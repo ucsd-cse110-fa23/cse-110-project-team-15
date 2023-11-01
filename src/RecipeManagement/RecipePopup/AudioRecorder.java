@@ -31,7 +31,7 @@ public class AudioRecorder {
       targetDataLine.open(audioFormat);
       targetDataLine.start();
       audioFile = new File("./bin/audio/recording.wav");
-      
+
       Thread recordingThread = new Thread(() -> {
         try (AudioInputStream audioInputStream = new AudioInputStream(targetDataLine)) {
           AudioSystem.write(audioInputStream, AudioFileFormat.Type.WAVE, audioFile);
@@ -51,7 +51,6 @@ public class AudioRecorder {
       if (targetDataLine != null) {
         targetDataLine.stop();
         targetDataLine.close();
-        // Whisper.transcribeAudio();
       }
     }
   }

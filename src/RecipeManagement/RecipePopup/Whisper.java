@@ -7,7 +7,7 @@ public class Whisper {
     private static final String API_ENDPOINT = "https://api.openai.com/v1/audio/transcriptions";
     private static final String TOKEN = "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";
     private static final String MODEL = "whisper-1";
-    private static final String FILE_PATH = "src/RecipeManagement/RecipePopup/recording.wav";
+    private static final String FILE_PATH = "bin/audio/recording.wav";
 
     // Helper method to write a parameter to the output stream in multipart form
     // data format

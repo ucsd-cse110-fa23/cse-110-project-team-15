@@ -62,10 +62,13 @@ public class RecipePopup extends Stage {
 
         stopRecordingButton.setOnAction(e -> {
             audioRecorder.stopRecording();
-            startRecordingButton.setDisable(false);
             stopRecordingButton.setDisable(true);
             recordingStatusLabel.setText("");
             recordingStatusLabel.setVisible(false);
+
+            Whisper.transcribeAudio();
+
+            startRecordingButton.setDisable(false);
         });
     }
 
