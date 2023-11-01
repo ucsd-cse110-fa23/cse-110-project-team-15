@@ -78,8 +78,6 @@ public class Whisper {
         System.out.println("Error Result: " + errorResult);
     }
 
-    
-
     public static void transcribeAudio() {
         try {
             File file = new File(FILE_PATH);
@@ -108,7 +106,6 @@ public class Whisper {
             } else {
                 handleErrorResponse(connection);
             }
-
             connection.disconnect();
         } catch (Exception e) {
             e.printStackTrace();

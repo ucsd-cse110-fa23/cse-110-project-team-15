@@ -9,7 +9,7 @@ import javafx.scene.layout.VBox;
 import javafx.geometry.Pos;
 
 public class RecipePopup extends Stage {
-    
+
     private AudioRecorder audioRecorder;
     private Label recordingStatusLabel;
     Label optionsLabel;
@@ -53,6 +53,7 @@ public class RecipePopup extends Stage {
 
     public void addListeners() {
         startRecordingButton.setOnAction(e -> {
+            audioRecorder.startRecording();
             startRecordingButton.setDisable(true);
             stopRecordingButton.setDisable(false);
             recordingStatusLabel.setText("Recording...");

@@ -21,27 +21,27 @@ public class AudioRecorder {
   }
 
   public void startRecording() {
-    if (!isRecording) {
-      isRecording = true;
-      AudioFormat audioFormat = new AudioFormat(16000, 16, 1, true, false);
-      int bufferSize = 4096;
-      DataLine.Info info = new DataLine.Info(TargetDataLine.class, audioFormat, bufferSize);
-      try {
-        targetDataLine = (TargetDataLine) AudioSystem.getLine(info);
-        targetDataLine.open(audioFormat);
-        targetDataLine.start();
-        audioFile = new File("src/RecipeManagement/RecipePopup/recording.wav");
-        Thread recordingThread = new Thread(() -> {
-          try (AudioInputStream audioInputStream = new AudioInputStream(targetDataLine)) {
-            AudioSystem.write(audioInputStream, AudioFileFormat.Type.WAVE, audioFile);
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
-        });
-        recordingThread.start();
-      } catch (LineUnavailableException e) {
-        e.printStackTrace();
-      }
+    if (isRecording) return;
+    isRecording = true;
+    AudioFormat audioFormat = new AudioFormat(44100, 16, 1, true, false);
+    // int bufferSize = 4096;
+    DataLine.Info info = new DataLine.Info(TargetDataLine.class, audioFormat);
+    try {
+      targetDataLine = (TargetDataLine) AudioSystem.getLine(info);
+      targetDataLine.open(audioFormat);
+      targetDataLine.start();
+      audioFile = new File("./bin/audio/recording.wav");
+      
+      Thread recordingThread = new Thread(() -> {
+        try (AudioInputStream audioInputStream = new AudioInputStream(targetDataLine)) {
+          AudioSystem.write(audioInputStream, AudioFileFormat.Type.WAVE, audioFile);
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      });
+      recordingThread.start();
+    } catch (LineUnavailableException e) {
+      e.printStackTrace();
     }
   }
 
@@ -51,7 +51,7 @@ public class AudioRecorder {
       if (targetDataLine != null) {
         targetDataLine.stop();
         targetDataLine.close();
-        Whisper.transcribeAudio();
+        // Whisper.transcribeAudio();
       }
     }
   }
