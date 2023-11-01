@@ -1,1 +1,3 @@
 .vscode/
+*.wav
+lib/

@@ -1,9 +1,9 @@
-package src.RecipeManagement;
+package RecipeManagement;
 
 import javafx.application.Application;
-import javafx.concurrent.Task;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import RecipeManagement.RecipePopup.RecipePopup;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -15,16 +15,9 @@ import javafx.scene.text.*;
 import java.util.Map;
 import java.util.HashMap;
 
-import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.stream.Collectors;
-
-import src.RecipeManagement.RecipePopup.RecipePopup;
-
-import java.util.*; 
 
 class Recipe extends HBox {
 
@@ -126,7 +119,6 @@ class RecipeList extends VBox {
         }
         catch(Exception e){
             System.out.println("savetasks() not implemented!");
-    
         }
     }
 
@@ -189,7 +181,6 @@ class RecipeList extends VBox {
         catch(Exception e){
             System.out.println("loadtasks() not implemented!");
         }
-        
     }
 }
 
@@ -216,7 +207,6 @@ class Footer extends HBox {
     public Button getCreateButton() {
         return createButton;
     }
-
 }
 
 class Header extends HBox {
@@ -229,8 +219,6 @@ class Header extends HBox {
         titleText.setStyle("-fx-font-weight: bold; -fx-font-size: 20;");
         this.getChildren().add(titleText);
         this.setAlignment(Pos.CENTER); // Align the text to the Center
-
-        
     }
 }
 
@@ -273,10 +261,9 @@ class AppFrame extends BorderPane{
 
     public void addListeners()
     {
-
         createButton.setOnAction(e -> {
             RecipePopup popup = new RecipePopup();
-            popup.show();
+            popup.display();
         });
     }
 }
