@@ -1,3 +1,5 @@
 .vscode/
 *.wav
 lib/
+
+.DS_Store
