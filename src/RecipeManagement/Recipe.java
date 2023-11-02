@@ -40,11 +40,11 @@ public class Recipe extends HBox {
         this.name.setStyle("-fx-background-color: #DAE5EA; -fx-border-width: 0;"); // set background color of texfield
         this.name.setAlignment(Pos.CENTER);
         this.name.setPadding(new Insets(10, 0, 10, 0)); // adds some padding to the text field
-        /*detailButton = new Button("View");
+        detailButton = new Button("View");
         detailButton.setPrefSize(100, 20);
         detailButton.setPrefHeight(Double.MAX_VALUE);
-        detailButton.setStyle("-fx-background-color: #DAE5EA; -fx-border-width: 0;");*/
-        this.getChildren().addAll(nameLabel, name);
+        detailButton.setStyle("-fx-background-color: #DAE5EA; -fx-border-width: 0;");
+        this.getChildren().addAll(nameLabel, name, detailButton);
         
 
         this.mealType = new TextField();
@@ -71,6 +71,7 @@ public class Recipe extends HBox {
         deleteButton.setStyle("-fx-background-color: #DAE5EA; -fx-border-width: 0;"); // sets style of button*/
 
         this.getChildren().addAll(recipeInfo);
+        addListeners();
     }
 
     public TextField getName() {
@@ -89,18 +90,17 @@ public class Recipe extends HBox {
         return this.instruction;
     }
 
-    /*public Button getDetailButton() {
+    public Button getDetailButton() {
         return this.detailButton;
-    }*/
+    }
 
-    /*public void addListeners() 
+    public void addListeners() 
     {
         detailButton.setOnAction(e -> {
-
             DetailsPopup popup = new DetailsPopup(recipe);
             popup.display();
         });
-    }*/
+    }
 
     /*public Button getUploadButton(){
         return this.uploadButton;

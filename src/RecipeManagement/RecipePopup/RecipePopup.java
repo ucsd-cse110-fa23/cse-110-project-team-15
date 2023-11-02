@@ -86,7 +86,7 @@ public class RecipePopup extends Stage {
             recordingStatusLabel.setVisible(false);
             // TODO: is this correct way to do this? (multithreading maybe if needed?)
             if (mealTypeSet) {
-                //audioToIngredient();
+                audioToIngredient();
                 try {
                     generateInstruction();
                 } catch (IOException | InterruptedException | URISyntaxException e1) {
@@ -119,6 +119,12 @@ public class RecipePopup extends Stage {
             // Show an error message in the popup screen
             errorLabel.setVisible(true);
         }
+    }
+
+    public void audioToIngredient() {
+        String generatedText = Whisper.transcribeAudio();
+        System.out.println("Ingredients: " + generatedText);
+        recipe.getIngredient().setText(generatedText);
     }
 
 

@@ -1,4 +1,4 @@
-/*package RecipeManagement.RecipePopup;
+package RecipeManagement;
 
 
 import javafx.stage.Stage;
@@ -14,7 +14,6 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 
-import RecipeManagement.Recipe;
 import javafx.geometry.Pos;
 
 public class DetailsPopup extends Stage {
@@ -64,4 +63,4 @@ public class DetailsPopup extends Stage {
         setScene(scene);
         this.show();
     }
-}*/
+}
