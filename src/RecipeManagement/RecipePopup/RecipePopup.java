@@ -9,6 +9,7 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
 
 import RecipeManagement.Recipe;
 import javafx.geometry.Pos;
@@ -28,7 +29,9 @@ public class RecipePopup extends Stage {
     private HBox buttonBox;
     private VBox layout;
 
+
     public RecipePopup(Recipe recipe) {
+
 
         setTitle("Specify Meal Type");
         setWidth(300);
@@ -97,6 +100,8 @@ public class RecipePopup extends Stage {
         });
     }
 
+
+
     public void audioToMealType() {
         String generatedText = Whisper.transcribeAudio();
         if (generatedText.toLowerCase().contains("breakfast") 
@@ -122,13 +127,21 @@ public class RecipePopup extends Stage {
         recipe.getIngredient().setText(generatedText);
     }
 
+
     public void generateInstruction() throws IOException, InterruptedException, URISyntaxException {
         // TODO: figure out how to parse ChatGPT response for name/ingredients/instructions
         ChatGPT gpt = new ChatGPT();
         String prompt = "List the instructions to making a " + recipe.getMealType().getText() + " with these ingredients " + recipe.getIngredient().getText() +". Respond in this format \"name of recipe - ingredients - instructions\"";
         String instruction = gpt.generate(prompt);
-        System.out.println("Instructions: " + instruction);
-        recipe.getInstruction().setText(instruction);
+        String[] instructions = instruction.split("-");
+        System.out.println("Recipe Name: " + instructions[0]);
+        System.out.println("Meal Type: " + recipe.getMealType().getText());
+        System.out.println("Ingredients: " + instructions[1]);
+        System.out.println("Instructions: " + instructions[2]);
+        recipe.getName().setText(instructions[0]);
+        recipe.getIngredient().setText(instructions[1]);
+        recipe.getInstruction().setText(instructions[2]);
+        mealTypeSet = false;
     }
 
     public void display() {

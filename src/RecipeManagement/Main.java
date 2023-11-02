@@ -9,6 +9,8 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.text.*;
+import java.util.Map;
+import java.util.HashMap;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ import java.util.Collections;
 
 class RecipeList extends VBox {
     Recipe[] list;
+
 
     RecipeList() {
         this.setSpacing(5); // sets spacing between tasks
@@ -192,7 +195,7 @@ class AppFrame extends BorderPane {
         addListeners();
     }
 
-    public void addListeners()
+    public void addListeners() 
     {
         createButton.setOnAction(e -> {
             Recipe recipe = new Recipe();
