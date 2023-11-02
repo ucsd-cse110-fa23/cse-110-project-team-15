@@ -6,72 +6,16 @@ import javafx.stage.Stage;
 import RecipeManagement.RecipePopup.RecipePopup;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.geometry.Insets;
 import javafx.scene.text.*;
-import java.util.Map;
-import java.util.HashMap;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 
-class Recipe extends HBox {
-
-    private VBox recipeInfo;
-    private TextField recipeName;
-    private Button uploadButton;
-    private Button deleteButton;
-    private Label nameLabel;
-
-    // String[] recipeDetails = new String[];
-
-    Recipe() {
-        this.setPrefSize(500, 100); // sets size of task
-        this.setStyle("-fx-background-color: #DAE5EA; -fx-border-width: 0; -fx-font-weight: bold;"); // sets background color of task
-
-        recipeInfo = new VBox();
-        nameLabel = new Label("Recipe Name:");
-
-        recipeName = new TextField(); // create task name text field
-        recipeName.setPrefSize(200, 20); // set size of text field
-        recipeName.setStyle("-fx-background-color: #DAE5EA; -fx-border-width: 0;"); // set background color of texfield
-        recipeName.setAlignment(Pos.CENTER);
-        recipeName.setPadding(new Insets(10, 0, 10, 0)); // adds some padding to the text field
-        recipeInfo.getChildren().add(nameLabel);
-        recipeInfo.getChildren().add(recipeName); // add textlabel to task
-
-        uploadButton = new Button("Upload"); // creates a button for marking the task as done
-        uploadButton.setPrefSize(100, 20);
-        uploadButton.setPrefHeight(Double.MAX_VALUE);
-        uploadButton.setStyle("-fx-background-color: #DAE5EA; -fx-border-width: 0;"); // sets style of button
-
-        deleteButton = new Button("Delete"); // creates a button for marking the task as done
-        deleteButton.setPrefSize(100, 25);
-        deleteButton.setPrefHeight(Double.MAX_VALUE);
-        deleteButton.setStyle("-fx-background-color: #DAE5EA; -fx-border-width: 0;"); // sets style of button
-
-        this.getChildren().addAll(uploadButton, recipeInfo, deleteButton);
-
-    }
-
-    public TextField getrecipeName() {
-        return this.recipeName;
-    }
-    public Button getUploadButton(){
-        return this.uploadButton;
-    }
-
-    public Button getDeleteButton(){
-        return this.deleteButton;
-    }
-}
-
 class RecipeList extends VBox {
-    Map<String, String[]> recipes = new HashMap<>();
+    Recipe[] list;
 
     RecipeList() {
         this.setSpacing(5); // sets spacing between tasks
@@ -104,7 +48,7 @@ class RecipeList extends VBox {
                 if (this.getChildren().get(i) instanceof Recipe){
                     Recipe Recipe = (Recipe) this.getChildren().get(i);
                     index++;
-                    String details = Recipe.getrecipeName().getText();
+                    String details = Recipe.getName().getText();
                     fw.write(details + "\n");
                 }
             }
@@ -127,7 +71,7 @@ class RecipeList extends VBox {
             for (int i = 0; i < this.getChildren().size(); i++){
                 if (this.getChildren().get(i) instanceof Recipe){
                     Recipe Recipe = (Recipe) this.getChildren().get(i);
-                    list.add(Recipe.getrecipeName().getText());
+                    list.add(Recipe.getName().getText());
                     clist.add(Recipe);
                     index++;
                 }
@@ -135,7 +79,7 @@ class RecipeList extends VBox {
             Collections.sort(list);
             for (String recipeName: list){
                 for (Recipe Recipe: clist){
-                    if (Recipe.getrecipeName().getText().equals(recipeName)){
+                    if (Recipe.getName().getText().equals(recipeName)){
                         clist2.add(Recipe);
                     }
                 }
@@ -152,25 +96,25 @@ class RecipeList extends VBox {
     /*
      * Load Recipes from a file called "Recipes.csv"
      */
-    public void loadRecipes() {
-        try{
-            BufferedReader in = new BufferedReader(new FileReader("Recipes.csv"));
-            String splitter = ",";
-            String line = in.readLine();
-            while (line != null){
-                Recipe Recipe = new Recipe();
-                String[] detail = line.split(splitter);
-                Recipe.getrecipeName().setText(detail[0]);
-                this.getChildren().add(Recipe);
-                line = in.readLine();
-            }
-            in.close();
-            this.updateRecipeIndices();
-        }
-        catch(Exception e){
-            System.out.println("loadtasks() not implemented!");
-        }
-    }
+    // public void loadRecipes() {
+    //     try{
+    //         BufferedReader in = new BufferedReader(new FileReader("Recipes.csv"));
+    //         String splitter = ",";
+    //         String line = in.readLine();
+    //         while (line != null){
+    //             Recipe Recipe = new Recipe();
+    //             String[] detail = line.split(splitter);
+    //             Recipe.getrecipeName().setText(detail[0]);
+    //             this.getChildren().add(Recipe);
+    //             line = in.readLine();
+    //         }
+    //         in.close();
+    //         this.updateRecipeIndices();
+    //     }
+    //     catch(Exception e){
+    //         System.out.println("loadtasks() not implemented!");
+    //     }
+    // }
 }
 
 class Footer extends HBox {
@@ -211,7 +155,7 @@ class Header extends HBox {
     }
 }
 
-class AppFrame extends BorderPane{
+class AppFrame extends BorderPane {
 
     private Header header;
     private Footer footer;
@@ -251,7 +195,10 @@ class AppFrame extends BorderPane{
     public void addListeners()
     {
         createButton.setOnAction(e -> {
-            RecipePopup popup = new RecipePopup();
+            Recipe recipe = new Recipe();
+            RecipeList.getChildren().add(recipe);
+
+            RecipePopup popup = new RecipePopup(recipe);
             popup.display();
         });
     }

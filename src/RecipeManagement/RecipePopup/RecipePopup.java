@@ -6,6 +6,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+
+import RecipeManagement.Recipe;
 import javafx.geometry.Pos;
 
 public class RecipePopup extends Stage {
@@ -16,22 +21,25 @@ public class RecipePopup extends Stage {
     private static Label optionsLabel;
     private static Label optionsText;
     public static boolean mealTypeSet = false;
-    public static String ingredients;
-    public static String mealType;
-    Button startRecordingButton;
-    Button stopRecordingButton;
-    HBox buttonBox;
-    VBox layout;
+    private Recipe recipe;
+    
+    private Button startRecordingButton;
+    private Button stopRecordingButton;
+    private HBox buttonBox;
+    private VBox layout;
 
-    public RecipePopup() {
+    public RecipePopup(Recipe recipe) {
+
         setTitle("Specify Meal Type");
         setWidth(300);
         setHeight(200);
 
-        optionsLabel = new Label("Say one of the following options:");
+        this.recipe = recipe;
+
+        optionsLabel = new Label(mealTypeSet ? "Say your ingredients" : "Say one of the following options:");
         optionsLabel.setStyle("-fx-alignment: center; -fx-font-weight: bold;");
 
-        optionsText = new Label("Breakfast, Lunch, or Dinner");
+        optionsText = new Label(mealTypeSet ? "" : "Breakfast, Lunch, or Dinner");
         optionsText.setStyle("-fx-alignment: center; -fx-font-weight: bold;");
 
         audioRecorder = new AudioRecorder();
@@ -73,32 +81,54 @@ public class RecipePopup extends Stage {
             stopRecordingButton.setDisable(true);
             recordingStatusLabel.setText("");
             recordingStatusLabel.setVisible(false);
-            audioToMealType();
+            // TODO: is this correct way to do this? (multithreading maybe if needed?)
+            if (mealTypeSet) {
+                audioToIngredient();
+                try {
+                    generateInstruction();
+                } catch (IOException | InterruptedException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
+                this.close();
+            } else {
+                audioToMealType();
+            }
             startRecordingButton.setDisable(false);
         });
     }
 
     public void audioToMealType() {
         String generatedText = Whisper.transcribeAudio();
-        if (mealTypeSet) {
-            ingredients = generatedText;
-            System.out.println("Ingredients:" + generatedText);
+        if (generatedText.toLowerCase().contains("breakfast") 
+                || generatedText.toLowerCase().contains("lunch")
+                || generatedText.toLowerCase().contains("dinner")) {
+            System.out.println("Transcription Result: " + generatedText);
+            errorLabel.setVisible(false);
+            optionsLabel.setText("List Ingredients");
+            optionsLabel.setVisible(true);
+            optionsText.setVisible(false);
+            recipe.getMealType().setText(generatedText);
+            mealTypeSet = true;
         } else {
-            if (generatedText.toLowerCase().contains("breakfast") || generatedText.toLowerCase().contains("lunch")
-                    || generatedText.toLowerCase().contains("dinner")) {
-                System.out.println("Transcription Result: " + generatedText);
-                errorLabel.setVisible(false);
-                optionsLabel.setText("List Ingredients");
-                optionsLabel.setVisible(true);
-                optionsText.setVisible(false);
-                mealType = generatedText;
-                mealTypeSet = true;
-            } else {
-                System.out.println("Transcription does not contain Breakfast, Lunch, or Dinner.");
-                // Show an error message in the popup screen
-                errorLabel.setVisible(true);
-            }
+            System.out.println("Transcription does not contain Breakfast, Lunch, or Dinner.");
+            // Show an error message in the popup screen
+            errorLabel.setVisible(true);
         }
+    }
+
+    public void audioToIngredient() {
+        String generatedText = Whisper.transcribeAudio();
+        System.out.println("Ingredients: " + generatedText);
+        recipe.getIngredient().setText(generatedText);
+    }
+
+    public void generateInstruction() throws IOException, InterruptedException, URISyntaxException {
+        // TODO: figure out how to parse ChatGPT response for name/ingredients/instructions
+        ChatGPT gpt = new ChatGPT();
+        String prompt = "List the instructions to making a " + recipe.getMealType().getText() + " with these ingredients " + recipe.getIngredient().getText() +". Respond in this format \"name of recipe - ingredients - instructions\"";
+        String instruction = gpt.generate(prompt);
+        System.out.println("Instructions: " + instruction);
+        recipe.getInstruction().setText(instruction);
     }
 
     public void display() {
