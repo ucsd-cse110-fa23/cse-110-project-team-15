@@ -53,7 +53,7 @@ public class Whisper {
             response.append(inputLine);
         }
         in.close();
-        
+
         JSONObject responseJson = new JSONObject(response.toString());
         String generatedText = responseJson.getString("text");
 

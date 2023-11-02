@@ -54,9 +54,6 @@ class Recipe extends HBox {
         deleteButton.setPrefHeight(Double.MAX_VALUE);
         deleteButton.setStyle("-fx-background-color: #DAE5EA; -fx-border-width: 0;"); // sets style of button
 
-
-        // uploadButton.setOnAction(e -> uploadImage());
-
         this.getChildren().addAll(uploadButton, recipeInfo, deleteButton);
 
     }
@@ -94,10 +91,6 @@ class RecipeList extends VBox {
             }
         }
     }
-
-    // public void recipeMapping() {
-    //     String[] recipeDetails = {}
-    //  }
 
     /*
      * Save tasks to a file called "Recipes.csv"
@@ -169,10 +162,6 @@ class RecipeList extends VBox {
                 String[] detail = line.split(splitter);
                 Recipe.getrecipeName().setText(detail[0]);
                 this.getChildren().add(Recipe);
-                // Button doneButton = task.getDoneButton();
-                // doneButton.setOnAction(e -> {
-                //     task.toggleDone();
-                // });
                 line = in.readLine();
             }
             in.close();
