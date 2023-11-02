@@ -9,6 +9,7 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
 
 import RecipeManagement.Recipe;
 import javafx.geometry.Pos;
@@ -28,7 +29,9 @@ public class RecipePopup extends Stage {
     private HBox buttonBox;
     private VBox layout;
 
+
     public RecipePopup(Recipe recipe) {
+
 
         setTitle("Specify Meal Type");
         setWidth(300);
@@ -83,7 +86,7 @@ public class RecipePopup extends Stage {
             recordingStatusLabel.setVisible(false);
             // TODO: is this correct way to do this? (multithreading maybe if needed?)
             if (mealTypeSet) {
-                audioToIngredient();
+                //audioToIngredient();
                 try {
                     generateInstruction();
                 } catch (IOException | InterruptedException | URISyntaxException e1) {
@@ -96,6 +99,8 @@ public class RecipePopup extends Stage {
             startRecordingButton.setDisable(false);
         });
     }
+
+
 
     public void audioToMealType() {
         String generatedText = Whisper.transcribeAudio();
@@ -116,11 +121,6 @@ public class RecipePopup extends Stage {
         }
     }
 
-    public void audioToIngredient() {
-        String generatedText = Whisper.transcribeAudio();
-        System.out.println("Ingredients: " + generatedText);
-        recipe.getIngredient().setText(generatedText);
-    }
 
     public void generateInstruction() throws IOException, InterruptedException, URISyntaxException {
         // TODO: figure out how to parse ChatGPT response for name/ingredients/instructions
@@ -128,7 +128,11 @@ public class RecipePopup extends Stage {
         String prompt = "List the instructions to making a " + recipe.getMealType().getText() + " with these ingredients " + recipe.getIngredient().getText() +". Respond in this format \"name of recipe - ingredients - instructions\"";
         String instruction = gpt.generate(prompt);
         System.out.println("Instructions: " + instruction);
-        recipe.getInstruction().setText(instruction);
+        String[] instructions = instruction.split("-");
+        recipe.getName().setText(instructions[0]);
+        recipe.getIngredient().setText(instructions[1]);
+        recipe.getInstruction().setText(instructions[2]);
+        mealTypeSet = false;
     }
 
     public void display() {
