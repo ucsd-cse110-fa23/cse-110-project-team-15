@@ -2,6 +2,9 @@ package tests;
 
 import org.junit.Test;
 
+import RecipeManagement.Recipe;
+import RecipeManagement.RecipePopup.RecipePopup;
+
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
@@ -17,8 +20,9 @@ public class Iter1 {
 
 
     @Test
-    public void testStudentEquals() {
-
+    public void recipeTest() {
+        Recipe rec = new Recipe();
+        assertEquals(rec.getName(), null);
     }
 
     @Test
