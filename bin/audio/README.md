@@ -1,1 +1,1 @@
-# Audio folder for recorder outputs
+# Folder for audio recorder outputs
