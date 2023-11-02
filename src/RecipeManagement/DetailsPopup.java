@@ -1,6 +1,4 @@
 package RecipeManagement;
-
-
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -12,13 +10,19 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
+
+import RecipeManagement.Recipe;
+import javafx.geometry.Pos;
+// import java.io.IOException;
+// import java.net.URISyntaxException;
+import java.util.List;
 import java.util.Map;
 
 import javafx.geometry.Pos;
 
 public class DetailsPopup extends Stage {
 
-    private Map<String, String[]> recipe;
+    private Recipe recipe;
 
     private TextField name;
     private TextField ingredients;
@@ -31,36 +35,36 @@ public class DetailsPopup extends Stage {
     private HBox buttonBox;
     private VBox layout;
 
-
-    public DetailsPopup(Map<String, String[]> recipe) {
-
-
-        setTitle(name.getText());
+    public DetailsPopup(Recipe recipe) {
+        // setTitle(name.getText());
         setWidth(300);
         setHeight(200);
 
-        this.recipe = recipe;
+        // Create controls for the popup window
+        name = new TextField(recipe.getName().getText());
+        ingredients = new TextField(recipe.getIngredient().getText());
+        instruction = new TextField(recipe.getInstruction().getText());
 
+        backButton = new Button("<-");
+        editButton = new Button("Edit");
+        saveButton = new Button("Save");
+        deleteButton = new Button("Delete");
 
-        buttonBox = new HBox(10);
-        buttonBox.setAlignment(Pos.CENTER);
-        buttonBox.getChildren().addAll(backButton, editButton, deleteButton, saveButton);
-
-        layout = new VBox(10);
+        // Create a layout for the controls
+        VBox layout = new VBox(10); // 10 pixels spacing
         layout.setAlignment(Pos.CENTER);
-        layout.getChildren().addAll(buttonBox);
-        
-        addListeners();
-    }
+        layout.getChildren().addAll(name, ingredients, instruction, backButton, editButton, deleteButton, saveButton);
 
-    public void addListeners() {
-    }
+        // Add an action for the "Add" button
+        saveButton.setOnAction(e -> {
+            recipe.getName().setText(name.getText());
+            recipe.getIngredient().setText(ingredients.getText());
+            recipe.getInstruction().setText(instruction.getText());
+            close(); // Close the popup window
+            });
 
-
-
-    public void display() {
-        Scene scene = new Scene(layout, 400, 500);
+        // Create a scene and set it for the popup window
+        Scene scene = new Scene(layout);
         setScene(scene);
-        this.show();
     }
 }
