@@ -12,46 +12,46 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 
 public class AudioRecorder {
-  private TargetDataLine targetDataLine;
-  private File audioFile;
-  private boolean isRecording;
+    private TargetDataLine targetDataLine;
+    private File audioFile;
+    private boolean isRecording;
 
-  public AudioRecorder() {
-    isRecording = false;
-  }
+    public AudioRecorder() {
+        isRecording = false;
+    }
 
-  public void startRecording() {
-    if (isRecording) return;
-    isRecording = true;
-    AudioFormat audioFormat = new AudioFormat(44100, 16, 1, true, false);
-    // int bufferSize = 4096;
-    DataLine.Info info = new DataLine.Info(TargetDataLine.class, audioFormat);
-    try {
-      targetDataLine = (TargetDataLine) AudioSystem.getLine(info);
-      targetDataLine.open(audioFormat);
-      targetDataLine.start();
-      audioFile = new File("./bin/audio/recording.wav");
+    public void startRecording() {
+        if (isRecording) return;
+        isRecording = true;
+        AudioFormat audioFormat = new AudioFormat(16000, 16, 1, true, false);
+        int bufferSize = 4096;
+        DataLine.Info info = new DataLine.Info(TargetDataLine.class, audioFormat, bufferSize);
+        try {
+            targetDataLine = (TargetDataLine) AudioSystem.getLine(info);
+            targetDataLine.open(audioFormat);
+            targetDataLine.start();
+            audioFile = new File("./bin/audio/recording.wav");
 
-      Thread recordingThread = new Thread(() -> {
-        try (AudioInputStream audioInputStream = new AudioInputStream(targetDataLine)) {
-          AudioSystem.write(audioInputStream, AudioFileFormat.Type.WAVE, audioFile);
-        } catch (IOException e) {
-          e.printStackTrace();
+            Thread recordingThread = new Thread(() -> {
+                try (AudioInputStream audioInputStream = new AudioInputStream(targetDataLine)) {
+                    AudioSystem.write(audioInputStream, AudioFileFormat.Type.WAVE, audioFile);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            recordingThread.start();
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
         }
-      });
-      recordingThread.start();
-    } catch (LineUnavailableException e) {
-      e.printStackTrace();
     }
-  }
 
-  public void stopRecording() {
-    if (isRecording) {
-      isRecording = false;
-      if (targetDataLine != null) {
-        targetDataLine.stop();
-        targetDataLine.close();
-      }
+    public void stopRecording() {
+        if (isRecording) {
+            isRecording = false;
+            if (targetDataLine != null) {
+                targetDataLine.stop();
+                targetDataLine.close();
+            }
+        }
     }
-  }
 }

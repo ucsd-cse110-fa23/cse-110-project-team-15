@@ -1,5 +1,9 @@
 .vscode/
+
 *.wav
+
 lib/
 
 .DS_Store
+
+**/.DS_Store

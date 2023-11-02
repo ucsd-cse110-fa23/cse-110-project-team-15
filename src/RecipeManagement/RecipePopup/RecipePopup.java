@@ -12,8 +12,12 @@ public class RecipePopup extends Stage {
 
     private AudioRecorder audioRecorder;
     private Label recordingStatusLabel;
-    Label optionsLabel;
-    Label optionsText;
+    private static Label errorLabel;
+    private static Label optionsLabel;
+    private static Label optionsText;
+    public static boolean mealTypeSet = false;
+    public static String ingredients;
+    public static String mealType;
     Button startRecordingButton;
     Button stopRecordingButton;
     HBox buttonBox;
@@ -40,13 +44,17 @@ public class RecipePopup extends Stage {
         recordingStatusLabel.setStyle("-fx-alignment: center; -fx-font-weight: bold;");
         recordingStatusLabel.setVisible(false);
 
+        errorLabel = new Label("Try again");
+        errorLabel.setStyle("-fx-alignment: center; -fx-font-weight: bold;");
+        errorLabel.setVisible(false);
+
         buttonBox = new HBox(10);
         buttonBox.setAlignment(Pos.CENTER);
         buttonBox.getChildren().addAll(startRecordingButton, stopRecordingButton);
 
         layout = new VBox(10);
         layout.setAlignment(Pos.CENTER);
-        layout.getChildren().addAll(optionsLabel, optionsText, buttonBox, recordingStatusLabel);
+        layout.getChildren().addAll(optionsLabel, optionsText, buttonBox, recordingStatusLabel, errorLabel);
         
         addListeners();
     }
@@ -65,11 +73,32 @@ public class RecipePopup extends Stage {
             stopRecordingButton.setDisable(true);
             recordingStatusLabel.setText("");
             recordingStatusLabel.setVisible(false);
-
-            Whisper.transcribeAudio();
-
+            audioToMealType();
             startRecordingButton.setDisable(false);
         });
+    }
+
+    public void audioToMealType() {
+        String generatedText = Whisper.transcribeAudio();
+        if (mealTypeSet) {
+            ingredients = generatedText;
+            System.out.println("Ingredients:" + generatedText);
+        } else {
+            if (generatedText.toLowerCase().contains("breakfast") || generatedText.toLowerCase().contains("lunch")
+                    || generatedText.toLowerCase().contains("dinner")) {
+                System.out.println("Transcription Result: " + generatedText);
+                errorLabel.setVisible(false);
+                optionsLabel.setText("List Ingredients");
+                optionsLabel.setVisible(true);
+                optionsText.setVisible(false);
+                mealType = generatedText;
+                mealTypeSet = true;
+            } else {
+                System.out.println("Transcription does not contain Breakfast, Lunch, or Dinner.");
+                // Show an error message in the popup screen
+                errorLabel.setVisible(true);
+            }
+        }
     }
 
     public void display() {

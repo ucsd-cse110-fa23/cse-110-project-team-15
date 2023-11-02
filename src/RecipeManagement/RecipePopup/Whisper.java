@@ -45,23 +45,19 @@ public class Whisper {
     }
 
     // Helper method to handle a successful response
-    private static void handleSuccessResponse(HttpURLConnection connection)
-            throws IOException, JSONException {
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(connection.getInputStream()));
+    private static String handleSuccessResponse(HttpURLConnection connection) throws IOException, JSONException {
+        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         String inputLine;
         StringBuilder response = new StringBuilder();
         while ((inputLine = in.readLine()) != null) {
             response.append(inputLine);
         }
         in.close();
-
+        
         JSONObject responseJson = new JSONObject(response.toString());
-
         String generatedText = responseJson.getString("text");
 
-        // Print the transcription result
-        System.out.println("Transcription Result: " + generatedText);
+        return generatedText;
     }
 
     private static void handleErrorResponse(HttpURLConnection connection)
@@ -78,14 +74,15 @@ public class Whisper {
         System.out.println("Error Result: " + errorResult);
     }
 
-    public static void transcribeAudio() {
+    public static String transcribeAudio() {
+        String transcription = null;
         try {
             File file = new File(FILE_PATH);
             URL url = new URI(API_ENDPOINT).toURL();
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             connection.setDoOutput(true);
-
+            
             String boundary = "Boundary-" + System.currentTimeMillis();
             connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
             connection.setRequestProperty("Authorization", "Bearer " + TOKEN);
@@ -102,7 +99,7 @@ public class Whisper {
             int responseCode = connection.getResponseCode();
 
             if (responseCode == HttpURLConnection.HTTP_OK) {
-                handleSuccessResponse(connection);
+                transcription = handleSuccessResponse(connection);
             } else {
                 handleErrorResponse(connection);
             }
@@ -110,5 +107,6 @@ public class Whisper {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return transcription;
     }
 }
