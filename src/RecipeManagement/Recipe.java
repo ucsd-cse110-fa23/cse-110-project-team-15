@@ -94,11 +94,15 @@ public class Recipe extends HBox {
         return this.detailButton;
     }
 
+    // public RecipeDetails getDetails() {
+    //     return new RecipeDetails(name.getText(), mealType.getText(), ingredient.getText(), instruction.getText());
+    // }
+
     public void addListeners() 
     {
         detailButton.setOnAction(e -> {
-            DetailsPopup popup = new DetailsPopup(recipe);
-            popup.display();
+            DetailsPopup popup = new DetailsPopup(this);
+            popup.showAndWait();
         });
     }
 
