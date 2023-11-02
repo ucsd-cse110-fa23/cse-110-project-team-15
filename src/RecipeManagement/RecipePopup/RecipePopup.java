@@ -133,8 +133,11 @@ public class RecipePopup extends Stage {
         ChatGPT gpt = new ChatGPT();
         String prompt = "List the instructions to making a " + recipe.getMealType().getText() + " with these ingredients " + recipe.getIngredient().getText() +". Respond in this format \"name of recipe - ingredients - instructions\"";
         String instruction = gpt.generate(prompt);
-        System.out.println("Instructions: " + instruction);
         String[] instructions = instruction.split("-");
+        System.out.println("Recipe Name: " + instructions[0]);
+        System.out.println("Meal Type: " + recipe.getMealType().getText());
+        System.out.println("Ingredients: " + instructions[1]);
+        System.out.println("Instructions: " + instructions[2]);
         recipe.getName().setText(instructions[0]);
         recipe.getIngredient().setText(instructions[1]);
         recipe.getInstruction().setText(instructions[2]);

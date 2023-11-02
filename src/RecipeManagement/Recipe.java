@@ -43,7 +43,7 @@ public class Recipe extends HBox {
         detailButton = new Button("View");
         detailButton.setPrefSize(100, 20);
         detailButton.setPrefHeight(Double.MAX_VALUE);
-        detailButton.setStyle("-fx-background-color: #DAE5EA; -fx-border-width: 0;");
+        detailButton.setStyle("-fx-font-style: italic; -fx-background-color: #FFFFFF;  -fx-font-weight: bold; -fx-font: 11 arial;");
         this.getChildren().addAll(nameLabel, name, detailButton);
         
 
