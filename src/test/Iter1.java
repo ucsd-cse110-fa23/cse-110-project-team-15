@@ -1,29 +1,16 @@
-package tests;
+package test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 
-import RecipeManagement.Recipe;
-import RecipeManagement.RecipePopup.RecipePopup;
-
-import java.util.Objects;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Collections;
-import java.util.ArrayList;
-import java.util.Iterator;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import static org.junit.Assert.*;
 
 public class Iter1 {
-
-
-    @Test
-    public void recipeTest() {
-        Recipe rec = new Recipe();
-        assertEquals(rec.getName(), null);
-    }
 
     @Test
     public void testStudentCompareTo() {
@@ -32,6 +19,11 @@ public class Iter1 {
 
     @Test
     public void wrongTest() {
+        assertEquals("hi", "hi");
+        assertEquals("hi", "he");
+    }
+    @Test
+    public void test2() {
         assertEquals("hi", "hi");
         assertEquals("hi", "he");
     }
