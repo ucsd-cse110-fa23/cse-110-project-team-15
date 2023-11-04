@@ -27,6 +27,12 @@ public class Iter1 {
 
     @Test
     public void testStudentCompareTo() {
+        assertEquals("hi", "hi");
+    }
 
+    @Test
+    public void wrongTest() {
+        assertEquals("hi", "hi");
+        assertEquals("hi", "he");
     }
 }
