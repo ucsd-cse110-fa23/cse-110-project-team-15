@@ -18,7 +18,7 @@ repositories {
 
 dependencies {
     def junitVersion = '5.8.1'
-    implementation files(fileTree('lib') {include '*.jar'})
+    // implementation files(fileTree('lib') {include '*.jar'})
     // implementation files(fileTree('lib') {include '*.dylib'})
     // implementation files(fileTree('lib') {include '*.properties'})
     implementation 'org.json:json:20171018'
@@ -30,8 +30,8 @@ dependencies {
 }
 
 javafx {
-
-    modules = ['javafx.controls', 'javafx.fxml']
+    
+    modules = ['javafx.controls', 'javafx.fxml', "javafx.base", "javafx.graphics"]
 
 }
 
