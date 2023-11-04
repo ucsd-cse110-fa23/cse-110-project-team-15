@@ -1,5 +1,3 @@
-package RecipeManagement;
-
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -9,7 +7,6 @@ import javafx.geometry.Insets;
 import java.util.Map;
 
 //import RecipeManagement.RecipePopup.DetailsPopup;
-import RecipeManagement.RecipePopup.RecipePopup;
 
 import java.util.HashMap;
 

@@ -1,4 +1,3 @@
-package RecipeManagement;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -11,7 +10,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 
-import RecipeManagement.Recipe;
+
 import javafx.geometry.Pos;
 // import java.io.IOException;
 // import java.net.URISyntaxException;

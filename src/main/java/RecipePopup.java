@@ -1,4 +1,3 @@
-package RecipeManagement.RecipePopup;
 
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -11,7 +10,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 
-import RecipeManagement.Recipe;
 import javafx.geometry.Pos;
 
 public class RecipePopup extends Stage {
