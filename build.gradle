@@ -12,11 +12,9 @@ repositories {
     mavenCentral()
 }
 
-
-
 dependencies {
     def junitVersion = '5.8.1'
-    runtimeOnly files(fileTree('lib') {include '*.jar'})
+    implementation files(fileTree('lib') {include '*.jar'})
     // This provides the JUnit API.
     testImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
     // This provides the TestEngine to actually run the tests.
