@@ -6,4 +6,10 @@
 
 **/.DS_Store
 
-lib/
+lib
+
+build/
+
+bin/
+
+hs_err_pid25420.log
