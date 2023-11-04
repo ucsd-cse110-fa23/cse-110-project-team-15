@@ -9,3 +9,9 @@
 lib
 
 .gradle/
+
+build/
+
+bin/
+
+hs_err_pid25420.log
