@@ -1,5 +1,3 @@
-
-//import RecipeManagement.RecipePopup.DetailsPopup;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
@@ -32,12 +30,11 @@ public class Test1 extends Main {
 
     @BeforeEach
     public void setUp() throws Exception {
-        int x = 1;
+
     }
 
     @Test
     public void test1() throws Exception{
-        
         assertEquals("hi", "hi");
     }
 
