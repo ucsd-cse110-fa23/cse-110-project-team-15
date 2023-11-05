@@ -199,8 +199,8 @@ class AppFrame extends BorderPane {
         createButton.setOnAction(e -> {
             Recipe recipe = new Recipe();
             RecipeList.getChildren().add(recipe);
-
-            RecipePopup popup = new RecipePopup(recipe);
+            Whisper whisp = new Whisper();
+            RecipePopup popup = new RecipePopup(recipe, whisp);
             popup.display();
         });
     }

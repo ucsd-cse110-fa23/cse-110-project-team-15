@@ -12,4 +12,10 @@ build/
 
 bin/
 
-hs_err_pid25420.log
+.gradle/
+
+bin/main
+
+bin/test
+
+hs_err_pid*.log

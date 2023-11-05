@@ -10,7 +10,7 @@ public class Whisper {
 
     // Helper method to write a parameter to the output stream in multipart form
     // data format
-    private static void writeParameterToOutputStream(
+    private void writeParameterToOutputStream(
             OutputStream outputStream,
             String parameterName,
             String parameterValue,
@@ -23,7 +23,7 @@ public class Whisper {
 
     // Helper method to write a file to the output stream in multipart form data
     // format
-    private static void writeFileToOutputStream(
+    private void writeFileToOutputStream(
             OutputStream outputStream,
             File file,
             String boundary) throws IOException {
@@ -44,7 +44,7 @@ public class Whisper {
     }
 
     // Helper method to handle a successful response
-    private static String handleSuccessResponse(HttpURLConnection connection) throws IOException, JSONException {
+    private String handleSuccessResponse(HttpURLConnection connection) throws IOException, JSONException {
         BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         String inputLine;
         StringBuilder response = new StringBuilder();
@@ -59,7 +59,7 @@ public class Whisper {
         return generatedText;
     }
 
-    private static void handleErrorResponse(HttpURLConnection connection)
+    private void handleErrorResponse(HttpURLConnection connection)
             throws IOException, JSONException {
         BufferedReader errorReader = new BufferedReader(
                 new InputStreamReader(connection.getErrorStream()));
@@ -73,7 +73,7 @@ public class Whisper {
         System.out.println("Error Result: " + errorResult);
     }
 
-    public static String transcribeAudio() {
+    public String transcribeAudio() {
         String transcription = null;
         try {
             File file = new File(FILE_PATH);
@@ -100,7 +100,7 @@ public class Whisper {
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 transcription = handleSuccessResponse(connection);
             } else {
-                handleErrorResponse(connection);
+                this.handleErrorResponse(connection);
             }
             connection.disconnect();
         } catch (Exception e) {

@@ -12,9 +12,9 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 
 public class AudioRecorder {
-    private TargetDataLine targetDataLine;
+    TargetDataLine targetDataLine;
     private File audioFile;
-    private boolean isRecording;
+    boolean isRecording;
 
     public AudioRecorder() {
         isRecording = false;

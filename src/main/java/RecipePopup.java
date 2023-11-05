@@ -19,8 +19,10 @@ public class RecipePopup extends Stage {
     private static Label errorLabel;
     private static Label optionsLabel;
     private static Label optionsText;
-    public static boolean mealTypeSet = false;
+    public boolean mealTypeSet;
     private Recipe recipe;
+    private Whisper whisp;
+
     
     private Button startRecordingButton;
     private Button stopRecordingButton;
@@ -28,14 +30,15 @@ public class RecipePopup extends Stage {
     private VBox layout;
 
 
-    public RecipePopup(Recipe recipe) {
-
+    public RecipePopup(Recipe recipe, Whisper whisp) {
+        mealTypeSet = false;
 
         setTitle("Specify Meal Type");
         setWidth(300);
         setHeight(200);
 
         this.recipe = recipe;
+        this.whisp = whisp;
 
         optionsLabel = new Label(mealTypeSet ? "Say your ingredients" : "Say one of the following options:");
         optionsLabel.setStyle("-fx-alignment: center; -fx-font-weight: bold;");
@@ -101,7 +104,8 @@ public class RecipePopup extends Stage {
 
 
     public void audioToMealType() {
-        String generatedText = Whisper.transcribeAudio();
+        String generatedText = whisp.transcribeAudio();
+        System.out.println(generatedText);
         if (generatedText.toLowerCase().contains("breakfast") 
                 || generatedText.toLowerCase().contains("lunch")
                 || generatedText.toLowerCase().contains("dinner")) {
@@ -120,7 +124,9 @@ public class RecipePopup extends Stage {
     }
 
     public void audioToIngredient() {
-        String generatedText = Whisper.transcribeAudio();
+        Whisper whisp = new Whisper();
+
+        String generatedText = whisp.transcribeAudio();
         System.out.println("Ingredients: " + generatedText);
         recipe.getIngredient().setText(generatedText);
     }
@@ -146,5 +152,9 @@ public class RecipePopup extends Stage {
         Scene scene = new Scene(layout, 400, 500);
         setScene(scene);
         this.show();
+    }
+
+    public Recipe getRecipe() {
+        return this.recipe;
     }
 }
