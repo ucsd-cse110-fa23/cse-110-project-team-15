@@ -14,8 +14,9 @@ bin/
 
 .gradle/
 
-bin/main
+bin/main/
 
-bin/test
+bin/test/
 
 hs_err_pid*.log
+

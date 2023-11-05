@@ -91,6 +91,29 @@ public class Test1 extends ApplicationTest {
     }
 
     @Test
+    public void mealInalidTest() throws Exception{
+        Platform.runLater(() -> {
+            String mealType = "I want a snack";
+            String name = "Salad";
+            Recipe recipe = new Recipe();
+            recipe.getName().setText(name);
+            Whisper whisp = mock(Whisper.class);
+            RecipePopup recipePopup = new RecipePopup(recipe, whisp);
+            when(whisp.transcribeAudio()).thenReturn(mealType); // Adjust as needed for your test cases
+
+            recipePopup.audioToMealType();
+
+            // Verify that the appropriate actions have been taken
+            assertEquals("Salad", recipePopup.getRecipe().getName().getText());
+            assertFalse("lunch" == recipePopup.getRecipe().getMealType().getText().toLowerCase());
+            assertFalse("dinner" == recipePopup.getRecipe().getMealType().getText().toLowerCase());
+            assertFalse("breakfast" == recipePopup.getRecipe().getMealType().getText().toLowerCase());
+
+        });
+
+    }
+
+    @Test
     public void removeRecipeTest() throws Exception {
         Recipe rec = new Recipe();
         String name = "Chicken salad";
