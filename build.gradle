@@ -22,8 +22,8 @@ dependencies {
     // implementation files(fileTree('lib') {include '*.dylib'})
     // implementation files(fileTree('lib') {include '*.properties'})
     implementation 'org.json:json:20171018'
-    implementation 'org.openjfx:javafx-controls:16'
-    implementation 'org.openjfx:javafx-fxml:16'
+    // implementation 'org.openjfx:javafx-controls:16'
+    // implementation 'org.openjfx:javafx-fxml:16'
     testImplementation 'org.testfx:testfx-core:4.0.16-alpha'
     testImplementation "org.testfx:testfx-junit5:4.0.16-alpha"
     testImplementation 'org.mockito:mockito-core:3.2.4'
@@ -35,8 +35,11 @@ dependencies {
 }
 
 javafx {
-    
-    modules = ['javafx.controls', 'javafx.swing', 'javafx.fxml', "javafx.base", "javafx.graphics"]
+    if (System.getenv("CI") == null) {
+        sdk = "./"
+    }
+    // modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.swing', 'javafx.media', 'javafx.graphics']
+    modules = [ 'javafx.base', 'javafx.controls', 'javafx.swing', 'javafx.fxml', 'javafx.graphics']
 
 }
 
@@ -44,7 +47,5 @@ test {
     useJUnitPlatform()
 }
 
-application {
+mainClassName = 'Main'
 
-    mainClassName = 'Main'
-}

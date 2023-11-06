@@ -1,18 +1,18 @@
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+// import static org.junit.jupiter.api.Assertions.*;
+// import org.junit.jupiter.api.BeforeEach;
+// import org.junit.jupiter.api.Test;
+// import org.mockito.Mockito;
 
-import javax.sound.sampled.*;
-import java.io.File;
+// import javax.sound.sampled.*;
+// import java.io.File;
 
-public class AudioRecorderTest {
-    public AudioRecorder audioRecorder;
+// public class AudioRecorderTest {
+//     public AudioRecorder audioRecorder;
 
-    @BeforeEach
-    public void setUp() {
-        audioRecorder = new AudioRecorder();
-    }
+//     @BeforeEach
+//     public void setUp() {
+//         audioRecorder = new AudioRecorder();
+//     }
 
     // @Test
     // public void testStartRecording() {
@@ -54,4 +54,4 @@ public class AudioRecorderTest {
     //     Mockito.verify(targetDataLine).stop();
     //     Mockito.verify(targetDataLine).close();
     // }
-}
+// }
