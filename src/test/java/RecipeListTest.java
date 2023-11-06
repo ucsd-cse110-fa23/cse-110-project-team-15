@@ -92,7 +92,7 @@ public class RecipeListTest extends ApplicationTest {
 
             File file = new File("recipes.csv");
             assertTrue(file.exists());
-
+            
             List<String> lines = Files.readAllLines(Path.of("recipes.csv"));
 
             assertEquals("Recipe 1", lines.get(0));

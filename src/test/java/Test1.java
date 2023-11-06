@@ -77,7 +77,8 @@ public class Test1 extends ApplicationTest {
             Recipe recipe = new Recipe();
             recipe.getName().setText(name);
             Whisper whisp = mock(Whisper.class);
-            RecipePopup recipePopup = new RecipePopup(recipe, whisp);
+            ChatGPT gpt = mock(ChatGPT.class);
+            RecipePopup recipePopup = new RecipePopup(recipe, whisp, gpt);
             when(whisp.transcribeAudio()).thenReturn(mealType); // Adjust as needed for your test cases
 
             recipePopup.audioToMealType();
@@ -98,7 +99,8 @@ public class Test1 extends ApplicationTest {
             Recipe recipe = new Recipe();
             recipe.getName().setText(name);
             Whisper whisp = mock(Whisper.class);
-            RecipePopup recipePopup = new RecipePopup(recipe, whisp);
+            ChatGPT gpt = mock(ChatGPT.class);
+            RecipePopup recipePopup = new RecipePopup(recipe, whisp, gpt);
             when(whisp.transcribeAudio()).thenReturn(mealType); // Adjust as needed for your test cases
 
             recipePopup.audioToMealType();

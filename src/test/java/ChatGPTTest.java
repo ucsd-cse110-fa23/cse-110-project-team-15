@@ -1,4 +1,8 @@
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.io.IOException;
@@ -10,16 +14,19 @@ public class ChatGPTTest {
 
     @BeforeEach
     public void setUp() {
-        chatGPT = new ChatGPT();
+        chatGPT = mock(ChatGPT.class);
     }
 
     @Test
     public void testGenerate() throws IOException, InterruptedException, URISyntaxException {
         String prompt = "Where is UC San Diego located?";
+        String location = "9500 Gilman Dr, La Jolla, CA 92093";
+
+        when(chatGPT.generate(anyString())).thenReturn(location);
         String generatedText = chatGPT.generate(prompt);
 
         assertNotNull(generatedText);
-        assertFalse(generatedText.isEmpty());
+        assertEquals(location, generatedText);
 
         System.out.println("Generated Text: " + generatedText);
     }

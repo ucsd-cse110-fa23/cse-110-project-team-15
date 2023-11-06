@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit5.ApplicationTest;
 
 import javafx.embed.swing.JFXPanel;
@@ -10,6 +11,11 @@ public class RecipeTest extends ApplicationTest {
     @BeforeAll
     public static void initJFX() {
         new JFXPanel();
+    }
+
+    @Override
+    public void stop() throws Exception {
+        FxToolkit.hideStage();
     }
 
     @Test

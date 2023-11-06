@@ -200,7 +200,8 @@ class AppFrame extends BorderPane {
             Recipe recipe = new Recipe();
             RecipeList.getChildren().add(recipe);
             Whisper whisp = new Whisper();
-            RecipePopup popup = new RecipePopup(recipe, whisp);
+            ChatGPT gpt = new ChatGPT();
+            RecipePopup popup = new RecipePopup(recipe, whisp, gpt);
             popup.display();
         });
     }

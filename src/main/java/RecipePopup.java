@@ -22,6 +22,7 @@ public class RecipePopup extends Stage {
     public boolean mealTypeSet;
     private Recipe recipe;
     private Whisper whisp;
+    private ChatGPT gpt;
 
     
     private Button startRecordingButton;
@@ -30,7 +31,7 @@ public class RecipePopup extends Stage {
     private VBox layout;
 
 
-    public RecipePopup(Recipe recipe, Whisper whisp) {
+    public RecipePopup(Recipe recipe, Whisper whisp, ChatGPT gpt) {
         mealTypeSet = false;
 
         setTitle("Specify Meal Type");
@@ -39,6 +40,7 @@ public class RecipePopup extends Stage {
 
         this.recipe = recipe;
         this.whisp = whisp;
+        this.gpt = gpt;
 
         optionsLabel = new Label(mealTypeSet ? "Say your ingredients" : "Say one of the following options:");
         optionsLabel.setStyle("-fx-alignment: center; -fx-font-weight: bold;");
@@ -124,8 +126,6 @@ public class RecipePopup extends Stage {
     }
 
     public void audioToIngredient() {
-        Whisper whisp = new Whisper();
-
         String generatedText = whisp.transcribeAudio();
         System.out.println("Ingredients: " + generatedText);
         recipe.getIngredient().setText(generatedText);
@@ -134,7 +134,6 @@ public class RecipePopup extends Stage {
 
     public void generateInstruction() throws IOException, InterruptedException, URISyntaxException {
         // TODO: figure out how to parse ChatGPT response for name/ingredients/instructions
-        ChatGPT gpt = new ChatGPT();
         String prompt = "List the instructions to making a " + recipe.getMealType().getText() + " with these ingredients " + recipe.getIngredient().getText() +". Respond in this format \"name of recipe - ingredients - instructions\"";
         String instruction = gpt.generate(prompt);
         String[] instructions = instruction.split("-");
