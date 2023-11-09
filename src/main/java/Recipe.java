@@ -37,6 +37,7 @@ public class Recipe extends HBox {
         this.name.setStyle("-fx-background-color: #DAE5EA; -fx-border-width: 0;"); // set background color of texfield
         this.name.setAlignment(Pos.CENTER);
         this.name.setPadding(new Insets(10, 0, 10, 0)); // adds some padding to the text field
+        this.name.setEditable(false);
         detailButton = new Button("View");
         detailButton.setPrefSize(100, 20);
         detailButton.setPrefHeight(Double.MAX_VALUE);
