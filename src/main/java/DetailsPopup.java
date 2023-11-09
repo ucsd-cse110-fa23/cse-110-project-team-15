@@ -35,6 +35,8 @@ public class DetailsPopup extends Stage {
     private VBox layout;
 
     public DetailsPopup(Recipe recipe) {
+
+        this.recipe = recipe;
         // setTitle(name.getText());
         setWidth(300);
         setHeight(200);
@@ -71,10 +73,11 @@ public class DetailsPopup extends Stage {
             instruction.setEditable(!instruction.isEditable());
             });
 
+        // Add an action for the "Delete" button
         deleteButton.setOnAction(e -> {
-            ingredients.setEditable(!ingredients.isEditable());
-            instruction.setEditable(!instruction.isEditable());
-            });
+            recipe.deleteRecipe(); // Call the deleteRecipe method of the Recipe
+            close(); // Close the popup window
+        });
         
 
         // Create a scene and set it for the popup window

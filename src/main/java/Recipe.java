@@ -22,13 +22,16 @@ public class Recipe extends HBox {
     private Button deleteButton;
     private Button detailButton;
     public Map<String, String[]> recipe = new HashMap<>();
+    private RecipeList recipeList;
     String[] recipeDetails = new String[3];
 
-    public Recipe() {
+    public Recipe(RecipeList recipeList) {
         
         this.setPrefSize(500, 100); // sets size of task
         this.setStyle("-fx-background-color: #DAE5EA; -fx-border-width: 0; -fx-font-weight: bold;"); // sets background color of task
 
+        this.recipeList = recipeList;
+        
         recipeInfo = new VBox();
         nameLabel = new Label("Recipe Name:");
 
@@ -115,5 +118,10 @@ public class Recipe extends HBox {
     // Checks if it is a completed recipe (if createRecipe -> RecipePopup -> mealtype -> ingredients -> name -> instructions)
     public Boolean isComplete(){
         return this.name.getText() != null && this.mealType.getText() != null && this.ingredient.getText() != null && this.instruction.getText() != null;
+    }
+
+    public void deleteRecipe() {
+        // Remove this recipe from the RecipeList
+        recipeList.removeRecipe(this);
     }
 }
