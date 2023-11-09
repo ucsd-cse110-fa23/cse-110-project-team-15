@@ -63,6 +63,7 @@ public class DetailsPopup extends Stage {
             recipe.getName().setText(name.getText());
             recipe.getIngredient().setText(ingredients.getText());
             recipe.getInstruction().setText(instruction.getText());
+            recipe.saveRecipe();
             close(); // Close the popup window
             });
 
@@ -74,6 +75,7 @@ public class DetailsPopup extends Stage {
         // Add an action for the "Delete" button
         deleteButton.setOnAction(e -> {
             recipe.deleteRecipe();
+            recipe.saveRecipe();
             close();
         });
 

@@ -97,28 +97,28 @@ class RecipeList extends VBox {
         }
     }
 
-    /*
-     * Load Recipes from a file called "Recipes.csv"
-     */
-    // public void loadRecipes() {
-    //     try{
-    //         BufferedReader in = new BufferedReader(new FileReader("Recipes.csv"));
-    //         String splitter = ",";
-    //         String line = in.readLine();
-    //         while (line != null){
-    //             Recipe Recipe = new Recipe();
-    //             String[] detail = line.split(splitter);
-    //             Recipe.getrecipeName().setText(detail[0]);
-    //             this.getChildren().add(Recipe);
-    //             line = in.readLine();
-    //         }
-    //         in.close();
-    //         this.updateRecipeIndices();
-    //     }
-    //     catch(Exception e){
-    //         System.out.println("loadtasks() not implemented!");
-    //     }
-    // }
+    public void loadTasks() {
+
+        try (BufferedReader reader = new BufferedReader(new FileReader("recipes.csv"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                RecipeList list = new RecipeList();
+                String[] info = line.split("-");
+                Recipe recipe = new Recipe(list);
+                recipe.getName().setText(info[0]);
+                recipe.getIngredient().setText(info[1]);
+                recipe.getInstruction().setText(info[2]);
+                this.getChildren().add(recipe);                
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Update task indices
+        //updateTaskIndices();
+
+        //System.out.println("loadtasks() not implemented!");
+    }
 }
 
 class Footer extends HBox {
@@ -192,6 +192,22 @@ class AppFrame extends BorderPane {
 
         createButton = footer.getCreateButton();
 
+        try (BufferedReader reader = new BufferedReader(new FileReader("recipes.csv"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] info = line.split("-");
+                Recipe recipe = new Recipe(RecipeList);
+                recipe.getName().setText(info[0]);
+                recipe.getIngredient().setText(info[1]);
+                recipe.getInstruction().setText(info[2]);
+                RecipeList.getChildren().add(recipe);                
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        
+
         // Call Event Listeners for the Buttons
         addListeners();
     }
@@ -225,7 +241,12 @@ public class Main extends Application {
         primaryStage.setResizable(false);
         // Show the app
         primaryStage.show();
+
+        
+
     }
+
+   
 
     public static void main(String[] args) {
         launch(args);
