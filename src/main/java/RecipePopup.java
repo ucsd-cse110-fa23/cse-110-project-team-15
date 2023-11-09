@@ -96,6 +96,7 @@ public class RecipePopup extends Stage {
                     e1.printStackTrace();
                 }
                 this.close();
+                recipe.saveRecipe();
             } else {
                 audioToMealType();
             }

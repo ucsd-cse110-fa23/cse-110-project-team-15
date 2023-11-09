@@ -125,4 +125,8 @@ public class Recipe extends HBox {
         // Remove this recipe from the RecipeList
         recipeList.removeRecipe(this);
     }
+
+    public void saveRecipe() {
+        recipeList.saveRecipes();
+    }
 }

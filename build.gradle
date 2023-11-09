@@ -35,9 +35,9 @@ dependencies {
 }
 
 javafx {
-    if (System.getenv("CI") == null) {
+    /*if (System.getenv("CI") == null) {
         sdk = "./"
-    }
+    }*/
     // modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.swing', 'javafx.media', 'javafx.graphics']
     modules = [ 'javafx.base', 'javafx.controls', 'javafx.swing', 'javafx.fxml', 'javafx.graphics']
 

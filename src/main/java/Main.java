@@ -50,8 +50,10 @@ class RecipeList extends VBox {
                 if (this.getChildren().get(i) instanceof Recipe){
                     Recipe Recipe = (Recipe) this.getChildren().get(i);
                     index++;
-                    String details = Recipe.getName().getText();
-                    fw.write(details + "\n");
+                    String name = Recipe.getName().getText();
+                    String ingredients = Recipe.getIngredient().getText();
+                    String instruction = Recipe.getInstruction().getText();
+                    fw.write(name + "-" + ingredients + "-" + instruction + "\n");
                 }
             }
             fw.close();
