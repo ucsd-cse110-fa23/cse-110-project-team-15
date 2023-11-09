@@ -71,6 +71,12 @@ public class DetailsPopup extends Stage {
             instruction.setEditable(!instruction.isEditable());
             });
 
+        // Add an action for the "Delete" button
+        deleteButton.setOnAction(e -> {
+            recipe.deleteRecipe();
+            close();
+        });
+
         // Create a scene and set it for the popup window
         Scene scene = new Scene(layout);
         setScene(scene);

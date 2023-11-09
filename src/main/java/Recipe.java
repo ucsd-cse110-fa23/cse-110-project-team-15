@@ -12,6 +12,8 @@ import java.util.HashMap;
 
 public class Recipe extends HBox {
 
+    private RecipeList recipeList;
+
     private Label nameLabel;
     private VBox recipeInfo;
     private TextField name;
@@ -24,7 +26,9 @@ public class Recipe extends HBox {
     public Map<String, String[]> recipe = new HashMap<>();
     String[] recipeDetails = new String[3];
 
-    public Recipe() {
+    public Recipe(RecipeList recipeList) {
+
+        this.recipeList = recipeList;
         
         this.setPrefSize(500, 100); // sets size of task
         this.setStyle("-fx-background-color: #DAE5EA; -fx-border-width: 0; -fx-font-weight: bold;"); // sets background color of task
@@ -115,5 +119,10 @@ public class Recipe extends HBox {
     // Checks if it is a completed recipe (if createRecipe -> RecipePopup -> mealtype -> ingredients -> name -> instructions)
     public Boolean isComplete(){
         return this.name.getText() != null && this.mealType.getText() != null && this.ingredient.getText() != null && this.instruction.getText() != null;
+    }
+
+    public void deleteRecipe() {
+        // Remove this recipe from the RecipeList
+        recipeList.removeRecipe(this);
     }
 }

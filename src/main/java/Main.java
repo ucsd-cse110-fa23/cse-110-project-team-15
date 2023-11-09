@@ -197,7 +197,7 @@ class AppFrame extends BorderPane {
     public void addListeners() 
     {
         createButton.setOnAction(e -> {
-            Recipe recipe = new Recipe();
+            Recipe recipe = new Recipe(RecipeList);
             RecipeList.getChildren().add(recipe);
             Whisper whisp = new Whisper();
             ChatGPT gpt = new ChatGPT();
