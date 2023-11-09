@@ -79,6 +79,10 @@ public class DetailsPopup extends Stage {
             close();
         });
 
+        backButton.setOnAction(e -> {
+            close();
+        });
+
         // Create a scene and set it for the popup window
         Scene scene = new Scene(layout);
         setScene(scene);

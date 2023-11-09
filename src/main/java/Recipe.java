@@ -2,6 +2,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
+import javafx.stage.Stage;
 import javafx.scene.control.Label;
 import javafx.geometry.Insets;
 import java.util.Map;
@@ -104,7 +105,10 @@ public class Recipe extends HBox {
     {
         detailButton.setOnAction(e -> {
             DetailsPopup popup = new DetailsPopup(this);
-            popup.showAndWait();
+            popup.show();
+            //DetailScreen detailsScreen = new DetailScreen(this);
+            //Stage stage = (Stage) getScene().getWindow();
+            //stage.setScene(detailsScreen);
         });
     }
 
