@@ -33,6 +33,7 @@ public class Recipe extends HBox {
         nameLabel = new Label("Recipe Name:");
 
         this.name = new TextField(); // create task name text field
+        this.name.setEditable(false);
         this.name.setPrefSize(200, 20); // set size of text field
         this.name.setStyle("-fx-background-color: #DAE5EA; -fx-border-width: 0;"); // set background color of texfield
         this.name.setAlignment(Pos.CENTER);

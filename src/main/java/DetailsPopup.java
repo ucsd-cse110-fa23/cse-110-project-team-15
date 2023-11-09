@@ -41,8 +41,11 @@ public class DetailsPopup extends Stage {
 
         // Create controls for the popup window
         name = new TextField(recipe.getName().getText());
+        name.setEditable(false);
         ingredients = new TextField(recipe.getIngredient().getText());
+        ingredients.setEditable(false);
         instruction = new TextField(recipe.getInstruction().getText());
+        instruction.setEditable(false);
 
         backButton = new Button("<-");
         editButton = new Button("Edit");
@@ -62,8 +65,27 @@ public class DetailsPopup extends Stage {
             close(); // Close the popup window
             });
 
+        // Add an action for the "Edit" button
+        editButton.setOnAction(e -> {
+            ingredients.setEditable(!ingredients.isEditable());
+            instruction.setEditable(!instruction.isEditable());
+            });
+        
+
         // Create a scene and set it for the popup window
         Scene scene = new Scene(layout);
         setScene(scene);
+    }
+
+    public TextField getName() {
+        return this.name;
+    }
+
+    public TextField getIngredient() {
+        return this.ingredients;
+    }
+
+    public TextField getInstruction() {
+        return this.instruction;
     }
 }
