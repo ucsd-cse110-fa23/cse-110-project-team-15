@@ -70,6 +70,11 @@ public class DetailsPopup extends Stage {
             ingredients.setEditable(!ingredients.isEditable());
             instruction.setEditable(!instruction.isEditable());
             });
+
+        deleteButton.setOnAction(e -> {
+            ingredients.setEditable(!ingredients.isEditable());
+            instruction.setEditable(!instruction.isEditable());
+            });
         
 
         // Create a scene and set it for the popup window
