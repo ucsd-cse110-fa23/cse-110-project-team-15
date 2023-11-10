@@ -13,14 +13,15 @@ java {
 repositories {
     mavenCentral()
     mavenLocal()
-
 }
 
 dependencies {
     def junitVersion = '5.8.1'
-    implementation files(fileTree('lib') {include '*.jar'})
+    // implementation files(fileTree('lib') {include '*.jar'})
     // implementation files(fileTree('lib') {include '*.dylib'})
     // implementation files(fileTree('lib') {include '*.properties'})
+    implementation 'org.openjfx:javafx-controls:17.0.1'
+    implementation 'org.openjfx:javafx-fxml:17.0.1'
     implementation 'org.json:json:20171018'
 
     // This provides the JUnit API.
@@ -30,9 +31,7 @@ dependencies {
 }
 
 javafx {
-
-    modules = ['javafx.controls', 'javafx.fxml']
-
+    modules = ['javafx.controls', 'javafx.fxml', "javafx.base", "javafx.graphics"]
 }
 
 test {
@@ -40,6 +39,5 @@ test {
 }
 
 application {
-
     mainClassName = 'Main'
 }
