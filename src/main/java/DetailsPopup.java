@@ -78,8 +78,11 @@ public class DetailsPopup extends Stage {
             recipe.deleteRecipe(); // Call the deleteRecipe method of the Recipe
             close(); // Close the popup window
         });
-        
 
+        backButton.setOnAction(e -> {
+            close(); // Close the popup window
+        });
+        
         // Create a scene and set it for the popup window
         Scene scene = new Scene(layout);
         setScene(scene);
