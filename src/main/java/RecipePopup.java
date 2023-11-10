@@ -87,7 +87,6 @@ public class RecipePopup extends Stage {
             stopRecordingButton.setDisable(true);
             recordingStatusLabel.setText("");
             recordingStatusLabel.setVisible(false);
-            // TODO: is this correct way to do this? (multithreading maybe if needed?)
             if (mealTypeSet) {
                 audioToIngredient();
                 try {
