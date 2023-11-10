@@ -44,28 +44,37 @@ public class DetailsPopup extends Stage {
         // Create controls for the popup window
         name = new TextField(recipe.getName().getText());
         this.name.setPrefSize(200, 10); // set size of text field
-        this.name.setStyle("-fx-background-color: #DAE5EA; -fx-border-width: 0; -fx-font-weight: bold; -fx-font: 15 arial;"); // set background color of texfield
+        this.name.setStyle(" -fx-background-color: #659966;  -fx-font-weight: bold; -fx-font-size: 17; -fx-font-family: 'Times New Roman';");
         this.name.setAlignment(Pos.CENTER);
         this.name.setPadding(new Insets(10, 0, 10, 0)); // adds some padding to the text field
         name.setEditable(false);
 
         ingredients = new TextField(recipe.getIngredient().getText());
-        ingredients.setPrefSize(200, 10); // set size of text field
+        ingredients.setPrefSize(50, 10); // set size of text field
+        ingredients.setStyle(" -fx-font-weight: bold; -fx-font-size: 14; -fx-font-family: 'Times New Roman';");
         ingredients.setEditable(false);
 
         instruction = new TextArea(recipe.getInstruction().getText());
         this.instruction.setPrefSize(200, 100); // set size of text field
+        instruction.setStyle(" -fx-font-weight: bold; -fx-font-size: 14; -fx-font-family: 'Times New Roman';");
         this.instruction.setEditable(false);
         this.instruction.setWrapText(true);
 
+        String defaultButtonStyle = ("-fx-background-color: #bdd9bd;  -fx-font-weight: bold; -fx-font-size: 13; -fx-font-family: 'Times New Roman';");
+
         backButton = new Button("<-");
+        backButton.setStyle("-fx-background-color: #bdd9bd;  -fx-font-weight: bold; -fx-font-size: 13; -fx-font-family: 'Arial';"); 
         editButton = new Button("Edit");
+        editButton.setStyle(defaultButtonStyle); 
         saveButton = new Button("Save");
+        saveButton.setStyle(defaultButtonStyle); 
         deleteButton = new Button("Delete");
+        deleteButton.setStyle(defaultButtonStyle); 
 
         // Create a layout for the controls
         VBox layout = new VBox(10); // 10 pixels spacing
         layout.setAlignment(Pos.CENTER);
+        layout.setStyle("-fx-background-color: #93c994;");
         layout.getChildren().addAll(name, ingredients, instruction, backButton, editButton, deleteButton, saveButton);
 
         // Add an action for the "Add" button

@@ -22,7 +22,7 @@ class RecipeList extends VBox {
     RecipeList() {
         this.setSpacing(5); // sets spacing between tasks
         this.setPrefSize(500, 560);
-        this.setStyle("-fx-background-color: #F0F8FF;");
+        this.setStyle("-fx-background-color: #93c994;");
     }
 
     public void removeRecipe(Recipe Recipe){
@@ -113,11 +113,6 @@ class RecipeList extends VBox {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        // Update task indices
-        //updateTaskIndices();
-
-        //System.out.println("loadtasks() not implemented!");
     }
 }
 
@@ -127,11 +122,11 @@ class Footer extends HBox {
 
     Footer() {
         this.setPrefSize(500, 60);
-        this.setStyle("-fx-background-color: #F0F8FF;");
+        this.setStyle("-fx-background-color: #93c994;");
         this.setSpacing(15);
 
         // set a default style for buttons - background color, font size, italics
-        String defaultButtonStyle = "-fx-font-style: italic; -fx-background-color: #FFFFFF;  -fx-font-weight: bold; -fx-font: 11 arial;";
+        String defaultButtonStyle = ("-fx-background-color: #bdd9bd;  -fx-font-weight: bold; -fx-font-size: 13; -fx-font-family: 'Lucida Bright';");
 
         createButton = new Button("+ New Recipe"); // text displayed on add button
         createButton.setStyle(defaultButtonStyle); // styling the button
@@ -150,10 +145,10 @@ class Header extends HBox {
 
     Header() {
         this.setPrefSize(500, 60); // Size of the header
-        this.setStyle("-fx-background-color: #F0F8FF;");
+        this.setStyle("-fx-background-color: #93c994;");
 
-        Text titleText = new Text("Recipe Management App"); // Text of the Header
-        titleText.setStyle("-fx-font-weight: bold; -fx-font-size: 20;");
+        Text titleText = new Text("Recipe Creation App"); // Text of the Header
+        titleText.setStyle("-fx-font-weight: bold;  -fx-font-size: 25; -fx-font-family: 'Lucida Bright';");
         this.getChildren().add(titleText);
         this.setAlignment(Pos.CENTER); // Align the text to the Center
     }

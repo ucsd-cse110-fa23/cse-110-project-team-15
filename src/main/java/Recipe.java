@@ -15,14 +15,12 @@ public class Recipe extends HBox {
 
     private RecipeList recipeList;
 
-    private Label nameLabel;
+    // private Label nameLabel;
     private VBox recipeInfo;
     private TextField name;
     private TextField mealType;
     private TextField ingredient;
     private TextField instruction;
-    private Button uploadButton;
-    private Button deleteButton;
     private Button detailButton;
     public Map<String, String[]> recipe = new HashMap<>();
     String[] recipeDetails = new String[3];
@@ -32,23 +30,29 @@ public class Recipe extends HBox {
         this.recipeList = recipeList;
         
         this.setPrefSize(500, 50); // sets size of task
-        this.setStyle("-fx-background-color: #DAE5EA; -fx-border-width: 0; -fx-font-weight: bold;"); // sets background color of task
+        this.setStyle("-fx-background-color: #659966; -fx-border-width: 0; -fx-font-weight: bold; -fx-font-size: 11; -fx-font-family: 'Times New Roman';"); // sets background color of task
 
         recipeInfo = new VBox();
-        nameLabel = new Label("Recipe Name:");
+        // nameLabel = new Label("Recipe Name:");
 
         this.name = new TextField(); // create task name text field
         this.name.setPrefSize(200, 10); // set size of text field
-        this.name.setStyle("-fx-background-color: #DAE5EA; -fx-border-width: 0;"); // set background color of texfield
-        this.name.setAlignment(Pos.CENTER);
+        this.name.setStyle("-fx-background-color: #659966; -fx-border-width: 0; -fx-font-size: 17; -fx-font-family: 'Times New Roman';"); // set background color of texfield
         this.name.setPadding(new Insets(10, 0, 10, 0)); // adds some padding to the text field
+        this.name.setAlignment(Pos.CENTER_LEFT);
         this.name.setEditable(false);
+
         detailButton = new Button("View");
         detailButton.setPrefSize(50, 10);
         detailButton.setPrefHeight(Double.MAX_VALUE);
-        detailButton.setStyle("-fx-font-style: italic; -fx-background-color: #FFFFFF;  -fx-font-weight: bold; -fx-font: 11 arial;");
-        this.getChildren().addAll(nameLabel, name, detailButton);
-        
+        detailButton.setStyle(" -fx-background-color: #bdd9bd;  -fx-font-weight: bold; -fx-font-size: 13; -fx-font-family: 'Times New Roman';");
+        this.setPadding(new Insets(0, 0, 0, 100)); 
+
+        HBox recipecontainer = new HBox();
+        recipecontainer.setAlignment(Pos.CENTER);
+        recipecontainer.setSpacing(50);
+        recipecontainer.getChildren().addAll(name, detailButton);
+        this.getChildren().addAll(recipecontainer);
 
         this.mealType = new TextField();
 
@@ -60,18 +64,6 @@ public class Recipe extends HBox {
         recipeDetails[1] = ingredient.toString();
         recipeDetails[2] = instruction.toString();
         recipe.put(name.toString(), recipeDetails);
-
-        // this.getChildren().addAll(this.name, this.mealType, this.ingredient, this.instruction);
-
-        /*uploadButton = new Button("Upload"); // creates a button for marking the task as done
-        uploadButton.setPrefSize(100, 20);
-        uploadButton.setPrefHeight(Double.MAX_VALUE);
-        uploadButton.setStyle("-fx-background-color: #DAE5EA; -fx-border-width: 0;"); // sets style of button
-
-        deleteButton = new Button("Delete"); // creates a button for marking the task as done
-        deleteButton.setPrefSize(100, 25);
-        deleteButton.setPrefHeight(Double.MAX_VALUE);
-        deleteButton.setStyle("-fx-background-color: #DAE5EA; -fx-border-width: 0;"); // sets style of button*/
 
         this.getChildren().addAll(recipeInfo);
         addListeners();
@@ -97,28 +89,13 @@ public class Recipe extends HBox {
         return this.detailButton;
     }
 
-    // public RecipeDetails getDetails() {
-    //     return new RecipeDetails(name.getText(), mealType.getText(), ingredient.getText(), instruction.getText());
-    // }
-
     public void addListeners() 
     {
         detailButton.setOnAction(e -> {
             DetailsPopup popup = new DetailsPopup(this);
             popup.show();
-            //DetailScreen detailsScreen = new DetailScreen(this);
-            //Stage stage = (Stage) getScene().getWindow();
-            //stage.setScene(detailsScreen);
         });
     }
-
-    /*public Button getUploadButton(){
-        return this.uploadButton;
-    }
-
-    public Button getDeleteButton(){
-        return this.deleteButton;
-    }*/
 
     // Checks if it is a completed recipe (if createRecipe -> RecipePopup -> mealtype -> ingredients -> name -> instructions)
     public Boolean isComplete(){
