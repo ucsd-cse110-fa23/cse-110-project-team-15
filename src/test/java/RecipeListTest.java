@@ -51,14 +51,14 @@ public class RecipeListTest extends ApplicationTest {
 
     @Test
     public void testSortRecipes() {
-        Recipe recipe1 = new Recipe();
+        RecipeList list = new RecipeList();
+        Recipe recipe1 = new Recipe(list);
         recipe1.getName().setText("Eggs and Hash");
-        Recipe recipe2 = new Recipe();
+        Recipe recipe2 = new Recipe(list);
         recipe2.getName().setText("Chicken Stir-Fry");
-        Recipe recipe3 = new Recipe();
+        Recipe recipe3 = new Recipe(list);
         recipe3.getName().setText("Pancakes");
 
-        RecipeList list = new RecipeList();
         list.getChildren().add(recipe1);
         list.getChildren().add(recipe2);
         list.getChildren().add(recipe3);
@@ -79,11 +79,11 @@ public class RecipeListTest extends ApplicationTest {
     public void testSaveRecipes() {
         RecipeList list = new RecipeList();
 
-        Recipe recipe1 = new Recipe();
+        Recipe recipe1 = new Recipe(list);
         recipe1.getName().setText("Recipe 1");
         list.getChildren().add(recipe1);
 
-        Recipe recipe2 = new Recipe();
+        Recipe recipe2 = new Recipe(list);
         recipe2.getName().setText("Recipe 2");
         list.getChildren().add(recipe2);
 
@@ -95,8 +95,11 @@ public class RecipeListTest extends ApplicationTest {
             
             List<String> lines = Files.readAllLines(Path.of("recipes.csv"));
 
-            assertEquals("Recipe 1", lines.get(0));
-            assertEquals("Recipe 2", lines.get(1));
+            String[] parts1 = lines.get(0).split("-");
+            assertEquals("Recipe 1", parts1[0]);
+
+            String[] parts2 = lines.get(1).split("-");
+            assertEquals("Recipe 2", parts2[0]);
         } catch (IOException e) {
             fail("Error occurred: " + e.getMessage());
         }

@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 // import static org.junit.Assert;
 
 public class Test1 extends ApplicationTest {
+    RecipeList list = new RecipeList();
 
     @BeforeAll
     public static void initJFX() {
@@ -52,7 +53,7 @@ public class Test1 extends ApplicationTest {
     @Test
     public void recipeCreate() throws Exception{
 
-        Recipe rec = new Recipe();
+        Recipe rec = new Recipe(list);
         String name = "Chicken salad";
         String mealType = "Lunch";
         String ingredient = "Hello";
@@ -74,7 +75,7 @@ public class Test1 extends ApplicationTest {
         Platform.runLater(() -> {
             String mealType = "Lunch";
             String name = "Salad";
-            Recipe recipe = new Recipe();
+            Recipe recipe = new Recipe(list);
             recipe.getName().setText(name);
             Whisper whisp = mock(Whisper.class);
             ChatGPT gpt = mock(ChatGPT.class);
@@ -86,9 +87,7 @@ public class Test1 extends ApplicationTest {
             // Verify that the appropriate actions have been taken
             assertEquals("Salad", recipePopup.getRecipe().getName().getText());
             assertEquals("Lunch", recipePopup.getRecipe().getMealType().getText());
-
         });
-
     }
 
     @Test
@@ -96,7 +95,7 @@ public class Test1 extends ApplicationTest {
         Platform.runLater(() -> {
             String mealType = "I want a snack";
             String name = "Salad";
-            Recipe recipe = new Recipe();
+            Recipe recipe = new Recipe(list);
             recipe.getName().setText(name);
             Whisper whisp = mock(Whisper.class);
             ChatGPT gpt = mock(ChatGPT.class);
@@ -117,7 +116,7 @@ public class Test1 extends ApplicationTest {
 
     @Test
     public void removeRecipeTest() throws Exception {
-        Recipe rec = new Recipe();
+        Recipe rec = new Recipe(list);
         String name = "Chicken salad";
         String mealType = "Lunch";
         String ingredient = "Hello";
@@ -134,7 +133,4 @@ public class Test1 extends ApplicationTest {
 
         assertEquals(list.getChildren().size(), 0);
     }
-
-    
-
 }

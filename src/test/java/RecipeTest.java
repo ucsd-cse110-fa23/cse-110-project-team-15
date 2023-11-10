@@ -7,6 +7,7 @@ import javafx.embed.swing.JFXPanel;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class RecipeTest extends ApplicationTest {
+    RecipeList list = new RecipeList();
 
     @BeforeAll
     public static void initJFX() {
@@ -20,7 +21,7 @@ public class RecipeTest extends ApplicationTest {
 
     @Test
     public void testRecipeInitialization() {
-        Recipe recipe = new Recipe();
+        Recipe recipe = new Recipe(list);
 
         assertNotNull(recipe.getName());
         assertNotNull(recipe.getMealType());
@@ -31,7 +32,7 @@ public class RecipeTest extends ApplicationTest {
 
     @Test
     public void testRecipeCompletion() {
-        Recipe recipe = new Recipe();
+        Recipe recipe = new Recipe(list);
 
         recipe.getName().setText("Chicken Stir-Fry");
         recipe.getMealType().setText("Dinner");

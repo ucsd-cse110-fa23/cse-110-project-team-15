@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class PopupRecipeTest  extends ApplicationTest {
+    RecipeList list = new RecipeList();
 
     @BeforeAll
     public static void initJFX() {
@@ -42,7 +43,7 @@ public class PopupRecipeTest  extends ApplicationTest {
     public void audioToIngredientTest() {
         Platform.runLater(() -> {
             String ingredients = "1 cup flour, 2 eggs, sugar, vanilla";
-            Recipe recipe = new Recipe();
+            Recipe recipe = new Recipe(list);
             Whisper whisp = mock(Whisper.class);
             ChatGPT gpt = mock(ChatGPT.class);
             RecipePopup recipePopup = new RecipePopup(recipe, whisp, gpt);
@@ -59,7 +60,7 @@ public class PopupRecipeTest  extends ApplicationTest {
             String mealType = "Lunch";
             String ingredients = "1 cup flour, 2 eggs, sugar";
             String response = "Pancakes - flour, eggs - Mix flour and eggs";
-            Recipe recipe = new Recipe();
+            Recipe recipe = new Recipe(list);
             recipe.getMealType().setText(mealType);
             recipe.getIngredient().setText(ingredients);
 
