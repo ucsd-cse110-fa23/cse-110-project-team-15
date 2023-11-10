@@ -1,6 +1,7 @@
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
@@ -10,7 +11,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 
-
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 // import java.io.IOException;
 // import java.net.URISyntaxException;
@@ -25,7 +26,7 @@ public class DetailsPopup extends Stage {
 
     private TextField name;
     private TextField ingredients;
-    private TextField instruction;
+    private TextArea instruction;
     
     private Button editButton;
     private Button deleteButton;
@@ -37,16 +38,25 @@ public class DetailsPopup extends Stage {
     public DetailsPopup(Recipe recipe) {
         this.recipe = recipe;
         // setTitle(name.getText());
-        setWidth(300);
-        setHeight(200);
+        setWidth(525);
+        setHeight(650);
 
         // Create controls for the popup window
         name = new TextField(recipe.getName().getText());
+        this.name.setPrefSize(200, 10); // set size of text field
+        this.name.setStyle("-fx-background-color: #DAE5EA; -fx-border-width: 0; -fx-font-weight: bold; -fx-font: 15 arial;"); // set background color of texfield
+        this.name.setAlignment(Pos.CENTER);
+        this.name.setPadding(new Insets(10, 0, 10, 0)); // adds some padding to the text field
         name.setEditable(false);
+
         ingredients = new TextField(recipe.getIngredient().getText());
+        ingredients.setPrefSize(200, 10); // set size of text field
         ingredients.setEditable(false);
-        instruction = new TextField(recipe.getInstruction().getText());
-        instruction.setEditable(false);
+
+        instruction = new TextArea(recipe.getInstruction().getText());
+        this.instruction.setPrefSize(200, 100); // set size of text field
+        this.instruction.setEditable(false);
+        this.instruction.setWrapText(true);
 
         backButton = new Button("<-");
         editButton = new Button("Edit");

@@ -31,20 +31,20 @@ public class Recipe extends HBox {
 
         this.recipeList = recipeList;
         
-        this.setPrefSize(500, 100); // sets size of task
+        this.setPrefSize(500, 50); // sets size of task
         this.setStyle("-fx-background-color: #DAE5EA; -fx-border-width: 0; -fx-font-weight: bold;"); // sets background color of task
 
         recipeInfo = new VBox();
         nameLabel = new Label("Recipe Name:");
 
         this.name = new TextField(); // create task name text field
-        this.name.setPrefSize(200, 20); // set size of text field
+        this.name.setPrefSize(200, 10); // set size of text field
         this.name.setStyle("-fx-background-color: #DAE5EA; -fx-border-width: 0;"); // set background color of texfield
         this.name.setAlignment(Pos.CENTER);
         this.name.setPadding(new Insets(10, 0, 10, 0)); // adds some padding to the text field
         this.name.setEditable(false);
         detailButton = new Button("View");
-        detailButton.setPrefSize(100, 20);
+        detailButton.setPrefSize(50, 10);
         detailButton.setPrefHeight(Double.MAX_VALUE);
         detailButton.setStyle("-fx-font-style: italic; -fx-background-color: #FFFFFF;  -fx-font-weight: bold; -fx-font: 11 arial;");
         this.getChildren().addAll(nameLabel, name, detailButton);
