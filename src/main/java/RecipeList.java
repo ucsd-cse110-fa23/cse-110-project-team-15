@@ -7,7 +7,6 @@ import java.util.Collections;
 public class RecipeList extends VBox {
     Recipe[] list;
 
-
     RecipeList() {
         this.setSpacing(5); // sets spacing between tasks
         this.setPrefSize(500, 560);
@@ -16,15 +15,6 @@ public class RecipeList extends VBox {
 
     public void removeRecipe(Recipe Recipe){
         this.getChildren().remove(Recipe);
-    }
-
-    public void updateRecipeIndices() {
-        int index = 1;
-        for (int i = 0; i < this.getChildren().size(); i++) {
-            if (this.getChildren().get(i) instanceof Recipe) {
-                index++;
-            }
-        }
     }
 
     /*
@@ -79,7 +69,6 @@ public class RecipeList extends VBox {
             }
             this.getChildren().clear();
             this.getChildren().addAll(clist2);
-            updateRecipeIndices();
         }
         catch(Exception e){
             System.out.println("sorttasks() not implemented!");

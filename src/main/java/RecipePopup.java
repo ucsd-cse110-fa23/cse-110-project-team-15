@@ -8,7 +8,6 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.List;
 
 import javafx.geometry.Pos;
 

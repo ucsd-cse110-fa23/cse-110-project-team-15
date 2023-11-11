@@ -1,23 +1,12 @@
 import javafx.stage.Stage;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.List;
-
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-// import java.io.IOException;
-// import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Map;
-
 import javafx.geometry.Pos;
 
 public class DetailsPopup extends Stage {
