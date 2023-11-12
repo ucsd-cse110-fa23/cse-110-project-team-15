@@ -35,10 +35,8 @@ dependencies {
 }
 
 javafx {
-    if (!(Os.isFamily(Os.FAMILY_WINDOWS))) {
-        if (System.getenv("CI") == null) {
-            sdk = "./"
-        }
+    if (System.getenv("CI") == null && !(Os.isFamily(Os.FAMILY_WINDOWS))) {
+        sdk = "./"
     }
     // modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.swing', 'javafx.media', 'javafx.graphics']
     modules = [ 'javafx.base', 'javafx.controls', 'javafx.swing', 'javafx.fxml', 'javafx.graphics']
