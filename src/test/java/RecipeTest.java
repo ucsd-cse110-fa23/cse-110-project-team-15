@@ -3,9 +3,9 @@ import org.junit.jupiter.api.Test;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit5.ApplicationTest;
 
+import client.view.Recipe;
+import client.view.RecipeList;
 import javafx.embed.swing.JFXPanel;
-import view.Recipe;
-import view.RecipeList;
 
 import static org.junit.jupiter.api.Assertions.*;
 

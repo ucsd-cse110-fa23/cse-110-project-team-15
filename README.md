@@ -4,10 +4,16 @@
 ```
 git pull
 ```
-Make sure to clear Java workspace and restart VSCode. To run the server and then build locally through gradle, do:
+Make sure to clear Java workspace and restart VSCode. Make sure to run the server first. To run the server, do:
 
 ```
-java src/main/server/Server
+cd src/main/java
+javac -cp ".:/path/to/your/json-20230227.jar" server/*.java
+java -cp ".:/path/to/your/json-20230227.jar" server/Server
+```
+
+Then, open a new terminal and run the app by:
+```
 ./gradlew run
 ```
 
