@@ -1,5 +1,11 @@
 import javafx.application.Platform;
 import javafx.stage.Stage;
+import model.ChatGPT;
+import model.Whisper;
+import view.Main;
+import view.Recipe;
+import view.RecipeList;
+import view.RecipePopup;
 import javafx.embed.swing.JFXPanel;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit5.ApplicationTest;

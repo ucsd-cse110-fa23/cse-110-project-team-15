@@ -1,7 +1,9 @@
-
+package client.view;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import server.ChatGPT;
+import server.Whisper;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
@@ -9,6 +11,9 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.text.*;
 
 import java.io.*;
+
+import javax.swing.text.View;
+
 
 class Footer extends HBox {
 
@@ -48,27 +53,31 @@ class Header extends HBox {
     }
 }
 
-class AppFrame extends BorderPane {
+public class AppFrame extends BorderPane {
 
     private Header header;
     private Footer footer;
-    private RecipeList RecipeList;
+    private RecipeList recipeList;
+    private RecipePopup recipePopup;
+    private DetailsPopup detailsPopup;
 
     private Button createButton;
 
-    AppFrame()
+    public AppFrame()
     {
         // Initialise the header Object
         header = new Header();
 
         // Create a RecipeList Object to hold the tasks
-        RecipeList = new RecipeList();
+        recipeList = new RecipeList();
         
         // Initialise the Footer Object
         footer = new Footer();
 
+        recipePopup = new RecipePopup();
+
         // Add a Scroller to the Task List
-        ScrollPane scroll = new ScrollPane(RecipeList);
+        ScrollPane scroll = new ScrollPane(recipeList);
         scroll.setFitToWidth(true);
         scroll.setFitToHeight(true);
 
@@ -85,17 +94,15 @@ class AppFrame extends BorderPane {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] info = line.split("-");
-                Recipe recipe = new Recipe(RecipeList);
+                Recipe recipe = new Recipe(recipeList);
                 recipe.getName().setText(info[0]);
                 recipe.getIngredient().setText(info[1]);
                 recipe.getInstruction().setText(info[2]);
-                RecipeList.getChildren().add(recipe);                
+                recipeList.getChildren().add(recipe);                
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        
 
         // Call Event Listeners for the Buttons
         addListeners();
@@ -104,40 +111,22 @@ class AppFrame extends BorderPane {
     public void addListeners() 
     {
         createButton.setOnAction(e -> {
-            Recipe recipe = new Recipe(RecipeList);
-            RecipeList.getChildren().add(recipe);
-            Whisper whisp = new Whisper();
-            ChatGPT gpt = new ChatGPT();
-            RecipePopup popup = new RecipePopup(recipe, whisp, gpt);
-            popup.display();
+            Recipe recipe = new Recipe(recipeList);
+            recipeList.getChildren().add(recipe);
+            recipePopup.setRecipe(recipe);
+            recipePopup.display();
         });
     }
-}
 
-public class Main extends Application {
-
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-
-        // Setting the Layout of the Window- Should contain a Header, Footer and the RecipeList
-        AppFrame root = new AppFrame();
-
-        // Set the title of the app
-        primaryStage.setTitle("Recipe Management App");
-        // Create scene of mentioned size with the border pane
-        primaryStage.setScene(new Scene(root, 500, 600));
-        // Make window non-resizable
-        primaryStage.setResizable(false);
-        // Show the app
-        primaryStage.show();
-
-        
-
+    public RecipeList getRecipes() {
+        return recipeList;
     }
 
-   
+    public RecipePopup getRecipePopup() {
+        return recipePopup;
+    }
 
-    public static void main(String[] args) {
-        launch(args);
+    public DetailsPopup getDetailsPopup() {
+        return detailsPopup;
     }
 }

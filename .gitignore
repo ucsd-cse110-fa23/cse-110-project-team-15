@@ -19,5 +19,3 @@ bin/main/
 bin/test/
 
 hs_err_pid*.log
-
-recipes.csv

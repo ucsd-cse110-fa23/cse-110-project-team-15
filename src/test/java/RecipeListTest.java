@@ -7,6 +7,9 @@ import org.testfx.framework.junit5.ApplicationTest;
 
 import javafx.embed.swing.JFXPanel;
 import javafx.stage.Stage;
+import view.Main;
+import view.Recipe;
+import view.RecipeList;
 
 import java.io.File;
 import java.io.IOException;
