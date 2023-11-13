@@ -35,9 +35,6 @@ public class Server {
     // TODO: start the server
     server.start();
 
-    
-
     System.out.println("Server started on port " + SERVER_PORT);
-
   }
 }

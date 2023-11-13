@@ -6,7 +6,6 @@ import java.util.*;
 public class RequestHandler implements HttpHandler {
     private final Map<String, String> data;
 
-
     public RequestHandler(Map<String, String> data) {
         this.data = data;
     }
@@ -121,5 +120,4 @@ public class RequestHandler implements HttpHandler {
         scanner.close();
         return response;
     }
-
 }
