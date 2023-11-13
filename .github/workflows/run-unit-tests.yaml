@@ -29,10 +29,6 @@ jobs:
       - name: Change wrapper permissions
         run: chmod +x ./gradlew
 
-      - name: Run server locally
-        run: javac Server.java
-        run: java Server
-
       # build everything (includes running unit tests)
       - name: Execute Gradle build
         run: xvfb-run ./gradlew build

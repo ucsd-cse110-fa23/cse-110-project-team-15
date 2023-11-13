@@ -1,32 +1,24 @@
-package view;
+package client.view;
 
 import javafx.stage.Stage;
-import model.AudioRecorder;
-import model.ChatGPT;
-import model.Whisper;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
-
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 
 public class RecipePopup extends Stage {
 
-    private AudioRecorder audioRecorder;
+    
     private Label recordingStatusLabel;
     private static Label errorLabel;
     private static Label optionsLabel;
     private static Label optionsText;
     public boolean mealTypeSet;
     private Recipe recipe;
-    private Whisper whisp;
-    private ChatGPT gpt;
-
     
     private Button startRecordingButton;
     private Button stopRecordingButton;
@@ -34,24 +26,18 @@ public class RecipePopup extends Stage {
     private VBox layout;
 
 
-    public RecipePopup(Recipe recipe, Whisper whisp, ChatGPT gpt) {
+    public RecipePopup() {
         mealTypeSet = false;
 
         setTitle("Specify Meal Type");
         setWidth(300);
         setHeight(200);
 
-        this.recipe = recipe;
-        this.whisp = whisp;
-        this.gpt = gpt;
-
         optionsLabel = new Label(mealTypeSet ? "Say your ingredients" : "Say one of the following options:");
         optionsLabel.setStyle("-fx-alignment: center; -fx-font-weight: bold;");
 
         optionsText = new Label(mealTypeSet ? "" : "Breakfast, Lunch, or Dinner");
         optionsText.setStyle("-fx-alignment: center; -fx-font-weight: bold;");
-
-        audioRecorder = new AudioRecorder();
         startRecordingButton = new Button("Start Recording");
         stopRecordingButton = new Button("Stop Recording");
         stopRecordingButton.setDisable(true);
@@ -72,80 +58,14 @@ public class RecipePopup extends Stage {
         layout = new VBox(10);
         layout.setAlignment(Pos.CENTER);
         layout.getChildren().addAll(optionsLabel, optionsText, buttonBox, recordingStatusLabel, errorLabel);
-        
-        addListeners();
     }
 
-    public void addListeners() {
-        startRecordingButton.setOnAction(e -> {
-            audioRecorder.startRecording();
-            startRecordingButton.setDisable(true);
-            stopRecordingButton.setDisable(false);
-            recordingStatusLabel.setText("Recording...");
-            recordingStatusLabel.setVisible(true);
-        });
-
-        stopRecordingButton.setOnAction(e -> {
-            audioRecorder.stopRecording();
-            stopRecordingButton.setDisable(true);
-            recordingStatusLabel.setText("");
-            recordingStatusLabel.setVisible(false);
-            if (mealTypeSet) {
-                audioToIngredient();
-                try {
-                    generateInstruction();
-                } catch (IOException | InterruptedException | URISyntaxException e1) {
-                    e1.printStackTrace();
-                }
-                this.close();
-                recipe.saveRecipe();
-            } else {
-                audioToMealType();
-            }
-            startRecordingButton.setDisable(false);
-        });
+    public void setStartRecordingButtonAction(EventHandler<ActionEvent> eventHandler) {
+        startRecordingButton.setOnAction(eventHandler);
     }
 
-    public void audioToMealType() {
-        String generatedText = whisp.transcribeAudio();
-        System.out.println(generatedText);
-        if (generatedText.toLowerCase().contains("breakfast") 
-                || generatedText.toLowerCase().contains("lunch")
-                || generatedText.toLowerCase().contains("dinner")) {
-            System.out.println("Transcription Result: " + generatedText);
-            errorLabel.setVisible(false);
-            optionsLabel.setText("List Ingredients");
-            optionsLabel.setVisible(true);
-            optionsText.setVisible(false);
-            recipe.getMealType().setText(generatedText);
-            mealTypeSet = true;
-        } else {
-            System.out.println("Transcription does not contain Breakfast, Lunch, or Dinner.");
-            // Show an error message in the popup screen
-            errorLabel.setVisible(true);
-        }
-    }
-
-    public void audioToIngredient() {
-        String generatedText = whisp.transcribeAudio();
-        System.out.println("Ingredients: " + generatedText);
-        recipe.getIngredient().setText(generatedText);
-    }
-
-
-    public void generateInstruction() throws IOException, InterruptedException, URISyntaxException {
-        // TODO: figure out how to parse ChatGPT response for name/ingredients/instructions
-        String prompt = "List the instructions to making a " + recipe.getMealType().getText() + " with these ingredients " + recipe.getIngredient().getText() +". Respond in this format \"name of recipe - ingredients - instructions\"";
-        String instruction = gpt.generate(prompt);
-        String[] instructions = instruction.split("-");
-        System.out.println("Recipe Name: " + instructions[0]);
-        System.out.println("Meal Type: " + recipe.getMealType().getText());
-        System.out.println("Ingredients: " + instructions[1]);
-        System.out.println("Instructions: " + instructions[2]);
-        recipe.getName().setText(instructions[0]);
-        recipe.getIngredient().setText(instructions[1]);
-        recipe.getInstruction().setText(instructions[2]);
-        mealTypeSet = false;
+    public void setStopRecordingButtonAction(EventHandler<ActionEvent> eventHandler) {
+        stopRecordingButton.setOnAction(eventHandler);
     }
 
     public void display() {
@@ -156,5 +76,33 @@ public class RecipePopup extends Stage {
 
     public Recipe getRecipe() {
         return this.recipe;
+    }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
+    }
+
+    public Button getStartRecordingButton() {
+        return this.startRecordingButton;
+    }
+
+    public Button getStopRecordingButton() {
+        return this.stopRecordingButton;
+    }
+
+    public Label getErrorLabel() {
+        return this.errorLabel;
+    }
+
+    public Label getRecordingStatusLabel() {
+        return this.recordingStatusLabel;
+    }
+
+    public Label getOptionsLabel() {
+        return this.optionsLabel;
+    }
+
+    public Label getOptionsText() {
+        return this.optionsText;
     }
 }

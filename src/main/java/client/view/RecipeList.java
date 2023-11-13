@@ -1,4 +1,4 @@
-package view;
+package client.view;
 import javafx.scene.layout.*;
 
 import java.io.*;

@@ -1,23 +1,53 @@
-package model;
+package server;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpRequest;
 import java.net.http.HttpClient;
 import java.net.http.HttpResponse;
+import java.util.Scanner;
+
+import com.sun.net.httpserver.*;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class ChatGPT {
-
+public class ChatGPT implements HttpHandler {
     private static final String API_ENDPOINT = "https://api.openai.com/v1/completions";
     private static final String API_KEY = "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";
     private static final String MODEL = "text-davinci-003";
 
-    public String generate(String prompt)  throws IOException, InterruptedException, URISyntaxException {
+    public ChatGPT() {}
+
+    public void handle(HttpExchange httpExchange) throws IOException {
+        String response = "Request Received";
+        String method = httpExchange.getRequestMethod();
+        try {
+            response = generate(httpExchange);
+            System.out.println(response);
+        } catch (Exception e) {
+            System.out.println("An erroneous request");
+            response = e.toString();
+            e.printStackTrace();
+        }
+        //Sending back response to the client
+        httpExchange.sendResponseHeaders(200, response.length());
+        OutputStream outStream = httpExchange.getResponseBody();
+        outStream.write(response.getBytes());
+        outStream.close();
+    }
+
+    public String generate(HttpExchange httpExchange) throws IOException, InterruptedException, URISyntaxException {
         // Set request parameters
         int maxTokens = 512;
+
+        InputStream inStream = httpExchange.getRequestBody();
+        Scanner scanner = new Scanner(inStream);
+        String prompt = scanner.nextLine();
+
+        scanner.close();
 
         // Create a request body which you will pass into request object
         JSONObject requestBody = new JSONObject();

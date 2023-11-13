@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.*;
 
-
 public class Server {
   // initialize server port and hostname
   private static final int SERVER_PORT = 8100;
@@ -28,11 +27,10 @@ public class Server {
       0
     );
 
-    // TODO: create the context
     server.createContext("/", new RequestHandler(data));
-    // TODO: set the executor
+    server.createContext("/transcribe", new Whisper());
+    server.createContext("/instruction", new ChatGPT());
     server.setExecutor(threadPoolExecutor);
-    // TODO: start the server
     server.start();
 
     System.out.println("Server started on port " + SERVER_PORT);

@@ -5,6 +5,18 @@ import java.net.*;
 import java.util.*;
 
 public class RequestHandler implements HttpHandler {
+    class ReciptInfo {
+        String name;
+        String ingredients;
+        String instructions;
+
+        ReciptInfo(String name, String ingredients, String instructions) {
+            this.name = name;
+            this.ingredients = ingredients;
+            this.instructions = instructions;
+        }
+    }
+
     private final Map<String, String> data;
 
     public RequestHandler(Map<String, String> data) {
@@ -71,7 +83,7 @@ public class RequestHandler implements HttpHandler {
 
         String response = "Posted entry {" + language + ", " + year + "}";
         System.out.println(response);
-        scanner.close();
+        scanner.close();    
 
         return response;
     }
@@ -117,5 +129,4 @@ public class RequestHandler implements HttpHandler {
         scanner.close();
         return response;
     }
-
 }

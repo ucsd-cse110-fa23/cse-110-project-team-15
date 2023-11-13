@@ -1,13 +1,53 @@
-package model;
+package server;
+
 import java.io.*;
 import java.net.*;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
 import org.json.*;
 
-public class Whisper {
+public class Whisper implements HttpHandler {
     private static final String API_ENDPOINT = "https://api.openai.com/v1/audio/transcriptions";
     private static final String TOKEN = "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";
     private static final String MODEL = "whisper-1";
-    private static final String FILE_PATH = "bin/audio/recording.wav";
+
+    public Whisper() {}
+
+    @Override
+    public void handle(HttpExchange exchange) throws IOException {
+        if (!"POST".equals(exchange.getRequestMethod())) {
+            exchange.sendResponseHeaders(405, 0); // Method Not Allowed
+            exchange.getResponseBody().close();
+            return;
+        }
+
+        // Process the incoming request and extract the audio file
+        InputStream requestBody = exchange.getRequestBody();
+        File audioFile = createFileFromInputStream(requestBody);
+
+        // Transcribe the audio file
+        String transcription = transcribeAudio(audioFile);
+
+        // Send the response
+        exchange.getResponseHeaders().add("Content-Type", "application/json");
+        exchange.sendResponseHeaders(200, transcription.length());
+        OutputStream responseBody = exchange.getResponseBody();
+        responseBody.write(transcription.getBytes());
+        responseBody.close();
+    }
+
+    private File createFileFromInputStream(InputStream inputStream) throws IOException {
+        File tempFile = File.createTempFile("audio", ".wav");
+        tempFile.deleteOnExit();
+        try (FileOutputStream out = new FileOutputStream(tempFile)) {
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                out.write(buffer, 0, bytesRead);
+            }
+        }
+        return tempFile;
+    }
 
     // Helper method to write a parameter to the output stream in multipart form
     // data format
@@ -74,10 +114,10 @@ public class Whisper {
         System.out.println("Error Result: " + errorResult);
     }
 
-    public String transcribeAudio() {
+    public String transcribeAudio(File audioFile) {
+        File file = new File("../../../bin/audio/recording.wav");
         String transcription = null;
         try {
-            File file = new File(FILE_PATH);
             URL url = new URI(API_ENDPOINT).toURL();
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
@@ -109,4 +149,5 @@ public class Whisper {
         }
         return transcription;
     }
+
 }

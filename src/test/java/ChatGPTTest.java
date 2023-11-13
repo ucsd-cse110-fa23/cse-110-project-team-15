@@ -6,7 +6,7 @@ import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import model.ChatGPT;
+import server.ChatGPT;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
