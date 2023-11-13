@@ -1,7 +1,6 @@
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,8 +24,8 @@ public class ChatGPTTest {
         String prompt = "Where is UC San Diego located?";
         String location = "9500 Gilman Dr, La Jolla, CA 92093";
 
-        when(chatGPT.generate(anyString())).thenReturn(location);
-        String generatedText = chatGPT.generate(prompt);
+        when(chatGPT.generate(any(Class.class))).thenReturn(location);
+        String generatedText = chatGPT.generate(new HttpExchange());
 
         assertNotNull(generatedText);
         assertEquals(location, generatedText);
