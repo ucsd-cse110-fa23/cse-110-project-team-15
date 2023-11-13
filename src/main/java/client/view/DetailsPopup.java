@@ -1,3 +1,4 @@
+package client.view;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
@@ -5,7 +6,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 
@@ -21,14 +21,13 @@ public class DetailsPopup extends Stage {
     private Button deleteButton;
     private Button saveButton;
     private Button backButton;
-    private HBox buttonBox;
-    private VBox layout;
 
     public DetailsPopup(Recipe recipe) {
-        this.recipe = recipe;
         // setTitle(name.getText());
         setWidth(525);
         setHeight(650);
+
+        this.recipe = recipe;
 
         // Create controls for the popup window
         name = new TextField(recipe.getName().getText());
@@ -94,5 +93,24 @@ public class DetailsPopup extends Stage {
         // Create a scene and set it for the popup window
         Scene scene = new Scene(layout);
         setScene(scene);
+    }
+
+    public Recipe getRecipe() {
+        return this.recipe;
+    }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
+    }
+
+    public Button getEditButton() {
+        return this.editButton;
+    }
+    public Button getDeleteButton(){
+        return this.deleteButton;
+    }
+
+    public Button getSaveButton(){
+        return this.saveButton;
     }
 }

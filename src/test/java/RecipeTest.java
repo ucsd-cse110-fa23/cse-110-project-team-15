@@ -4,6 +4,9 @@ import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit5.ApplicationTest;
 
 import javafx.embed.swing.JFXPanel;
+import view.Recipe;
+import view.RecipeList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class RecipeTest extends ApplicationTest {

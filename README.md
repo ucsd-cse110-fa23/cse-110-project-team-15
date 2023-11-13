@@ -4,12 +4,17 @@
 ```
 git pull
 ```
-Make sure to clear Java workspace and restart VSCode. To run the build locally through gradle, do:
+Make sure to clear Java workspace and restart VSCode. To run the server and then build locally through gradle, do:
 
 ```
+java src/main/server/Server
 ./gradlew run
 ```
-You might also be able to run the build locally through the Java runner extension with your local JafaFX library. But it might not work because some are having issues with "javafx runtime components are missing and are required to run this application". You might need to update the build.gradle file but no fix has not been confirmed yet. Try running the Runner.java file.
+
+To run tests, do:
+```
+./gradlew build
+```
 
 ## GitHub
 Pull code
