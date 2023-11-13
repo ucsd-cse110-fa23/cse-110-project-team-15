@@ -1,18 +1,20 @@
-// import static org.junit.jupiter.api.Assertions.*;
-// import org.junit.jupiter.api.BeforeEach;
-// import org.junit.jupiter.api.Test;
-// import org.mockito.Mockito;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import static org.mockito.Mockito.*;
+import client.controller.AudioRecorder;
 
-// import javax.sound.sampled.*;
-// import java.io.File;
+import javax.sound.sampled.*;
+import java.io.File;
 
-// public class AudioRecorderTest {
-//     public AudioRecorder audioRecorder;
+public class AudioRecorderTest {
+    public AudioRecorder audioRecorder;
 
-//     @BeforeEach
-//     public void setUp() {
-//         audioRecorder = new AudioRecorder();
-//     }
+    @BeforeEach
+    public void setUp() {
+        audioRecorder = new AudioRecorder();
+    }
 
     // @Test
     // public void testStartRecording() {
@@ -25,9 +27,9 @@
     //     try {
     //         Mockito.when(AudioSystem.getLine(Mockito.any())).thenReturn(targetDataLine);
 
-    //         mockedAudioRecorder.startRecording();
+    //         // mockedAudioRecorder.startRecording();
 
-    //         assertTrue(mockedAudioRecorder.isRecording);
+    //         assertTrue(mockedAudioRecorder.getIsRecording());
 
     //         // Verify that the TargetDataLine was opened and started
     //         Mockito.verify(targetDataLine).open(audioFormat);
@@ -40,18 +42,18 @@
     // @Test
     // public void testStopRecording() {
     //     AudioRecorder mockedAudioRecorder = Mockito.spy(audioRecorder);
-    //     mockedAudioRecorder.isRecording = true;
+    //     mockedAudioRecorder.setIsRecording(true);
 
     //     // Mock the TargetDataLine
     //     TargetDataLine targetDataLine = Mockito.mock(TargetDataLine.class);
-    //     mockedAudioRecorder.targetDataLine = targetDataLine;
+    //     mockedAudioRecorder.setTargetDataLine(targetDataLine);
 
-    //     mockedAudioRecorder.stopRecording();
+    //     // mockedAudioRecorder.stopRecording();
 
-    //     assertFalse(mockedAudioRecorder.isRecording);
+    //     assertFalse(mockedAudioRecorder.getIsRecording());
 
     //     // Verify that the TargetDataLine was stopped and closed
     //     Mockito.verify(targetDataLine).stop();
     //     Mockito.verify(targetDataLine).close();
     // }
-// }
+}

@@ -23,10 +23,13 @@ public class ChatGPT implements HttpHandler {
 
     public void handle(HttpExchange httpExchange) throws IOException {
         String response = "Request Received";
-        String method = httpExchange.getRequestMethod();
         try {
-            response = generate(httpExchange);
+            InputStream inStream = httpExchange.getRequestBody();
+            Scanner scanner = new Scanner(inStream);
+            String prompt = scanner.nextLine();
+            response = generate(prompt);
             System.out.println(response);
+            scanner.close();
         } catch (Exception e) {
             System.out.println("An erroneous request");
             response = e.toString();
@@ -39,15 +42,9 @@ public class ChatGPT implements HttpHandler {
         outStream.close();
     }
 
-    public String generate(HttpExchange httpExchange) throws IOException, InterruptedException, URISyntaxException {
+    public String generate(String prompt) throws IOException, InterruptedException, URISyntaxException {
         // Set request parameters
         int maxTokens = 512;
-
-        InputStream inStream = httpExchange.getRequestBody();
-        Scanner scanner = new Scanner(inStream);
-        String prompt = scanner.nextLine();
-
-        scanner.close();
 
         // Create a request body which you will pass into request object
         JSONObject requestBody = new JSONObject();

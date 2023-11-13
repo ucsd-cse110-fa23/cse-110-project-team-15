@@ -5,11 +5,10 @@ import org.junit.jupiter.api.Test;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit5.ApplicationTest;
 
+import client.view.Recipe;
+import client.view.RecipeList;
 import javafx.embed.swing.JFXPanel;
 import javafx.stage.Stage;
-import view.Main;
-import view.Recipe;
-import view.RecipeList;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,7 +40,7 @@ public class RecipeListTest extends ApplicationTest {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Main main = new Main();
+        App main = new App();
         main.start(primaryStage);
     }
 

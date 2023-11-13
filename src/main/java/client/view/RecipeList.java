@@ -8,7 +8,7 @@ import java.util.Collections;
 public class RecipeList extends VBox {
     Recipe[] list;
 
-    RecipeList() {
+    public RecipeList() {
         this.setSpacing(5); // sets spacing between tasks
         this.setPrefSize(500, 560);
         this.setStyle("-fx-background-color: #93c994;");

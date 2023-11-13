@@ -53,4 +53,24 @@ public class AudioRecorder {
             }
         }
     }
+
+    public boolean getIsRecording() {
+        return isRecording;
+    }
+
+    public void setIsRecording(boolean recording) {
+        isRecording = recording;
+    }
+
+    public TargetDataLine getTargetDataLine() {
+        return targetDataLine;
+    }
+
+    public void setTargetDataLine(TargetDataLine targetDataLine) {
+        this.targetDataLine = targetDataLine;
+    }
+
+    // public void setIsRecording(TargetDataLine recording) {
+    //     isRecording = recording;
+    // }
 }

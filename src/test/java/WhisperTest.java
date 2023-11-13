@@ -1,83 +1,31 @@
-// import org.junit.jupiter.api.BeforeEach;
-// import org.junit.jupiter.api.Test;
-// import org.mockito.MockedStatic;
-// import org.mockito.Mockito;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-// import java.io.*;
-// import java.net.*;
-// import org.json.*;
+import java.io.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-// import static org.junit.jupiter.api.Assertions.*;
-// import static org.mockito.ArgumentMatchers.any;
-// import static org.mockito.Mockito.mockStatic;
+import server.Whisper;
 
-// public class WhisperTest {
 
-// private Whisper whisper;
+public class WhisperTest {
 
-// @BeforeEach
-// public void setUp() {
-// whisper = new Whisper();
-// }
+    private Whisper whisp;
 
-// @Test
-// public void testTranscribeAudioSuccess() throws IOException {
-// HttpURLConnection mockConnection = Mockito.mock(HttpURLConnection.class);
-// ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-// ByteArrayInputStream inputStream = new
-// ByteArrayInputStream("{\"text\":\"Transcribed text\"}".getBytes());
+    @BeforeEach
+    public void setUp() {
+        whisp = mock(Whisper.class);
+    }
 
-// Mockito.when(mockConnection.getOutputStream()).thenReturn(outputStream);
-// Mockito.when(mockConnection.getInputStream()).thenReturn(inputStream);
-// Mockito.when(mockConnection.getResponseCode()).thenReturn(HttpURLConnection.HTTP_OK);
+    @Test
+    public void testGenerate() {
+        File prompt = new File("0");
+        String location = "9500 Gilman Dr, La Jolla, CA 92093";
 
-// try (MockedStatic<URL> urlMock = Mockito.mockStatic(URL.class);
-// MockedStatic<HttpURLConnection> connectionMock =
-// Mockito.mockStatic(HttpURLConnection.class)) {
+        when(whisp.transcribeAudio(any(File.class))).thenReturn(location);
+        String generatedText = whisp.transcribeAudio(prompt);
 
-// urlMock.when(() -> new URL(any())).thenReturn(new
-// URL("https://example.com"));
-// connectionMock.when(() -> (HttpURLConnection)
-// any()).thenReturn(mockConnection);
-
-// String transcription = whisper.transcribeAudio();
-
-// assertTrue(transcription.contains("Transcribed text"));
-// }
-// }
-
-// @Test
-// public void testTranscribeAudioFailure() throws IOException {
-// HttpURLConnection mockConnection = Mockito.mock(HttpURLConnection.class);
-// ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-// ByteArrayInputStream errorStream = new ByteArrayInputStream("Error
-// message".getBytes());
-
-// Mockito.when(mockConnection.getOutputStream()).thenReturn(outputStream);
-// Mockito.when(mockConnection.getErrorStream()).thenReturn(errorStream);
-// Mockito.when(mockConnection.getResponseCode()).thenReturn(HttpURLConnection.HTTP_BAD_REQUEST);
-
-// try (MockedStatic<URL> urlMock = Mockito.mockStatic(URL.class);
-// MockedStatic<HttpURLConnection> connectionMock =
-// Mockito.mockStatic(HttpURLConnection.class)) {
-
-// urlMock.when(() -> new URL(any())).thenReturn(new
-// URL("https://example.com"));
-// connectionMock.when(() -> (HttpURLConnection)
-// any()).thenReturn(mockConnection);
-
-// String transcription = whisper.transcribeAudio();
-
-// assertTrue(transcription.contains("Error Result: Error message"));
-// }
-// }
-
-// @Test
-// public void testTranscribeAudioException() throws IOException {
-// try (MockedStatic<URL> urlMock = Mockito.mockStatic(URL.class)) {
-// urlMock.when(() -> new URL(any())).thenThrow(new MalformedURLException());
-
-// assertThrows(MalformedURLException.class, () -> whisper.transcribeAudio());
-// }
-// }
-// }
+        assertNotNull(generatedText);
+        assertEquals(location, generatedText);
+    }
+}
