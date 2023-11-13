@@ -1,3 +1,14 @@
+/* 
+ * Sources:
+ * https://chat.openai.com/
+ * 11/13/2023
+ * Information on request handling and model usage for request methods
+ * 
+ * Lab 5
+ * 11/13/2023
+ * Copy code from our lab 5 github
+*/
+
 package client.model;
 
 import java.io.BufferedReader;
@@ -48,16 +59,21 @@ public class Model {
         }
     }
 
+    // Doenst work all the time because of byte fixed content-lenth
     public String requestInstruction(String prompt) {
         String url = "http://localhost:8100/instruction";
         
         try {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("prompt", prompt);
+            
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url)) // Replace with your actual endpoint
+                .uri(URI.create(url))
                 .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(new JSONObject().put("prompt", prompt).toString()))
+                .method("PUT", HttpRequest.BodyPublishers.ofString(jsonObject.toString()))
                 .build();
+                
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             return response.body();
         } catch (Exception ex) {
