@@ -1,7 +1,10 @@
+package client.view;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import client.model.ChatGPT;
+import client.model.Whisper;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
@@ -9,6 +12,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.text.*;
 
 import java.io.*;
+
+import javax.swing.text.View;
 
 class Footer extends HBox {
 
@@ -95,8 +100,6 @@ class AppFrame extends BorderPane {
             e.printStackTrace();
         }
 
-        
-
         // Call Event Listeners for the Buttons
         addListeners();
     }
@@ -122,6 +125,9 @@ public class Main extends Application {
         // Setting the Layout of the Window- Should contain a Header, Footer and the RecipeList
         AppFrame root = new AppFrame();
 
+        Model model = new Model();
+        Controller controller = new Controller(view, model);
+
         // Set the title of the app
         primaryStage.setTitle("Recipe Management App");
         // Create scene of mentioned size with the border pane
@@ -130,12 +136,7 @@ public class Main extends Application {
         primaryStage.setResizable(false);
         // Show the app
         primaryStage.show();
-
-        
-
     }
-
-   
 
     public static void main(String[] args) {
         launch(args);

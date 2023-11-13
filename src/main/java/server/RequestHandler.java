@@ -1,3 +1,4 @@
+package server;
 import com.sun.net.httpserver.*;
 import java.io.*;
 import java.net.*;
@@ -5,7 +6,6 @@ import java.util.*;
 
 public class RequestHandler implements HttpHandler {
     private final Map<String, String> data;
-
 
     public RequestHandler(Map<String, String> data) {
         this.data = data;
@@ -38,7 +38,6 @@ public class RequestHandler implements HttpHandler {
         OutputStream outStream = httpExchange.getResponseBody();
         outStream.write(response.getBytes());
         outStream.close();
-
     }
 
     private String handleGet(HttpExchange httpExchange) throws IOException {
@@ -67,15 +66,12 @@ public class RequestHandler implements HttpHandler {
             postData.indexOf(",")
         ), year = postData.substring(postData.indexOf(",") + 1);
 
-
         // Store data in hashmap
         data.put(language, year);
-
 
         String response = "Posted entry {" + language + ", " + year + "}";
         System.out.println(response);
         scanner.close();
-
 
         return response;
     }

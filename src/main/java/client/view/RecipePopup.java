@@ -1,5 +1,9 @@
+package view;
 
 import javafx.stage.Stage;
+import model.AudioRecorder;
+import model.ChatGPT;
+import model.Whisper;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
@@ -101,8 +105,6 @@ public class RecipePopup extends Stage {
             startRecordingButton.setDisable(false);
         });
     }
-
-
 
     public void audioToMealType() {
         String generatedText = whisp.transcribeAudio();

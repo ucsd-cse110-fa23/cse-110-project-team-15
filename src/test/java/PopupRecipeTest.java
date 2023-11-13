@@ -1,6 +1,12 @@
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.stage.Stage;
+import model.ChatGPT;
+import model.Whisper;
+import view.Main;
+import view.Recipe;
+import view.RecipeList;
+import view.RecipePopup;
 
 import static org.mockito.Mockito.*;
 

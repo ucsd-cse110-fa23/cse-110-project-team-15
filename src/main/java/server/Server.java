@@ -1,4 +1,6 @@
+package server;
 import com.sun.net.httpserver.*;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
@@ -7,8 +9,6 @@ import java.util.concurrent.*;
 
 
 public class Server {
-
-
   // initialize server port and hostname
   private static final int SERVER_PORT = 8100;
   private static final String SERVER_HOSTNAME = "localhost";
@@ -35,9 +35,6 @@ public class Server {
     // TODO: start the server
     server.start();
 
-    
-
     System.out.println("Server started on port " + SERVER_PORT);
-
   }
 }
