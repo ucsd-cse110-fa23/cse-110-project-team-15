@@ -19,11 +19,10 @@ public class App extends Application {
 
         Model model = new Model();
         Controller controller = new Controller(root, model);
-
+        
         primaryStage.setResizable(false);
         primaryStage.setScene(new Scene(root, 500, 600));
         primaryStage.setTitle("Recipe Management App");
         primaryStage.show();
-
     }
 }
