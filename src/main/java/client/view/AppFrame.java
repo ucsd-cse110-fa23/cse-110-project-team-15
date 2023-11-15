@@ -1,9 +1,4 @@
 package client.view;
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import server.ChatGPT;
-import server.Whisper;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
@@ -11,9 +6,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.text.*;
 
 import java.io.*;
-
-import javax.swing.text.View;
-
 
 class Footer extends HBox {
 
@@ -68,7 +60,6 @@ public class AppFrame extends BorderPane {
         // Initialise the header Object
         header = new Header();
 
-        // Create a RecipeList Object to hold the tasks
         recipeList = new RecipeList();
         
         // Initialise the Footer Object
@@ -76,7 +67,6 @@ public class AppFrame extends BorderPane {
 
         recipePopup = new RecipePopup();
 
-        // Add a Scroller to the Task List
         ScrollPane scroll = new ScrollPane(recipeList);
         scroll.setFitToWidth(true);
         scroll.setFitToHeight(true);
