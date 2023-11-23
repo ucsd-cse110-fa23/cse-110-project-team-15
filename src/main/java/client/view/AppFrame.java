@@ -1,4 +1,5 @@
 package client.view;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -13,7 +14,6 @@ import javafx.scene.text.*;
 import java.io.*;
 
 import javax.swing.text.View;
-
 
 class Footer extends HBox {
 
@@ -41,15 +41,27 @@ class Footer extends HBox {
 }
 
 class Header extends HBox {
+    private Button createAccountButton;
 
     Header() {
         this.setPrefSize(500, 60); // Size of the header
         this.setStyle("-fx-background-color: #93c994;");
 
+        // set a default style for buttons - background color, font size, italics
+        String defaultButtonStyle = ("-fx-background-color: #bdd9bd;  -fx-font-weight: bold; -fx-font-size: 13; -fx-font-family: 'Lucida Bright';");
+
         Text titleText = new Text("Recipe Creation App"); // Text of the Header
         titleText.setStyle("-fx-font-weight: bold;  -fx-font-size: 25; -fx-font-family: 'Lucida Bright';");
-        this.getChildren().add(titleText);
+
+        createAccountButton = new Button("Create Account"); // text displayed on account button
+        createAccountButton.setStyle(defaultButtonStyle);
+
+        this.getChildren().addAll(titleText, createAccountButton);
         this.setAlignment(Pos.CENTER); // Align the text to the Center
+    }
+
+    public Button getCreateAccountButton() {
+        return createAccountButton;
     }
 }
 
@@ -59,22 +71,25 @@ public class AppFrame extends BorderPane {
     private Footer footer;
     private RecipeList recipeList;
     private RecipePopup recipePopup;
+    private AccountPopup accountPopup;
     private DetailsPopup detailsPopup;
 
     private Button createButton;
+    private Button createAccountButton;
 
-    public AppFrame()
-    {
+    public AppFrame() {
         // Initialise the header Object
         header = new Header();
 
         // Create a RecipeList Object to hold the tasks
         recipeList = new RecipeList();
-        
+
         // Initialise the Footer Object
         footer = new Footer();
 
         recipePopup = new RecipePopup();
+
+        accountPopup = new AccountPopup();
 
         // Add a Scroller to the Task List
         ScrollPane scroll = new ScrollPane(recipeList);
@@ -89,6 +104,7 @@ public class AppFrame extends BorderPane {
         this.setBottom(footer);
 
         createButton = footer.getCreateButton();
+        createAccountButton = header.getCreateAccountButton();
 
         try (BufferedReader reader = new BufferedReader(new FileReader("recipes.csv"))) {
             String line;
@@ -98,7 +114,7 @@ public class AppFrame extends BorderPane {
                 recipe.getName().setText(info[0]);
                 recipe.getIngredient().setText(info[1]);
                 recipe.getInstruction().setText(info[2]);
-                recipeList.getChildren().add(recipe);                
+                recipeList.getChildren().add(recipe);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -108,13 +124,17 @@ public class AppFrame extends BorderPane {
         addListeners();
     }
 
-    public void addListeners() 
-    {
+    public void addListeners() {
         createButton.setOnAction(e -> {
             Recipe recipe = new Recipe(recipeList);
             recipeList.getChildren().add(recipe);
             recipePopup.setRecipe(recipe);
             recipePopup.display();
+        });
+
+        createAccountButton.setOnAction(e -> {
+            /* TO DO */
+            accountPopup.display();
         });
     }
 
@@ -124,6 +144,10 @@ public class AppFrame extends BorderPane {
 
     public RecipePopup getRecipePopup() {
         return recipePopup;
+    }
+
+    public AccountPopup getAccountPopup() {
+        return accountPopup;
     }
 
     public DetailsPopup getDetailsPopup() {
