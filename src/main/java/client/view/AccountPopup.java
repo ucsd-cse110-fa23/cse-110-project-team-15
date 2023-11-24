@@ -1,6 +1,7 @@
 package client.view;
 
 import javafx.stage.Stage;
+import server.Create;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -50,6 +51,9 @@ public class AccountPopup extends Stage {
         layout.setAlignment(Pos.CENTER);
         layout.getChildren().addAll(usernameLabel, username, passwordLabel, password, buttonBox);
     }
+    public void getCreateAccountButtonAction(EventHandler<ActionEvent> eventHandler) {
+        createAccountButton.setOnAction(eventHandler);
+    }
 
     public void display() {
         Scene scene = new Scene(layout, 400, 500);
@@ -66,6 +70,7 @@ public class AccountPopup extends Stage {
     }
 
     public Button getCreateAccountButton() {
+        Create.insertDataIntoMongoDB(username.toString(), password.toString());
         return this.createAccountButton;
     }
 }
