@@ -1,4 +1,8 @@
 package client.view;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.layout.*;
 
 import java.io.*;
@@ -8,12 +12,31 @@ import java.util.Collections;
 public class RecipeList extends VBox {
     Recipe[] list;
     AppFrame appFrame;
-
+    private VBox filterDropdown;
+    ComboBox<CheckBox> comboBox;
+    
     public RecipeList(AppFrame appFrame) {
         this.appFrame = appFrame;
         this.setSpacing(5); // sets spacing between tasks
         this.setPrefSize(500, 560);
         this.setStyle("-fx-background-color: #93c994;");
+
+        comboBox = new ComboBox<>();
+        comboBox.setPromptText("Filter By Meal Type");
+
+        comboBox.getItems().addAll(
+            new CheckBox("BreakFast"),
+            new CheckBox("Lunch"),
+            new CheckBox("Dinner")
+        );
+        
+        filterDropdown = new VBox(comboBox);
+        filterDropdown.setAlignment(Pos.CENTER_RIGHT);
+        filterDropdown.setStyle("-fx-background-color: #93c994;  -fx-font-weight: bold; -fx-font-size: 13; -fx-font-family: 'Lucida Bright';");
+        this.getChildren().addAll(filterDropdown);
+
+        // filterButton = new Button("Filter By Meal Type");
+        // filterButton.setStyle("-fx-background-color: #bdd9bd;  -fx-font-weight: bold; -fx-font-size: 13; -fx-font-family: 'Lucida Bright';");
     }
 
     public void removeRecipe(Recipe Recipe){
