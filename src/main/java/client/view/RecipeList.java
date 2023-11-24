@@ -7,8 +7,10 @@ import java.util.Collections;
 
 public class RecipeList extends VBox {
     Recipe[] list;
+    AppFrame appFrame;
 
-    public RecipeList() {
+    public RecipeList(AppFrame appFrame) {
+        this.appFrame = appFrame;
         this.setSpacing(5); // sets spacing between tasks
         this.setPrefSize(500, 560);
         this.setStyle("-fx-background-color: #93c994;");
@@ -25,11 +27,9 @@ public class RecipeList extends VBox {
         try{
             File csvfile = new File("recipes.csv");
             FileWriter fw = new FileWriter(csvfile);
-            int index = 1;
             for (int i = 0; i < this.getChildren().size(); i++){
                 if (this.getChildren().get(i) instanceof Recipe){
                     Recipe Recipe = (Recipe) this.getChildren().get(i);
-                    index++;
                     String name = Recipe.getName().getText();
                     String ingredients = Recipe.getIngredient().getText();
                     String instruction = Recipe.getInstruction().getText();
@@ -81,9 +81,8 @@ public class RecipeList extends VBox {
         try (BufferedReader reader = new BufferedReader(new FileReader("recipes.csv"))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                RecipeList list = new RecipeList();
                 String[] info = line.split("-");
-                Recipe recipe = new Recipe(list);
+                Recipe recipe = new Recipe(appFrame);
                 recipe.getName().setText(info[0]);
                 recipe.getIngredient().setText(info[1]);
                 recipe.getInstruction().setText(info[2]);

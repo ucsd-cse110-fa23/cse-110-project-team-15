@@ -13,6 +13,7 @@ import java.util.HashMap;
 public class Recipe extends HBox {
 
     private RecipeList recipeList;
+    private DetailsPopup detailsPopup;
 
     // private Label nameLabel;
     private VBox recipeInfo;
@@ -24,9 +25,10 @@ public class Recipe extends HBox {
     public Map<String, String[]> recipe = new HashMap<>();
     String[] recipeDetails = new String[3];
 
-    public Recipe(RecipeList recipeList) {
+    public Recipe(AppFrame appframe) {
 
-        this.recipeList = recipeList;
+        this.recipeList = appframe.getRecipeList();
+        this.detailsPopup = appframe.getDetailsPopup();
         
         this.setPrefSize(500, 50); // sets size of task
         this.setStyle("-fx-background-color: #659966; -fx-border-width: 0; -fx-font-weight: bold; -fx-font-size: 11; -fx-font-family: 'Times New Roman';"); // sets background color of task
@@ -88,17 +90,16 @@ public class Recipe extends HBox {
         return this.detailButton;
     }
 
-    public void addListeners() 
-    {
+    public void addListeners() {
         detailButton.setOnAction(e -> {
-            DetailsPopup popup = new DetailsPopup(this);
-            popup.show();
+            detailsPopup.setRecipe(this);
+            detailsPopup.show();
         });
     }
 
     // Checks if it is a completed recipe (if createRecipe -> RecipePopup -> mealtype -> ingredients -> name -> instructions)
-    public Boolean isComplete(){
-        return this.name.getText() != null && this.mealType.getText() != null && this.ingredient.getText() != null && this.instruction.getText() != null;
+    public Boolean isComplete() {
+        return !this.name.getText().isEmpty() && !this.mealType.getText().isEmpty() && !this.ingredient.getText().isEmpty() && !this.instruction.getText().isEmpty();
     }
 
     public void deleteRecipe() {

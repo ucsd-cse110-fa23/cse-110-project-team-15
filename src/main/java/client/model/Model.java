@@ -3,7 +3,7 @@
  * https://chat.openai.com/
  * date: 11/13/2023
  * version number: GPT-4
- * prompt1: how do i make a http request in the front-end that posts the prompt string to the localhost instruction route and get the response from whisper api
+ * prompt1: how do i make a http request in the front-end that posts the prompt string to the localhost and get the response from chatgpt api
  * prompt2: how to send a request that contains the audio file we just recorded
  * 
  * Lab 5

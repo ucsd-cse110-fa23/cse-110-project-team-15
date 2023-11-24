@@ -3,14 +3,15 @@ import org.junit.jupiter.api.Test;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit5.ApplicationTest;
 
+import client.view.AppFrame;
 import client.view.Recipe;
-import client.view.RecipeList;
 import javafx.embed.swing.JFXPanel;
+import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class RecipeTest extends ApplicationTest {
-    RecipeList list = new RecipeList();
+
 
     @BeforeAll
     public static void initJFX() {
@@ -24,7 +25,8 @@ public class RecipeTest extends ApplicationTest {
 
     @Test
     public void testRecipeInitialization() {
-        Recipe recipe = new Recipe(list);
+        AppFrame mockAppFrame = Mockito.mock(AppFrame.class);
+        Recipe recipe = new Recipe(mockAppFrame);
 
         assertNotNull(recipe.getName());
         assertNotNull(recipe.getMealType());
@@ -35,7 +37,8 @@ public class RecipeTest extends ApplicationTest {
 
     @Test
     public void testRecipeCompletion() {
-        Recipe recipe = new Recipe(list);
+        AppFrame mockAppFrame = Mockito.mock(AppFrame.class);
+        Recipe recipe = new Recipe(mockAppFrame);
 
         recipe.getName().setText("Chicken Stir-Fry");
         recipe.getMealType().setText("Dinner");

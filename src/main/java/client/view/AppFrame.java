@@ -60,12 +60,13 @@ public class AppFrame extends BorderPane {
         // Initialise the header Object
         header = new Header();
 
-        recipeList = new RecipeList();
+        recipeList = new RecipeList(this);
         
         // Initialise the Footer Object
         footer = new Footer();
 
         recipePopup = new RecipePopup();
+        detailsPopup = new DetailsPopup();
 
         ScrollPane scroll = new ScrollPane(recipeList);
         scroll.setFitToWidth(true);
@@ -84,7 +85,7 @@ public class AppFrame extends BorderPane {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] info = line.split("-");
-                Recipe recipe = new Recipe(recipeList);
+                Recipe recipe = new Recipe(this);
                 recipe.getName().setText(info[0]);
                 recipe.getIngredient().setText(info[1]);
                 recipe.getInstruction().setText(info[2]);
@@ -101,7 +102,7 @@ public class AppFrame extends BorderPane {
     public void addListeners() 
     {
         createButton.setOnAction(e -> {
-            Recipe recipe = new Recipe(recipeList);
+            Recipe recipe = new Recipe(this);
             recipeList.getChildren().add(recipe);
             recipePopup.setRecipe(recipe);
             recipePopup.display();
@@ -118,5 +119,9 @@ public class AppFrame extends BorderPane {
 
     public DetailsPopup getDetailsPopup() {
         return detailsPopup;
+    }
+
+    public RecipeList getRecipeList() {
+        return recipeList;
     }
 }
