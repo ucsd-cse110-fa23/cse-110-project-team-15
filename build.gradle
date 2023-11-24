@@ -25,6 +25,7 @@ dependencies {
     // implementation 'org.openjfx:javafx-controls:16'
     // implementation 'org.openjfx:javafx-fxml:16'
     implementation 'org.json:json:20171018'
+    implementation 'org.controlsfx:controlsfx:11.2.0'
     testImplementation 'org.testfx:testfx-core:4.0.16-alpha'
     testImplementation "org.testfx:testfx-junit5:4.0.16-alpha"
     testImplementation 'org.mockito:mockito-core:3.2.4'
