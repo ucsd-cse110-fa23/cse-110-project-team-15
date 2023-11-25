@@ -1,7 +1,9 @@
 package client.view;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -35,6 +37,10 @@ public class RecipeList extends VBox {
         filterDropdown = new VBox(mealOptions);
         filterDropdown.setAlignment(Pos.CENTER_RIGHT);
         this.getChildren().addAll(filterDropdown);
+
+        mealOptions.getCheckModel().getCheckedItems().addListener((ListChangeListener.Change<? extends String> c) -> {
+            filterRecipes();
+        });
     }
 
     public void removeRecipe(Recipe Recipe){
@@ -54,7 +60,8 @@ public class RecipeList extends VBox {
                     String name = Recipe.getName().getText();
                     String ingredients = Recipe.getIngredient().getText();
                     String instruction = Recipe.getInstruction().getText();
-                    fw.write(name + "-" + ingredients + "-" + instruction + "\n");
+                    String mealType = Recipe.getMealType().getText();
+                    fw.write(name + "-" + ingredients + "-" + instruction + "-" + mealType + "\n");
                 }
             }
             fw.close();
@@ -107,10 +114,34 @@ public class RecipeList extends VBox {
                 recipe.getName().setText(info[0]);
                 recipe.getIngredient().setText(info[1]);
                 recipe.getInstruction().setText(info[2]);
+                recipe.getMealType().setText(info[3]);
                 this.getChildren().add(recipe);                
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void filterRecipes() {
+        String[] selectedMealTypes = mealOptions.getCheckModel().getCheckedItems().toArray(new String[0]);
+        for (Node node : this.getChildren()) {
+            if (node instanceof Recipe) {
+                Recipe recipe = (Recipe) node;
+                String mealType = recipe.getMealType().getText().toLowerCase();
+                System.out.println(recipe.getIngredient().getText());
+                System.out.println(mealType);
+                boolean shouldShow = selectedMealTypes.length == 0 || ifContains(selectedMealTypes, mealType);
+                node.setVisible(shouldShow);
+            }
+        }
+    }
+
+    private boolean ifContains(String[] array, String value) {
+        for (String str : array) {
+            if (str.equalsIgnoreCase(value)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
