@@ -12,19 +12,17 @@ import javafx.geometry.Pos;
 
 public class RecipePopup extends Stage {
 
-    
     private Label recordingStatusLabel;
     private static Label errorLabel;
     private static Label optionsLabel;
     private static Label optionsText;
     public boolean mealTypeSet;
     private Recipe recipe;
-    
+
     private Button startRecordingButton;
     private Button stopRecordingButton;
     private HBox buttonBox;
     private VBox layout;
-
 
     public RecipePopup() {
         mealTypeSet = false;
@@ -33,7 +31,7 @@ public class RecipePopup extends Stage {
         setWidth(300);
         setHeight(200);
 
-        optionsLabel = new Label(mealTypeSet ? "Say your ingredients" : "Say one of the following options:");
+        optionsLabel = new Label(mealTypeSet ? "Say ingredients" : "Say one of the following options:");
         optionsLabel.setStyle("-fx-alignment: center; -fx-font-weight: bold;");
 
         optionsText = new Label(mealTypeSet ? "" : "Breakfast, Lunch, or Dinner");

@@ -1,4 +1,5 @@
 package client.controller;
+
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 
@@ -49,12 +50,13 @@ public class Controller {
         if (recipePopup.mealTypeSet) {
             audioToIngredient();
             try {
-                instructions = generateInstruction(recipePopup.getRecipe().getMealType().getText(), recipePopup.getRecipe().getIngredient().getText());
+                instructions = generateInstruction(recipePopup.getRecipe().getMealType().getText(),
+                        recipePopup.getRecipe().getIngredient().getText());
                 recipePopup.getRecipe().getName().setText(instructions[0]);
                 recipePopup.getRecipe().getIngredient().setText(instructions[1]);
                 recipePopup.getRecipe().getInstruction().setText(instructions[2]);
                 recipePopup.mealTypeSet = false;
-                
+
             } catch (IOException | InterruptedException | URISyntaxException e1) {
                 e1.printStackTrace();
             }
@@ -71,7 +73,8 @@ public class Controller {
         Button refreshButton = detailsPopup.getRefreshButton();
         refreshButton.setDisable(true);
         try {
-            instructions = generateInstruction(detailsPopup.getRecipe().getMealType().getText(),detailsPopup.getRecipe().getIngredient().getText());
+            instructions = generateInstruction(detailsPopup.getRecipe().getMealType().getText(),
+                    detailsPopup.getRecipe().getIngredient().getText());
             detailsPopup.getRecipe().getName().setText(instructions[0]);
             detailsPopup.getRecipe().getIngredient().setText(instructions[1]);
             detailsPopup.getRecipe().getInstruction().setText(instructions[2]);
@@ -86,7 +89,7 @@ public class Controller {
     public void audioToMealType() {
         String generatedText = model.requestTranscript();
         System.out.println(generatedText);
-        if (generatedText.toLowerCase().contains("breakfast") 
+        if (generatedText.toLowerCase().contains("breakfast")
                 || generatedText.toLowerCase().contains("lunch")
                 || generatedText.toLowerCase().contains("dinner")) {
             System.out.println("Transcription Result: " + generatedText);
@@ -107,12 +110,18 @@ public class Controller {
         String generatedText = model.requestTranscript();
         System.out.println("Ingredients: " + generatedText);
         recipePopup.getRecipe().getIngredient().setText(generatedText);
+        recipePopup.getOptionsLabel().setText("Say one of the following options:");
+        recipePopup.getOptionsLabel().setVisible(true);
+        recipePopup.getOptionsText().setVisible(true);
     }
 
-    public String[] generateInstruction(String mealtype, String ingredients) throws IOException, InterruptedException, URISyntaxException {
-        // TODO: figure out how to parse ChatGPT response for name/ingredients/instructions
+    public String[] generateInstruction(String mealtype, String ingredients)
+            throws IOException, InterruptedException, URISyntaxException {
+        // TODO: figure out how to parse ChatGPT response for
+        // name/ingredients/instructions
         // System.out.println("")
-        String prompt = "List the instructions to making a " + mealtype + " with these ingredients " + ingredients +". Respond in this format \"name of recipe - ingredients - instructions\"";
+        String prompt = "List the instructions to making a " + mealtype + " with these ingredients " + ingredients
+                + ". Respond in this format \"name of recipe - ingredients - instructions\"";
         String instruction = model.requestInstruction(prompt);
         String[] instructions = instruction.split("-");
         System.out.println("Recipe Name: " + instructions[0]);
