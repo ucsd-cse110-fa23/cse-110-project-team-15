@@ -128,8 +128,6 @@ public class RecipeList extends VBox {
             if (node instanceof Recipe) {
                 Recipe recipe = (Recipe) node;
                 String mealType = recipe.getMealType().getText().toLowerCase();
-                System.out.println(recipe.getIngredient().getText());
-                System.out.println(mealType);
                 boolean shouldShow = selectedMealTypes.length == 0 || ifContains(selectedMealTypes, mealType);
                 node.setVisible(shouldShow);
             }
