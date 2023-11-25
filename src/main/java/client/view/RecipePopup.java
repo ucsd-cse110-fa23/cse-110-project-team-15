@@ -32,12 +32,14 @@ public class RecipePopup extends Stage {
         setHeight(200);
 
         optionsLabel = new Label(mealTypeSet ? "Say ingredients" : "Say one of the following options:");
-        optionsLabel.setStyle("-fx-alignment: center; -fx-font-weight: bold;");
+        optionsLabel.setStyle("-fx-alignment: center; -fx-font-weight: bold; -fx-font-family: 'Lucida Bright';");
 
         optionsText = new Label(mealTypeSet ? "" : "Breakfast, Lunch, or Dinner");
-        optionsText.setStyle("-fx-alignment: center; -fx-font-weight: bold;");
+        optionsText.setStyle("-fx-alignment: center; -fx-font-weight: bold; -fx-font-family: 'Lucida Bright';");
         startRecordingButton = new Button("Start Recording");
+        startRecordingButton.setStyle("-fx-background-color: #bdd9bd;  -fx-font-weight: bold; -fx-font-size: 13; -fx-font-family: 'Lucida Bright';");
         stopRecordingButton = new Button("Stop Recording");
+        stopRecordingButton.setStyle("-fx-background-color: #bdd9bd;  -fx-font-weight: bold; -fx-font-size: 13; -fx-font-family: 'Lucida Bright';");
         stopRecordingButton.setDisable(true);
 
         recordingStatusLabel = new Label();
@@ -55,6 +57,7 @@ public class RecipePopup extends Stage {
 
         layout = new VBox(10);
         layout.setAlignment(Pos.CENTER);
+        layout.setStyle("-fx-background-color: #93c994;");
         layout.getChildren().addAll(optionsLabel, optionsText, buttonBox, recordingStatusLabel, errorLabel);
     }
 

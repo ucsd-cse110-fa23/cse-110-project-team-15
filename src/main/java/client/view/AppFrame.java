@@ -1,5 +1,6 @@
 package client.view;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
@@ -40,23 +41,27 @@ class Header extends HBox {
     boolean loggedIn = false;
 
     Header() {
-        this.setPrefSize(500, 60); // Size of the header
+        this.setPrefSize(500, 100); // Size of the header
         this.setStyle("-fx-background-color: #93c994;");
+        this.setSpacing(10);
+        this.setPadding(new Insets(10));
 
         // set a default style for buttons - background color, font size, italics
         String defaultButtonStyle = ("-fx-background-color: #bdd9bd;  -fx-font-weight: bold; -fx-font-size: 13; -fx-font-family: 'Lucida Bright';");
         createAccountButton = new Button("Create Account"); // text displayed on account button
         createAccountButton.setStyle(defaultButtonStyle);
+        // createAccountButton.setAlignment(Pos.CENTER_RIGHT);
 
         loginButton = new Button("Login");
         loginButton.setStyle(defaultButtonStyle);
+        // loginButton.setAlignment(Pos.CENTER_RIGHT);
 
         logoutButton = new Button("Logout");
         logoutButton.setStyle(defaultButtonStyle);
         // when no user is signed in:
         logoutButton.setVisible(loggedIn);
 
-        Text titleText = new Text("Recipe Creation App"); // Text of the Header
+        Text titleText = new Text("PantryPal"); // Text of the Header
         titleText.setStyle("-fx-font-weight: bold;  -fx-font-size: 25; -fx-font-family: 'Lucida Bright';");
 
         this.getChildren().addAll(titleText, createAccountButton, loginButton, logoutButton);
