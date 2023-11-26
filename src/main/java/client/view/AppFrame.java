@@ -90,6 +90,7 @@ public class AppFrame extends BorderPane {
                 recipe.getName().setText(info[0]);
                 recipe.getIngredient().setText(info[1]);
                 recipe.getInstruction().setText(info[2]);
+                recipe.getMealType().setText(info[3]);
                 recipeList.getChildren().add(recipe);                
             }
         } catch (IOException e) {

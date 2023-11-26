@@ -1,7 +1,9 @@
 package client.view;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -20,7 +22,7 @@ public class RecipeList extends VBox {
     private VBox filterDropdown;
     CheckComboBox<String> mealOptions;
     ObservableList<String> mealtypes;
-    
+    private ObservableList<Recipe> recipeContainer;
     
     public RecipeList(AppFrame appFrame) {
         this.appFrame = appFrame;
@@ -35,10 +37,15 @@ public class RecipeList extends VBox {
         filterDropdown = new VBox(mealOptions);
         filterDropdown.setAlignment(Pos.CENTER_RIGHT);
         this.getChildren().addAll(filterDropdown);
+
+        mealOptions.getCheckModel().getCheckedItems().addListener((ListChangeListener.Change<? extends String> c) -> {
+            filterRecipes();
+        });
     }
 
     public void removeRecipe(Recipe Recipe){
-        this.getChildren().remove(Recipe);
+        recipeContainer.remove(Recipe);
+        filterRecipes();
     }
 
     /*
@@ -48,14 +55,13 @@ public class RecipeList extends VBox {
         try{
             File csvfile = new File("recipes.csv");
             FileWriter fw = new FileWriter(csvfile);
-            for (int i = 0; i < this.getChildren().size(); i++){
-                if (this.getChildren().get(i) instanceof Recipe){
-                    Recipe Recipe = (Recipe) this.getChildren().get(i);
-                    String name = Recipe.getName().getText();
-                    String ingredients = Recipe.getIngredient().getText();
-                    String instruction = Recipe.getInstruction().getText();
-                    fw.write(name + "-" + ingredients + "-" + instruction + "\n");
-                }
+            for (int i = 0; i < recipeContainer.size(); i++) {
+                Recipe Recipe = recipeContainer.get(i);
+                String name = Recipe.getName().getText();
+                String ingredients = Recipe.getIngredient().getText();
+                String instruction = Recipe.getInstruction().getText();
+                String mealType = Recipe.getMealType().getText();
+                fw.write(name + "-" + ingredients + "-" + instruction + "-" + mealType + "\n");
             }
             fw.close();
         }
@@ -98,7 +104,6 @@ public class RecipeList extends VBox {
     }
 
     public void loadTasks() {
-
         try (BufferedReader reader = new BufferedReader(new FileReader("recipes.csv"))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -107,10 +112,48 @@ public class RecipeList extends VBox {
                 recipe.getName().setText(info[0]);
                 recipe.getIngredient().setText(info[1]);
                 recipe.getInstruction().setText(info[2]);
-                this.getChildren().add(recipe);                
+                recipe.getMealType().setText(info[3]);
+                recipeContainer.add(recipe);
             }
+            filterRecipes();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void filterRecipes() {
+        String[] selectedMealTypes = mealOptions.getCheckModel().getCheckedItems().toArray(new String[0]);
+
+        for (Node node : this.getChildren()) {
+            ArrayList<Node> list = new ArrayList<Node>();
+            if (node instanceof Recipe)
+                continue;
+            list.add(node);
+        }
+
+        for (Recipe recipe : recipeContainer) {
+            String mealType = recipe.getMealType().getText().toLowerCase();
+            if (selectedMealTypes.length == 0 || ifContains(selectedMealTypes, mealType)) {
+                this.getChildren().add(recipe);
+            }
+        }
+    }
+
+    private boolean ifContains(String[] array, String value) {
+        for (String str : array) {
+            if (str.equalsIgnoreCase(value)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public ObservableList<Recipe> getRecipes() {
+        return recipeContainer;
+    }
+
+    public void addRecipe(Recipe recipe) {
+        recipeContainer.add(recipe);
+        filterRecipes();
     }
 }
