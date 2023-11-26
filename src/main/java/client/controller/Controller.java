@@ -58,6 +58,7 @@ public class Controller {
                 e1.printStackTrace();
             }
             recipePopup.close();
+            recipePopup.getRecipe().addRecipe();
             recipePopup.getRecipe().saveRecipe();
         } else {
             audioToMealType();

@@ -22,7 +22,7 @@ public class RecipeList extends VBox {
     private VBox filterDropdown;
     CheckComboBox<String> mealOptions;
     ObservableList<String> mealtypes;
-    private ObservableList<Recipe> recipeContainer;
+    private ArrayList<Recipe> recipeContainer;
     
     public RecipeList(AppFrame appFrame) {
         this.appFrame = appFrame;
@@ -31,6 +31,8 @@ public class RecipeList extends VBox {
         this.setStyle("-fx-background-color: #93c994;");
         mealtypes = FXCollections.observableArrayList();
         mealtypes.addAll(new String[] {"Breakfast", "Lunch", "Dinner"});
+
+        recipeContainer = new ArrayList<Recipe>();
     
         mealOptions = new CheckComboBox<String>(mealtypes);
         
@@ -148,7 +150,7 @@ public class RecipeList extends VBox {
         return false;
     }
 
-    public ObservableList<Recipe> getRecipes() {
+    public ArrayList<Recipe> getRecipes() {
         return recipeContainer;
     }
 

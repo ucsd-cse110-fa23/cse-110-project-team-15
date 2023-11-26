@@ -109,4 +109,11 @@ public class Recipe extends HBox {
     public void saveRecipe() {
         recipeList.saveRecipes();
     }
+
+    public void addRecipe() {
+        if (isComplete())
+            recipeList.addRecipe(this);
+        else
+            System.err.println("Failed to add recipe: Recipe incomplete");
+    }
 }
