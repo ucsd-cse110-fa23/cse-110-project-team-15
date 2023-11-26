@@ -90,11 +90,17 @@ public class RecipeListTest extends ApplicationTest {
 
         Recipe recipe1 = new Recipe(mockAppFrame);
         recipe1.getName().setText("Recipe 1");
-        list.getChildren().add(recipe1);
+        recipe1.getMealType().setText("breakfast");
+        recipe1.getIngredient().setText("ingredient");
+        recipe1.getInstruction().setText("instruction");
+        recipe1.addRecipe();
 
         Recipe recipe2 = new Recipe(mockAppFrame);
         recipe2.getName().setText("Recipe 2");
-        list.getChildren().add(recipe2);
+        recipe2.getMealType().setText("breakfast");
+        recipe2.getIngredient().setText("ingredient");
+        recipe2.getInstruction().setText("instruction");
+        recipe2.addRecipe();
 
         try {
             list.saveRecipes();
