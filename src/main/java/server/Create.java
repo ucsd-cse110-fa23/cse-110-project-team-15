@@ -13,20 +13,18 @@ import static java.util.Arrays.asList;
 public class Create {
 
 public static void insertDataIntoMongoDB(String username, String password) {
-String uri =
-"mongodb+srv://team15:cse110project@cluster0.yu0exzy.mongodb.net/?retryWrites=true&w=majority";
-try (MongoClient mongoClient = MongoClients.create(uri)) {
+    String uri =
+    "mongodb+srv://aditijain:cse110project@cluster0.yu0exzy.mongodb.net/?retryWrites=true&w=majority";
+    try (MongoClient mongoClient = MongoClients.create(uri)) {
 
-MongoDatabase PantryPalDB = mongoClient.getDatabase("PantryPal");
-MongoCollection<Document> accountsCollection =
-PantryPalDB.getCollection("accounts");
+        MongoDatabase PantryPalDB = mongoClient.getDatabase("PantryPal");
+        MongoCollection<Document> accountsCollection = PantryPalDB.getCollection("accounts");
 
-Document user = new Document("_id", new ObjectId());
-            user.append("username", username).append("password", password);
-            accountsCollection.insertOne(user);
+        Document user = new Document("_id", new ObjectId());
+        user.append("username", username).append("password", password);
+        accountsCollection.insertOne(user);
 
-    
-}
-}
+        }
+    }
 }
 

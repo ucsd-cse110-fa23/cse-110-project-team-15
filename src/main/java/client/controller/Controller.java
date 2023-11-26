@@ -7,12 +7,14 @@ import java.net.URISyntaxException;
 import client.model.Model;
 import client.view.AppFrame;
 import client.view.RecipePopup;
+import client.view.AccountPopup;
 
 public class Controller {
     private AppFrame appFrame;
     private Model model;
     private AudioRecorder audioRecorder;
     private RecipePopup recipePopup;
+    private AccountPopup accountPopup;
 
     public Controller(AppFrame appFrame, Model model) {
         this.appFrame = appFrame;
@@ -24,9 +26,16 @@ public class Controller {
         this.appFrame.getDetailsPopup();
         
         this.recipePopup = appFrame.getRecipePopup();
+        this.accountPopup = appFrame.getAccountPopup();
 
         this.recipePopup.setStartRecordingButtonAction(this::handleStartRecordingButton);
         this.recipePopup.setStopRecordingButtonAction(this::handleStopRecordingButton);
+        this.accountPopup.setCreateAccountButtonAction(this::handleCreateAccountButton);
+
+    }
+
+    private void handleCreateAccountButton(ActionEvent event) {
+        
     }
 
     private void handleStartRecordingButton(ActionEvent event) {
@@ -97,4 +106,6 @@ public class Controller {
         recipePopup.getRecipe().getInstruction().setText(instructions[2]);
         recipePopup.mealTypeSet = false;
     }
+
+
 }

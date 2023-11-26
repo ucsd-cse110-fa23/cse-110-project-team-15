@@ -46,6 +46,36 @@ public class Model {
             ex.printStackTrace();
             return "Error: " + ex.getMessage();
         }
+
+    }
+
+    public String accountRequest(String method, String username, String password, String query) {
+        try {
+            String urlString = "http://localhost:8100/";
+            if (query != null) {
+                urlString += "?=" + query;
+            }
+            URL url = new URI(urlString).toURL();
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod(method);
+            conn.setDoOutput(true);
+
+            if (method.equals("POST") || method.equals("PUT")) {
+                OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream());
+                out.write(username + "," + password);
+                out.flush();
+                out.close();
+            }
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String response = in.readLine();
+            in.close();
+            return response;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return "Error: " + ex.getMessage();
+        }
+
     }
 
     public String requestInstruction(String prompt) {
@@ -101,4 +131,5 @@ public class Model {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         return response.body();
     }
+
 }
