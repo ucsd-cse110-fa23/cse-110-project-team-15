@@ -21,3 +21,5 @@ bin/test/
 hs_err_pid*.log
 
 *.csv
+
+**/*.class

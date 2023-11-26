@@ -4,13 +4,8 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListCell;
 import org.controlsfx.control.CheckComboBox;
 import javafx.scene.layout.*;
-import javafx.util.Callback;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -126,8 +121,8 @@ public class RecipeList extends VBox {
     public void filterRecipes() {
         String[] selectedMealTypes = mealOptions.getCheckModel().getCheckedItems().toArray(new String[0]);
 
+        ArrayList<Node> list = new ArrayList<Node>();
         for (Node node : this.getChildren()) {
-            ArrayList<Node> list = new ArrayList<Node>();
             if (node instanceof Recipe)
                 continue;
             list.add(node);
@@ -135,10 +130,13 @@ public class RecipeList extends VBox {
 
         for (Recipe recipe : recipeContainer) {
             String mealType = recipe.getMealType().getText().toLowerCase();
+            System.out.println(mealType);
             if (selectedMealTypes.length == 0 || ifContains(selectedMealTypes, mealType)) {
-                this.getChildren().add(recipe);
+                list.add(recipe);
             }
         }
+        this.getChildren().clear();
+        this.getChildren().addAll(list);
     }
 
     private boolean ifContains(String[] array, String value) {

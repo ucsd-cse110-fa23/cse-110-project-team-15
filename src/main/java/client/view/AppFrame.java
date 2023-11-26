@@ -5,8 +5,6 @@ import javafx.scene.layout.*;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.text.*;
 
-import java.io.*;
-
 class Footer extends HBox {
 
     private Button createButton;
@@ -82,20 +80,7 @@ public class AppFrame extends BorderPane {
 
         createButton = footer.getCreateButton();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader("recipes.csv"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] info = line.split("-");
-                Recipe recipe = new Recipe(this);
-                recipe.getName().setText(info[0]);
-                recipe.getIngredient().setText(info[1]);
-                recipe.getInstruction().setText(info[2]);
-                recipe.getMealType().setText(info[3]);
-                recipeList.getChildren().add(recipe);                
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        recipeList.loadTasks();
 
         // Call Event Listeners for the Buttons
         addListeners();
