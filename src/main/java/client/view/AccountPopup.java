@@ -50,10 +50,20 @@ public class AccountPopup extends Stage {
         layout = new VBox(10);
         layout.setAlignment(Pos.CENTER);
         layout.getChildren().addAll(usernameLabel, username, passwordLabel, password, buttonBox);
+
     }
 
     public void setCreateAccountButtonAction(EventHandler<ActionEvent> eventHandler) {
         createAccountButton.setOnAction(eventHandler);
+        String enteredUsername = username.getText();
+        String enteredPassword = password.getText();
+        createAccount(enteredUsername, enteredPassword);
+
+    }
+
+    private void createAccount(String username, String password) {
+        // Use the entered username and password and send it to the Create class
+        server.Create.createAccount(username, password);
     }
     
 
