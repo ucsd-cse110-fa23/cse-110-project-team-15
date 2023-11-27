@@ -12,6 +12,9 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import org.bson.types.ObjectId;
+
+import client.view.Recipe;
 
 import org.json.JSONObject;
 
@@ -19,7 +22,7 @@ import java.net.URI;
 
 
 public class Model {
-
+    // Doesnt work
     public String recipeRequest(String method, String language, String year, String query) {
         try {
             String urlString = "http://localhost:8100/";
@@ -46,37 +49,59 @@ public class Model {
             ex.printStackTrace();
             return "Error: " + ex.getMessage();
         }
-
     }
 
-    public String accountRequest(String method, String username, String password, String query) {
+    public String sendAccount(String username, String password) {
+        String url = "http://localhost:8100/api/accounts";
+
         try {
-            String urlString = "http://localhost:8100/";
-            if (query != null) {
-                urlString += "?=" + query;
-            }
-            URL url = new URI(urlString).toURL();
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod(method);
-            conn.setDoOutput(true);
+            HttpClient client = HttpClient.newHttpClient();
+            JSONObject json = new JSONObject();
+            json.put("_id", new ObjectId());
+            json.put("username", username);
+            json.put("password", password);
 
-            if (method.equals("POST") || method.equals("PUT")) {
-                OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream());
-                out.write(username + "," + password);
-                out.flush();
-                out.close();
-            }
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
+                    .build();
+            
+            System.out.println("username on server: "+ json.toString());
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String response = in.readLine();
-            in.close();
-            return response;
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            return response.body();
         } catch (Exception ex) {
             ex.printStackTrace();
             return "Error: " + ex.getMessage();
         }
-
     }
+
+    public String sendRecipe(Recipe recipe) {
+        String url = "http://localhost:8100/api/recipes";
+
+        try {
+            HttpClient client = HttpClient.newHttpClient();
+            JSONObject json = new JSONObject();
+            json.put("name", recipe.getName().getText());
+            json.put("mealType", recipe.getMealType().getText());
+            json.put("ingredients", recipe.getIngredient().getText());
+            json.put("instructions", recipe.getInstruction().getText());
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            return response.body();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return "Error: " + ex.getMessage();
+        }
+    }
+
 
     public String requestInstruction(String prompt) {
         String url = "http://localhost:8100/instruction";

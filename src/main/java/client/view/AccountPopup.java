@@ -63,12 +63,12 @@ public class AccountPopup extends Stage {
         this.show();
     }
 
-    public Label getusernameLabel() {
-        return this.usernameLabel;
+    public TextField getUsername() {
+        return this.username;
     }
 
-    public Label getpasswordLabel() {
-        return this.passwordLabel;
+    public TextField getPassword() {
+        return this.password;
     }
 
     public Button getCreateAccountButton() {

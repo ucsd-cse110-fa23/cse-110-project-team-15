@@ -30,6 +30,7 @@ public class Server {
     server.createContext("/", new RequestHandler(data));
     server.createContext("/transcribe", new Whisper());
     server.createContext("/instruction", new ChatGPT());
+    server.createContext("/api/accounts", new MongoDB());
     server.setExecutor(threadPoolExecutor);
     server.start();
 

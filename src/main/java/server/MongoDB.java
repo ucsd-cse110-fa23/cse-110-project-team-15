@@ -16,6 +16,9 @@ import java.net.http.HttpResponse;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.CompletableFuture;
 import java.util.Scanner;
+import java.net.InetSocketAddress;
+import java.nio.charset.StandardCharsets;
+
 
 import com.sun.net.httpserver.*;
 
@@ -28,65 +31,58 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
 public class MongoDB implements HttpHandler {
+    private static  MongoCollection<Document> accountsCollection;
 
-    private static final String uri = "mongodb+srv://aditijain:cse110project@cluster0.yu0exzy.mongodb.net/?retryWrites=true&w=majority";
+    public MongoDB() {}
 
-    public void handle(HttpExchange exchange) throws IOException{
-        // Retrieve username and password from an HTTP server (replace the URL with your actual endpoint)
-        String username = getUsernameFromServer("http://localhost/username");
-        String password = getPasswordFromServer("http://your-http-server/password");
+    @Override
+    public void handle(HttpExchange exchange) throws IOException {
+        // MongoDB connection setup
+        String uri = "mongodb+srv://aditijain:cse110project@cluster0.yu0exzy.mongodb.net/?retryWrites=true&w=majority";
+        MongoClient mongoClient = MongoClients.create(uri);
+        MongoDatabase database = mongoClient.getDatabase("PantryPal");
+        accountsCollection = database.getCollection("accounts");
 
-        // Connect to MongoDB and insert the data
-        try (MongoClient mongoClient = MongoClients.create(uri)) {
-            MongoDatabase database = mongoClient.getDatabase("PantryPal");
-            MongoCollection<Document> collection = database.getCollection("accounts");
-            // Create a document to insert into the collection
-            Document user = new Document("_id", new ObjectId());
-            user.append("username", username).append("password", password);
+
+        String response;
+        int statusCode;
+
+        Document doc = accountsCollection.find(eq("username", "group15")).first();
+        System.out.println(doc.toJson());
+        System.out.println(exchange.getRequestMethod());
             
-            // Insert the document into the "accounts" collection
-            collection.insertOne(user);
+        // Handle only the GET request for simplicity
+        if ("GET".equals(exchange.getRequestMethod())) {
+            try {
+                // Read JSON data from the request body
+                InputStream requestBody = exchange.getRequestBody();
+                String jsonData = new String(requestBody.readAllBytes(), StandardCharsets.UTF_8);
 
-            // Close the MongoDB client
-            mongoClient.close();
-        }
+                // Parse JSON data and insert into MongoDB collection
+                Document document = Document.parse(jsonData);
+                accountsCollection.insertOne(document);
 
-    }
+                System.out.println("username on server: "+ jsonData);
 
-    private static String getUsernameFromServer(String url) {
-        return fetchDataFromServer(url);
-    }
-
-    private static String getPasswordFromServer(String url) {
-        return fetchDataFromServer(url);
-    }
-
-    private static String fetchDataFromServer(String url) {
-        // Use HttpClient to make a simple GET request (replace with your actual logic)
-        HttpClient httpClient = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .build();
-
-        CompletableFuture<HttpResponse<String>> responseFuture = httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
-
-
-        try {
-            HttpResponse<String> response = responseFuture.get();
-            if (response.statusCode() == 200) {
-                return response.body();
-            } else {
-                System.out.println("Failed to fetch data from server. Status code: " + response.statusCode());
-                return null;
+                response = "Data added to MongoDB collection 'accounts'";
+                statusCode = 200;
+            } catch (Exception e) {
+                response = "Error processing the request";
+                statusCode = 500;
             }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt(); // Preserve interrupt status
-            System.err.println("Request was interrupted: " + e.getMessage());
-            return null;
-        } catch (ExecutionException e) {
-            System.err.println("Exception during HTTP request: " + e.getMessage());
-            return null;
+        } else {
+            response = "Unsupported HTTP method";
+            statusCode = 405;  // Method Not Allowed
+        }
+
+        // Set response headers
+        exchange.getResponseHeaders().set("Content-Type", "text/plain");
+        exchange.sendResponseHeaders(statusCode, response.length());
+
+        // Send the response
+        try (OutputStream os = exchange.getResponseBody()) {
+            os.write(response.getBytes());
         }
     }
-}
 
+}

@@ -35,7 +35,7 @@ public class Controller {
     }
 
     private void handleCreateAccountButton(ActionEvent event) {
-        
+        model.sendAccount(accountPopup.getUsername().getText(), accountPopup.getPassword().getText());
     }
 
     private void handleStartRecordingButton(ActionEvent event) {
