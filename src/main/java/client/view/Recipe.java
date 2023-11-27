@@ -12,6 +12,7 @@ import java.util.HashMap;
 
 public class Recipe extends HBox {
 
+    // Recipe should not have recipelist
     private RecipeList recipeList;
     private DetailsPopup detailsPopup;
 
@@ -56,9 +57,7 @@ public class Recipe extends HBox {
         this.getChildren().addAll(recipecontainer);
 
         this.mealType = new TextField();
-
         this.ingredient = new TextField();
-
         this.instruction = new TextField();
 
         recipeDetails[0] = mealType.toString();
@@ -109,5 +108,12 @@ public class Recipe extends HBox {
 
     public void saveRecipe() {
         recipeList.saveRecipes();
+    }
+
+    public void addRecipe() {
+        if (isComplete())
+            recipeList.addRecipe(this);
+        else
+            System.err.println("Failed to add recipe: Recipe incomplete");
     }
 }

@@ -54,11 +54,11 @@ public class Controller {
                 recipePopup.getRecipe().getIngredient().setText(instructions[1]);
                 recipePopup.getRecipe().getInstruction().setText(instructions[2]);
                 recipePopup.mealTypeSet = false;
-                
             } catch (IOException | InterruptedException | URISyntaxException e1) {
                 e1.printStackTrace();
             }
             recipePopup.close();
+            recipePopup.getRecipe().addRecipe();
             recipePopup.getRecipe().saveRecipe();
         } else {
             audioToMealType();
