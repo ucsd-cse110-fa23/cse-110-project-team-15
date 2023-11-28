@@ -15,7 +15,7 @@ public class RecipeList extends VBox {
     Recipe[] list;
     AppFrame appFrame;
     private VBox filterDropdown;
-    CheckComboBox<String> mealOptions;
+    public CheckComboBox<String> mealOptions;
     ObservableList<String> mealtypes;
     private ArrayList<Recipe> recipeContainer;
     
