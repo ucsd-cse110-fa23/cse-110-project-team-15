@@ -18,6 +18,7 @@ import javax.swing.text.View;
 class Footer extends HBox {
 
     private Button createButton;
+    
 
     Footer() {
         this.setPrefSize(500, 60);
@@ -90,8 +91,8 @@ public class AppFrame extends BorderPane {
         recipePopup = new RecipePopup();
 
         accountPopup = new AccountPopup();
+        detailsPopup = new DetailsPopup();
 
-        // Add a Scroller to the Task List
         ScrollPane scroll = new ScrollPane(recipeList);
         scroll.setFitToWidth(true);
         scroll.setFitToHeight(true);
@@ -126,8 +127,8 @@ public class AppFrame extends BorderPane {
 
     public void addListeners() {
         createButton.setOnAction(e -> {
-            Recipe recipe = new Recipe(recipeList);
-            recipeList.getChildren().add(recipe);
+            Recipe recipe = new Recipe(this);
+            // recipeList.getChildren().add(recipe);
             recipePopup.setRecipe(recipe);
             recipePopup.display();
         });
@@ -152,5 +153,9 @@ public class AppFrame extends BorderPane {
 
     public DetailsPopup getDetailsPopup() {
         return detailsPopup;
+    }
+
+    public RecipeList getRecipeList() {
+        return recipeList;
     }
 }

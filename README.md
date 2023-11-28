@@ -1,4 +1,4 @@
-# CSE110 Lab 2!
+# CSE110 Team 15 Project
 
 ## How to run
 ```
