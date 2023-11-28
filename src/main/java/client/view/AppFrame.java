@@ -83,7 +83,7 @@ public class AppFrame extends BorderPane {
         header = new Header();
 
         // Create a RecipeList Object to hold the tasks
-        recipeList = new RecipeList();
+        recipeList = new RecipeList(this);
 
         // Initialise the Footer Object
         footer = new Footer();
@@ -111,7 +111,7 @@ public class AppFrame extends BorderPane {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] info = line.split("-");
-                Recipe recipe = new Recipe(recipeList);
+                Recipe recipe = new Recipe(this);
                 recipe.getName().setText(info[0]);
                 recipe.getIngredient().setText(info[1]);
                 recipe.getInstruction().setText(info[2]);
