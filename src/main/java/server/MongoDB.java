@@ -18,7 +18,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.Scanner;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
-
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.stream.Collectors;
 
 import com.sun.net.httpserver.*;
 
@@ -67,6 +69,7 @@ public class MongoDB implements HttpHandler {
                 response = "Data added to MongoDB collection 'accounts'";
                 statusCode = 200;
             } catch (Exception e) {
+                e.printStackTrace();
                 response = "Error processing the request";
                 statusCode = 500;
             }
