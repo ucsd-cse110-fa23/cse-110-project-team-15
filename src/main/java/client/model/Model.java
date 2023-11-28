@@ -25,6 +25,9 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import org.bson.types.ObjectId;
+
+import client.view.Recipe;
 
 import org.json.JSONObject;
 
@@ -32,7 +35,7 @@ import java.net.URI;
 
 
 public class Model {
-
+    // Doesnt work
     public String recipeRequest(String method, String language, String year, String query) {
         try {
             String urlString = "http://localhost:8100/";
@@ -60,6 +63,110 @@ public class Model {
             return "Error: " + ex.getMessage();
         }
     }
+
+    public String sendAccount(String username, String password) {
+        String url = "http://localhost:8100/api/accounts";
+
+        try {
+            HttpClient client = HttpClient.newHttpClient();
+            JSONObject json = new JSONObject();
+            json.put("_id", new ObjectId());
+            json.put("username", username);
+            json.put("password", password);
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
+                    .build();
+            
+            System.out.println("username on server: "+ json.toString());
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            return response.body();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return "Error: " + ex.getMessage();
+        }
+    }
+
+    public String sendRecipe(Recipe recipe) {
+        String url = "http://localhost:8100/api/recipes";
+
+        try {
+            HttpClient client = HttpClient.newHttpClient();
+            JSONObject json = new JSONObject();
+            json.put("name", recipe.getName().getText());
+            json.put("mealType", recipe.getMealType().getText());
+            json.put("ingredients", recipe.getIngredient().getText());
+            json.put("instructions", recipe.getInstruction().getText());
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            return response.body();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return "Error: " + ex.getMessage();
+        }
+    }
+
+
+    // public String sendAccount(String username, String password) {
+    //     String url = "http://localhost:8100/api/accounts";
+
+    //     try {
+    //         HttpClient client = HttpClient.newHttpClient();
+    //         JSONObject json = new JSONObject();
+    //         json.put("_id", new ObjectId());
+    //         json.put("username", username);
+    //         json.put("password", password);
+
+    //         HttpRequest request = HttpRequest.newBuilder()
+    //                 .uri(URI.create(url))
+    //                 .header("Content-Type", "application/json")
+    //                 .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
+    //                 .build();
+            
+    //         System.out.println("username on server: "+ json.toString());
+
+    //         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+    //         return response.body();
+    //     } catch (Exception ex) {
+    //         ex.printStackTrace();
+    //         return "Error: " + ex.getMessage();
+    //     }
+    // }
+
+    // public String sendRecipe(Recipe recipe) {
+    //     String url = "http://localhost:8100/api/recipes";
+
+    //     try {
+    //         HttpClient client = HttpClient.newHttpClient();
+    //         JSONObject json = new JSONObject();
+    //         json.put("name", recipe.getName().getText());
+    //         json.put("mealType", recipe.getMealType().getText());
+    //         json.put("ingredients", recipe.getIngredient().getText());
+    //         json.put("instructions", recipe.getInstruction().getText());
+
+    //         HttpRequest request = HttpRequest.newBuilder()
+    //                 .uri(URI.create(url))
+    //                 .header("Content-Type", "application/json")
+    //                 .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
+    //                 .build();
+
+    //         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+    //         return response.body();
+    //     } catch (Exception ex) {
+    //         ex.printStackTrace();
+    //         return "Error: " + ex.getMessage();
+    //     }
+    // }
+
 
     // Doenst work all the time because of byte fixed content-lenth
     public String requestInstruction(String prompt) {
@@ -119,4 +226,5 @@ public class Model {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         return response.body();
     }
+
 }

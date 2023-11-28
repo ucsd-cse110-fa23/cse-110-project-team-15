@@ -8,8 +8,12 @@ Make sure to clear Java workspace and restart VSCode. Make sure to run the serve
 
 ```
 cd src/main/java
-javac -cp ".:/path/to/your/json-20230227.jar" server/*.java
-java -cp ".:/path/to/your/json-20230227.jar" server/Server
+javac -cp ".:/path/to/your/mongodb-driver-core-4.11.0.jar:/path/to/your/mongodb-driver-sync-4.11.0.jar:/path/to/your/bson-4.11.0.jar:/path/to/your/json-20230227.jar" server/*.java
+java -cp ".:/path/to/your/mongodb-driver-core-4.11.0.jar:/path/to/your/mongodb-driver-sync-4.11.0.jar:/path/to/your/bson-4.11.0.jar:/path/to/your/json-20230227.jar" server/Server
+
+(in windows)
+javac -cp ".;/path/to/your/mongodb-driver-core-4.11.0.jar;/path/to/your/mongodb-driver-sync-4.11.0.jar;/path/to/your/bson-4.11.0.jar;/path/to/your/json-20230227.jar" server/*.java
+java -cp ".;/path/to/your/mongodb-driver-core-4.11.0.jar;/path/to/your/mongodb-driver-sync-4.11.0.jar;/path/to/your/bson-4.11.0.jar;/path/to/your/json-20230227.jar" server/Server
 ```
 
 Then, open a new terminal and run the app by:

@@ -9,12 +9,14 @@ import client.model.Model;
 import client.view.AppFrame;
 import client.view.DetailsPopup;
 import client.view.RecipePopup;
+import client.view.AccountPopup;
 
 public class Controller {
     private AppFrame appFrame;
     private Model model;
     private AudioRecorder audioRecorder;
     private RecipePopup recipePopup;
+    private AccountPopup accountPopup;
     private DetailsPopup detailsPopup;
 
     public Controller(AppFrame appFrame, Model model) {
@@ -26,10 +28,17 @@ public class Controller {
 
         this.detailsPopup = appFrame.getDetailsPopup();
         this.recipePopup = appFrame.getRecipePopup();
+        this.accountPopup = appFrame.getAccountPopup();
 
         this.recipePopup.setStartRecordingButtonAction(this::handleStartRecordingButton);
         this.recipePopup.setStopRecordingButtonAction(this::handleStopRecordingButton);
         this.detailsPopup.setRefreshButtonAction(this::handleRefreshButton);
+        this.accountPopup.setCreateAccountButtonAction(this::handleCreateAccountButton);
+
+    }
+
+    private void handleCreateAccountButton(ActionEvent event) {
+        model.sendAccount(accountPopup.getUsername().getText(), accountPopup.getPassword().getText());
     }
 
     private void handleStartRecordingButton(ActionEvent event) {
@@ -121,4 +130,6 @@ public class Controller {
 
         return instructions;
     }
+
+
 }

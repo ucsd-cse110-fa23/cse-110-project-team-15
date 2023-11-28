@@ -46,7 +46,7 @@ public class RecipeList extends VBox {
     }
 
     /*
-     * Save tasks to a file called "Recipes.csv"
+     * Save tasks to a file called "Recipes.csv". DO NOT DO THIS ON UI
      */
     public void saveRecipes() {
         try{
@@ -100,6 +100,9 @@ public class RecipeList extends VBox {
         }
     }
 
+    /*
+     * Save tasks to a file called "Recipes.csv". CHANGE THIS TO USE MONGODB INSTEEAD AND CONTROLLER
+     */
     public void loadTasks() {
         try (BufferedReader reader = new BufferedReader(new FileReader("recipes.csv"))) {
             String line;
