@@ -53,7 +53,7 @@ public class RegenRecipeTest extends ApplicationTest {
    
 
     @Test
-    public void testSaveRecipes() {
+    public void refresh() {
 
         Platform.runLater(() -> {
 
