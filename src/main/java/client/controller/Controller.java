@@ -15,9 +15,9 @@ public class Controller {
     private AppFrame appFrame;
     private Model model;
     private AudioRecorder audioRecorder;
-    private RecipePopup recipePopup;
+    public RecipePopup recipePopup;
     private AccountPopup accountPopup;
-    private DetailsPopup detailsPopup;
+    public DetailsPopup detailsPopup;
 
     public Controller(AppFrame appFrame, Model model) {
         this.appFrame = appFrame;

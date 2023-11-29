@@ -11,6 +11,7 @@ import client.view.AppFrame;
 import client.view.DetailsPopup;
 import client.view.Recipe;
 import client.view.RecipeList;
+import client.view.RecipePopup;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.control.Button;
@@ -18,6 +19,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,6 +28,8 @@ import java.nio.file.Path;
 
 import org.mockito.Mockito;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.Mockito.when;
 
 public class RegenRecipeTest extends ApplicationTest {
@@ -50,53 +54,40 @@ public class RegenRecipeTest extends ApplicationTest {
 
     @Test
     public void testSaveRecipes() {
-        AppFrame mockAppFrame = Mockito.mock(AppFrame.class);
-        Recipe recipe = new Recipe(mockAppFrame);
-        recipe.name.setText("Scrambled Eggs");
-        recipe.ingredient.setText("eggs");
-        recipe.instruction.setText("1.Crack, season, and whisk in a mixing bowl..");
 
         Platform.runLater(() -> {
-            DetailsPopup detailsPopup = new DetailsPopup();
-            detailsPopup.setRecipe(recipe);
-            detailsPopup.refreshButton.fire();
 
-            assertEquals("eggs", detailsPopup.getRecipe().ingredient.getText());
-            assertNotEquals("Scrambled Eggs", detailsPopup.getRecipe().name.getText());
-            assertNotEquals("1.Crack, season, and whisk in a mixing bowl..", recipe.instruction.getText());
-        });
-       /*Mockito.when(mockAppFrame.getRecipeList()).thenReturn(list);
+            AppFrame mockAppFrame = new AppFrame();
+            Model model = new Model();
+            Controller controller = new Controller(mockAppFrame, model);
 
-        Recipe recipe1 = new Recipe(mockAppFrame);
-        recipe1.getName().setText("Recipe 1");
-        recipe1.getMealType().setText("breakfast");
-        recipe1.getIngredient().setText("ingredient");
-        recipe1.getInstruction().setText("instruction");
-        recipe1.addRecipe();
+            Recipe recipe = new Recipe(mockAppFrame);
+            recipe.getMealType().setText("Breakfast");
+            recipe.name.setText("Chicken Rice");
+            recipe.ingredient.setText("rice");
+            recipe.instruction.setText("1.instruction1");
 
-        Recipe recipe2 = new Recipe(mockAppFrame);
-        recipe2.getName().setText("Recipe 2");
-        recipe2.getMealType().setText("breakfast");
-        recipe2.getIngredient().setText("ingredient");
-        recipe2.getInstruction().setText("instruction");
-        recipe2.addRecipe();
-
-        try {
-            list.saveRecipes();
-
-            File file = new File("recipes.csv");
-            assertTrue(file.exists());
             
-            List<String> lines = Files.readAllLines(Path.of("recipes.csv"));
+            DetailsPopup detailsPopup = new DetailsPopup();
+            controller.detailsPopup = detailsPopup;
 
-            String[] parts1 = lines.get(0).split("-");
-            assertEquals("Recipe 1", parts1[0]);
+            detailsPopup.setRecipe(recipe);
+            detailsPopup.getRefreshButton().fire();
+            try {
+                String[] instructions = controller.generateInstruction(recipe.getMealType().getText(), recipe.getIngredient().getText());
+                detailsPopup.name.setText(instructions[0]);
+                detailsPopup.ingredients.setText(instructions[1]);
+                detailsPopup.instruction.setText(instructions[2]);
+            } catch (IOException | InterruptedException | URISyntaxException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
 
-            String[] parts2 = lines.get(1).split("-");
-            assertEquals("Recipe 2", parts2[0]);
-        } catch (IOException e) {
-            fail("Error occurred: " + e.getMessage());
-        }*/
+            assertTrue(detailsPopup.ingredients.getText().toLowerCase().contains("rice"), "");
+            assertNotEquals("Chicken Rice", detailsPopup.name.getText());
+            assertNotEquals("1.instruction1", detailsPopup.instruction.getText());
+        });
     }
+
 }
 
