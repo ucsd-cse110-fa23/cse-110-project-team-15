@@ -34,11 +34,11 @@ public class AccountPopup extends Stage {
         setHeight(200);
 
         usernameLabel = new Label("Username:");
-        usernameLabel.setStyle("-fx-alignment: center; -fx-font-weight: bold;");
+        usernameLabel.setStyle("-fx-alignment: center; -fx-font-weight: bold; -fx-font-family: 'Lucida Bright';");
         usernameLabel.setVisible(true);
 
         passwordLabel = new Label("Password:");
-        passwordLabel.setStyle("-fx-alignment: center; -fx-font-weight: bold;");
+        passwordLabel.setStyle("-fx-alignment: center; -fx-font-weight: bold; -fx-font-family: 'Lucida Bright';");
         passwordLabel.setVisible(true);
 
         username = new TextField("");
@@ -48,6 +48,7 @@ public class AccountPopup extends Stage {
         password.setStyle("-fx-alignment: center; -fx-font-weight: bold;");
 
         createAccountButton = new Button("Create Account");
+        createAccountButton.setStyle("-fx-background-color: #bdd9bd;  -fx-font-weight: bold; -fx-font-size: 13; -fx-font-family: 'Lucida Bright';");
 
         buttonBox = new HBox(10);
         buttonBox.setAlignment(Pos.CENTER);
@@ -55,6 +56,7 @@ public class AccountPopup extends Stage {
 
         layout = new VBox(10);
         layout.setAlignment(Pos.CENTER);
+        layout.setStyle("-fx-background-color: #93c994;");
         layout.getChildren().addAll(usernameLabel, username, passwordLabel, password, buttonBox);
 
     }

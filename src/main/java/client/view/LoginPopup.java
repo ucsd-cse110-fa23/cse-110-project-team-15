@@ -11,6 +11,12 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import com.sun.net.httpserver.HttpExchange;
+
 public class LoginPopup extends Stage {
     private Button loginButton;
     private TextField username;
@@ -53,18 +59,59 @@ public class LoginPopup extends Stage {
         layout.getChildren().addAll(usernameLabel, username, passwordLabel, password, buttonBox);
     }
 
+    public void setLoginButtonAction(EventHandler<ActionEvent> eventHandler) {
+        loginButton.setOnAction(event -> {
+            String enteredUsername = username.getText();
+            String enteredPassword = password.getText();
+            loginAccount(enteredUsername, enteredPassword);
+    
+        });
+
+    }
+
+    private void loginAccount(String username, String password) {
+        // Use the entered username and password and send it to the Create class
+        server.Login.loginAccount(username, password);
+        sendDataToServerAndMongoDB(username, password);
+    }
+
+    private void sendDataToServerAndMongoDB(String username, String password) {
+        try {
+            // Sending data to your server using HttpClient
+            String serverUrl = "http://localhost:8100/login_account"; // Replace with your server URL
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(serverUrl))
+                    .POST(HttpRequest.BodyPublishers.ofString("username=" + username + "&password=" + password))
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            int statusCode = response.statusCode();
+            String responseBody = response.body();
+
+            // Handle response from server if needed
+            System.out.println("Server Response - Status code: " + statusCode);
+            System.out.println("Server Response - Body: " + responseBody);
+            System.out.println("Data inserted into MongoDB");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Handle exceptions
+        }
+    }
+
     public void display() {
         Scene scene = new Scene(layout, 400, 500);
         setScene(scene);
         this.show();
     }
 
-    public Label getusernameLabel() {
-        return this.usernameLabel;
+    public TextField getUsername() {
+        return this.username;
     }
 
-    public Label getpasswordLabel() {
-        return this.passwordLabel;
+    public TextField getPassword() {
+        return this.password;
     }
 
     public Button getloginButton() {
