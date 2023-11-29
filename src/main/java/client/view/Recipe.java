@@ -14,15 +14,15 @@ public class Recipe extends HBox {
 
     // Recipe should not have recipelist
     private RecipeList recipeList;
-    private DetailsPopup detailsPopup;
+    public DetailsPopup detailsPopup;
 
     // private Label nameLabel;
     private VBox recipeInfo;
-    private TextField name;
+    public TextField name;
     private TextField mealType;
-    private TextField ingredient;
-    private TextField instruction;
-    private Button detailButton;
+    public TextField ingredient;
+    public TextField instruction;
+    public Button detailButton;
     public Map<String, String[]> recipe = new HashMap<>();
     String[] recipeDetails = new String[3];
 
@@ -115,5 +115,9 @@ public class Recipe extends HBox {
             recipeList.addRecipe(this);
         else
             System.err.println("Failed to add recipe: Recipe incomplete");
+    }
+
+    public void setDetailsPopup(DetailsPopup detailsPopup) {
+        this.detailsPopup = detailsPopup;
     }
 }

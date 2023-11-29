@@ -14,15 +14,15 @@ public class DetailsPopup extends Stage {
 
     private Recipe recipe;
 
-    private TextField name;
-    private TextField ingredients;
-    private TextArea instruction;
+    public TextField name;
+    public TextField ingredients;
+    public TextArea instruction;
     
     private Button editButton;
     private Button deleteButton;
     private Button saveButton;
     private Button backButton;
-    private Button refreshButton;
+    public Button refreshButton;
 
     public DetailsPopup() {
         // setTitle(name.getText());
