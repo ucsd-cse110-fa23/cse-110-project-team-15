@@ -23,7 +23,7 @@ public class AccountPopup extends Stage {
     private TextField username;
     private TextField password;
     private HBox buttonBox;
-    private static VBox layout;
+    private VBox layout;
     private Label usernameLabel;
     private Label passwordLabel;
 
@@ -48,16 +48,12 @@ public class AccountPopup extends Stage {
         password.setStyle("-fx-alignment: center; -fx-font-weight: bold;");
 
         createAccountButton = new Button("Create Account");
-        createAccountButton.setStyle("-fx-background-color: #bdd9bd;  -fx-font-weight: bold; -fx-font-size: 13; -fx-font-family: 'Lucida Bright';");
+        createAccountButton.setStyle(
+                "-fx-background-color: #bdd9bd;  -fx-font-weight: bold; -fx-font-size: 13; -fx-font-family: 'Lucida Bright';");
 
         buttonBox = new HBox(10);
         buttonBox.setAlignment(Pos.CENTER);
         buttonBox.getChildren().addAll(createAccountButton);
-
-        layout = new VBox(10);
-        layout.setAlignment(Pos.CENTER);
-        layout.setStyle("-fx-background-color: #93c994;");
-        layout.getChildren().addAll(usernameLabel, username, passwordLabel, password, buttonBox);
 
     }
 
@@ -66,7 +62,6 @@ public class AccountPopup extends Stage {
             String enteredUsername = username.getText();
             String enteredPassword = password.getText();
             createAccount(enteredUsername, enteredPassword);
-    
         });
 
     }
@@ -76,7 +71,6 @@ public class AccountPopup extends Stage {
         server.Create.createAccount(username, password);
         sendDataToServerAndMongoDB(username, password);
     }
-
 
     private void sendDataToServerAndMongoDB(String username, String password) {
         try {
@@ -102,8 +96,13 @@ public class AccountPopup extends Stage {
             // Handle exceptions
         }
     }
-    
+
     public void display() {
+        layout = new VBox(10);
+        layout.setAlignment(Pos.CENTER);
+        layout.setStyle("-fx-background-color: #93c994;");
+        layout.getChildren().addAll(usernameLabel, username, passwordLabel, password, buttonBox);
+
         Scene scene = new Scene(layout, 400, 500);
         setScene(scene);
         this.show();

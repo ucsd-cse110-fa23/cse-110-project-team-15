@@ -1,5 +1,6 @@
 package client.view;
 
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -58,8 +59,7 @@ class Header extends HBox {
 
         logoutButton = new Button("Logout");
         logoutButton.setStyle(defaultButtonStyle);
-        // when no user is signed in:
-        logoutButton.setVisible(loggedIn);
+        logoutButton.setVisible(false);
 
         Text titleText = new Text("PantryPal"); // Text of the Header
         titleText.setStyle("-fx-font-weight: bold;  -fx-font-size: 25; -fx-font-family: 'Lucida Bright';");
@@ -76,14 +76,20 @@ class Header extends HBox {
         return loginButton;
     }
 
-    public Button getLogoutButton() {
+    public Button getLogoutButton(boolean visible) {
+        logoutButton.setVisible(visible);
         return logoutButton;
+    }
+
+    public Button getLoginButton(boolean visible) {
+        loginButton.setVisible(visible);
+        return loginButton;
     }
 }
 
 public class AppFrame extends BorderPane {
 
-    private Header header;
+    public static Header header;
     private Footer footer;
     private RecipeList recipeList;
     private RecipePopup recipePopup;
@@ -124,7 +130,7 @@ public class AppFrame extends BorderPane {
         createButton = footer.getCreateButton();
         createAccountButton = header.getCreateAccountButton();
         loginButton = header.getLoginButton();
-        logoutButton = header.getLogoutButton();
+        logoutButton = header.getLogoutButton(false);
 
         try (BufferedReader reader = new BufferedReader(new FileReader("recipes.csv"))) {
             String line;
@@ -160,6 +166,11 @@ public class AppFrame extends BorderPane {
         });
     }
 
+    public static void setLogoutButtonVisible() {
+        header.getLogoutButton(true);
+        header.getLoginButton(false);
+    }
+
     public RecipeList getRecipes() {
         return recipeList;
     }
@@ -183,4 +194,5 @@ public class AppFrame extends BorderPane {
     public RecipeList getRecipeList() {
         return recipeList;
     }
+
 }

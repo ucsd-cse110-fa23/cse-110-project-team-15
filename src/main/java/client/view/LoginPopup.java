@@ -18,13 +18,14 @@ import java.net.http.HttpResponse;
 import com.sun.net.httpserver.HttpExchange;
 
 public class LoginPopup extends Stage {
-    private Button loginButton;
+    private Button loginAccountButton;
     private TextField username;
     private TextField password;
     private HBox buttonBox;
-    private static VBox layout;
+    private VBox layout;
     private Label usernameLabel;
     private Label passwordLabel;
+    private boolean loggedIn = false;
 
     public LoginPopup() {
 
@@ -46,32 +47,34 @@ public class LoginPopup extends Stage {
         username.setStyle("-fx-alignment: center; -fx-font-weight: bold;");
         password.setStyle("-fx-alignment: center; -fx-font-weight: bold;");
 
-        loginButton = new Button("Login");
-        loginButton.setStyle("-fx-background-color: #bdd9bd;  -fx-font-weight: bold; -fx-font-size: 13; -fx-font-family: 'Lucida Bright';");
+        loginAccountButton = new Button("Login");
+        loginAccountButton.setStyle(
+                "-fx-background-color: #bdd9bd;  -fx-font-weight: bold; -fx-font-size: 13; -fx-font-family: 'Lucida Bright';");
 
         buttonBox = new HBox(10);
         buttonBox.setAlignment(Pos.CENTER);
-        buttonBox.getChildren().addAll(loginButton);
-
-        layout = new VBox(10);
-        layout.setAlignment(Pos.CENTER);
-        layout.setStyle("-fx-background-color: #93c994;");
-        layout.getChildren().addAll(usernameLabel, username, passwordLabel, password, buttonBox);
+        buttonBox.getChildren().addAll(loginAccountButton);
     }
 
-    public void setLoginButtonAction(EventHandler<ActionEvent> eventHandler) {
-        loginButton.setOnAction(event -> {
+    public boolean isLoggedIn() {
+        return loggedIn;
+    }
+
+    public void setLoginAccountButtonAction(EventHandler<ActionEvent> eventHandler) {
+        loginAccountButton.setOnAction(event -> {
             String enteredUsername = username.getText();
             String enteredPassword = password.getText();
             loginAccount(enteredUsername, enteredPassword);
-    
         });
-
     }
 
-    private void loginAccount(String username, String password) {
-        // Use the entered username and password and send it to the Create class
-        server.Login.loginAccount(username, password);
+    public void loginAccount(String username, String password) {
+        loggedIn = server.Login.loginAccount(username, password);
+        if (loggedIn) {
+            // If logged in successfully, close the login popup
+            this.close();
+            AppFrame.setLogoutButtonVisible();
+        }
         sendDataToServerAndMongoDB(username, password);
     }
 
@@ -101,6 +104,11 @@ public class LoginPopup extends Stage {
     }
 
     public void display() {
+        layout = new VBox(10);
+        layout.setAlignment(Pos.CENTER);
+        layout.setStyle("-fx-background-color: #93c994;");
+        layout.getChildren().addAll(usernameLabel, username, passwordLabel, password, buttonBox);
+
         Scene scene = new Scene(layout, 400, 500);
         setScene(scene);
         this.show();
@@ -114,7 +122,8 @@ public class LoginPopup extends Stage {
         return this.password;
     }
 
-    public Button getloginButton() {
-        return this.loginButton;
+    public Button getLoginAccountButton() {
+        return this.loginAccountButton;
     }
+
 }

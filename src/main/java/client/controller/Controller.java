@@ -10,6 +10,7 @@ import client.model.Model;
 import client.view.AccountPopup;
 import client.view.AppFrame;
 import client.view.DetailsPopup;
+import client.view.LoginPopup;
 import client.view.RecipePopup;
 
 public class Controller {
@@ -19,6 +20,7 @@ public class Controller {
     private RecipePopup recipePopup;
     private AccountPopup accountPopup;
     private DetailsPopup detailsPopup;
+    private LoginPopup loginPopup;
 
     public Controller(AppFrame appFrame, Model model) {
         this.appFrame = appFrame;
@@ -30,11 +32,17 @@ public class Controller {
         this.detailsPopup = appFrame.getDetailsPopup();
         this.recipePopup = appFrame.getRecipePopup();
         this.accountPopup = appFrame.getAccountPopup();
+        this.loginPopup = appFrame.getLoginPopup();
 
         this.recipePopup.setStartRecordingButtonAction(this::handleStartRecordingButton);
         this.recipePopup.setStopRecordingButtonAction(this::handleStopRecordingButton);
         this.detailsPopup.setRefreshButtonAction(this::handleRefreshButton);
         this.accountPopup.setCreateAccountButtonAction(this::handleCreateAccountButton);
+        this.loginPopup.setLoginAccountButtonAction(this::handleLoginAccountButton);
+    }
+
+    private void handleLoginAccountButton(ActionEvent event) {
+        model.sendAccount(loginPopup.getUsername().getText(), loginPopup.getPassword().getText());
     }
 
     private void handleCreateAccountButton(ActionEvent event) {
