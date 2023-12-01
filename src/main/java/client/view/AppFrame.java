@@ -108,19 +108,19 @@ public class AppFrame extends BorderPane {
 
         recipeList.loadTasks();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader("recipes.csv"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] info = line.split("-");
-                Recipe recipe = new Recipe(this);
-                recipe.getName().setText(info[0]);
-                recipe.getIngredient().setText(info[1]);
-                recipe.getInstruction().setText(info[2]);
-                // recipeList.getChildren().add(recipe);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // try (BufferedReader reader = new BufferedReader(new FileReader("recipes.csv"))) {
+        //     String line;
+        //     while ((line = reader.readLine()) != null) {
+        //         String[] info = line.split("-");
+        //         Recipe recipe = new Recipe(this);
+        //         recipe.getName().setText(info[0]);
+        //         recipe.getIngredient().setText(info[1]);
+        //         recipe.getInstruction().setText(info[2]);
+        //         // recipeList.getChildren().add(recipe);
+        //     }
+        // } catch (IOException e) {
+        //     e.printStackTrace();
+        // }
 
         // Call Event Listeners for the Buttons
         addListeners();
