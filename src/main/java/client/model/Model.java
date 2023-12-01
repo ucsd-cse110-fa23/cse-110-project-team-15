@@ -15,14 +15,20 @@ package client.model;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.net.http.HttpRequest.BodyPublishers;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -144,7 +150,7 @@ public class Model {
         try {
             Path path = Path.of(filePath);
             byte[] fileContent = Files.readAllBytes(path);
-            String response = sendAudioFile(url, fileContent, path.getFileName().toString());
+            String response = sendAudio(url, filePath);
             System.out.println("Response: " + response);
             return response;
         } catch (Exception ex) {
@@ -153,24 +159,57 @@ public class Model {
         }
     }
 
-    private static String sendAudioFile(String url, byte[] fileContent, String fileName) throws IOException, InterruptedException {
-        String boundary = "----MyBoundary" + System.currentTimeMillis();
+    public static String sendAudio(String url, String filePath) throws IOException, InterruptedException {
+        File audioFile = new File(filePath);
         HttpClient client = HttpClient.newHttpClient();
-
-        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-        byteStream.write(("--" + boundary + "\r\n").getBytes());
-        byteStream.write(("Content-Disposition: form-data; name=\"file\"; filename=\"" + fileName + "\"\r\n").getBytes());
-        byteStream.write(("Content-Type: audio/wav\r\n\r\n").getBytes());
-        byteStream.write(fileContent);
-        byteStream.write(("\r\n--" + boundary + "--\r\n").getBytes());
-
         HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(url))
-            .header("Content-Type", "multipart/form-data; boundary=" + boundary)
-            .POST(HttpRequest.BodyPublishers.ofByteArray(byteStream.toByteArray()))
-            .build();
+                .uri(URI.create(url))
+                .header("Content-Type", "audio/wav")
+                .POST(BodyPublishers.ofFile(audioFile.toPath()))
+                .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        
+        // Parse the response as JSON and get the transcript field
         return response.body();
     }
+
+
+    // private static String sendAudio(String urlString, String filePath) throws IOException{
+    //     final String POST_URL = urlString;
+    //     final File uploadFile = new File(filePath);
+
+    //     String boundary = Long.toHexString(System.currentTimeMillis()); 
+    //     String CRLF = "\r\n";
+    //     String charset = "UTF-8";
+    //     URLConnection connection = new URL(POST_URL).openConnection();
+    //     connection.setDoOutput(true);
+    //     connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+        
+    //     try (
+    //         OutputStream output = connection.getOutputStream();
+    //         PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, charset), true);
+    //     ) {
+    //         writer.append("--" + boundary).append(CRLF);
+    //         writer.append("Content-Disposition: form-data; name=\"binaryFile\"; filename=\"" + uploadFile.getName() + "\"").append(CRLF);
+    //         writer.append("Content-Length: " + uploadFile.length()).append(CRLF);
+    //         writer.append("Content-Type: " + URLConnection.guessContentTypeFromName(uploadFile.getName())).append(CRLF);
+    //         writer.append("Content-Transfer-Encoding: binary").append(CRLF);
+    //         writer.append(CRLF).flush();
+    //         Files.copy(uploadFile.toPath(), output);
+    //         output.flush();
+
+    //         int responseCode = ((HttpURLConnection) connection).getResponseCode();
+    //         System.out.println("Response code: [" + responseCode + "]");
+    //     }
+
+    //     BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+    //     StringBuilder response = new StringBuilder();
+    //     String line;
+    //     while ((line = reader.readLine()) != null) {
+    //         response.append(line);
+    //     }
+    //     return response.toString();
+        
+    // }
 }

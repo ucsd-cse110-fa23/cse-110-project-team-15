@@ -30,7 +30,7 @@ public class Server {
     server.createContext("/", new RequestHandler(data));
     server.createContext("/transcribe", new Whisper());
     server.createContext("/instruction", new ChatGPT());
-    server.setExecutor(threadPoolExecutor);
+    server.setExecutor(threadPoolExecutor); 
     server.start();
 
     System.out.println("Server started on port " + SERVER_PORT);
