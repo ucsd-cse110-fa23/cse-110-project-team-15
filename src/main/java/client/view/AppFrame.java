@@ -18,7 +18,6 @@ import javax.swing.text.View;
 class Footer extends HBox {
 
     private Button createButton;
-    
 
     Footer() {
         this.setPrefSize(500, 60);
@@ -107,6 +106,8 @@ public class AppFrame extends BorderPane {
         createButton = footer.getCreateButton();
         createAccountButton = header.getCreateAccountButton();
 
+        recipeList.loadTasks();
+
         try (BufferedReader reader = new BufferedReader(new FileReader("recipes.csv"))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -115,7 +116,7 @@ public class AppFrame extends BorderPane {
                 recipe.getName().setText(info[0]);
                 recipe.getIngredient().setText(info[1]);
                 recipe.getInstruction().setText(info[2]);
-                recipeList.getChildren().add(recipe);
+                // recipeList.getChildren().add(recipe);
             }
         } catch (IOException e) {
             e.printStackTrace();
