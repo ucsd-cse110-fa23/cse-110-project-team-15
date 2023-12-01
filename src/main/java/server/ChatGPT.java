@@ -16,7 +16,7 @@ import org.json.JSONObject;
 
 public class ChatGPT implements HttpHandler {
     private static final String API_ENDPOINT = "https://api.openai.com/v1/completions";
-    private static final String API_KEY = "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";
+    private static final String API_KEY = "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";
     private static final String MODEL = "text-davinci-003";
 
     public ChatGPT() {}
