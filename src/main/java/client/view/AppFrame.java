@@ -151,6 +151,9 @@ public class AppFrame extends BorderPane {
         loginButton.setOnAction(e -> {
             loginPopup.display();
         });
+        logoutButton.setOnAction(e -> {
+            setLoggedOutUI();
+        });
     }
 
     public static void setLoggedInUI() {
@@ -160,6 +163,15 @@ public class AppFrame extends BorderPane {
         getRecipes().loadTasks();
 
     }
+
+    public static void setLoggedOutUI() {
+        header.getLogoutButton(false);
+        header.getLoginButton(true);
+        header.getCreateAccountButton(true);
+        recipeList = getRecipes();
+        recipeList.getChildren().clear();
+    }
+
 
     public static RecipeList getRecipes() {
         return recipeList;

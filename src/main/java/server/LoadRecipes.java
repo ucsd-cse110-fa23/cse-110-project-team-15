@@ -2,17 +2,11 @@ package server;
 
 import com.mongodb.client.*;
 
-import javafx.scene.control.TextField;
-
 import org.bson.Document;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
-
 import static com.mongodb.client.model.Filters.*;
-import static com.mongodb.client.model.Projections.*;
-import static com.mongodb.client.model.Sorts.descending;
 
 public class LoadRecipes {
     public static List<Document> loadRecipes(String userID) {
