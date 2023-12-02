@@ -36,9 +36,9 @@ import org.bson.types.ObjectId;
 import org.json.JSONObject;
 
 import client.view.Recipe;
+import server.Login;
 
 import java.net.URI;
-
 
 public class Model {
 
@@ -85,8 +85,8 @@ public class Model {
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
                     .build();
-            
-            System.out.println("username on server: "+ json.toString());
+
+            System.out.println("username on server: " + json.toString());
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             return response.body();
@@ -102,6 +102,7 @@ public class Model {
         try {
             HttpClient client = HttpClient.newHttpClient();
             JSONObject json = new JSONObject();
+            // json.put("id", getUserID());
             json.put("name", recipe.getName().getText());
             json.put("mealType", recipe.getMealType().getText());
             json.put("ingredients", recipe.getIngredient().getText());
@@ -124,18 +125,18 @@ public class Model {
     // Doenst work all the time because of byte fixed content-lenth
     public String requestInstruction(String prompt) {
         String url = "http://localhost:8100/instruction";
-        
+
         try {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("prompt", prompt);
-            
+
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .header("Content-Type", "application/json")
-                .method("PUT", HttpRequest.BodyPublishers.ofString(jsonObject.toString()))
-                .build();
-                
+                    .uri(URI.create(url))
+                    .header("Content-Type", "application/json")
+                    .method("PUT", HttpRequest.BodyPublishers.ofString(jsonObject.toString()))
+                    .build();
+
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             return response.body();
         } catch (Exception ex) {
@@ -169,47 +170,52 @@ public class Model {
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        
+
         // Parse the response as JSON and get the transcript field
         return response.body();
     }
 
+    // private static String sendAudio(String urlString, String filePath) throws
+    // IOException{
+    // final String POST_URL = urlString;
+    // final File uploadFile = new File(filePath);
 
-    // private static String sendAudio(String urlString, String filePath) throws IOException{
-    //     final String POST_URL = urlString;
-    //     final File uploadFile = new File(filePath);
+    // String boundary = Long.toHexString(System.currentTimeMillis());
+    // String CRLF = "\r\n";
+    // String charset = "UTF-8";
+    // URLConnection connection = new URL(POST_URL).openConnection();
+    // connection.setDoOutput(true);
+    // connection.setRequestProperty("Content-Type", "multipart/form-data;
+    // boundary=" + boundary);
 
-    //     String boundary = Long.toHexString(System.currentTimeMillis()); 
-    //     String CRLF = "\r\n";
-    //     String charset = "UTF-8";
-    //     URLConnection connection = new URL(POST_URL).openConnection();
-    //     connection.setDoOutput(true);
-    //     connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
-        
-    //     try (
-    //         OutputStream output = connection.getOutputStream();
-    //         PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, charset), true);
-    //     ) {
-    //         writer.append("--" + boundary).append(CRLF);
-    //         writer.append("Content-Disposition: form-data; name=\"binaryFile\"; filename=\"" + uploadFile.getName() + "\"").append(CRLF);
-    //         writer.append("Content-Length: " + uploadFile.length()).append(CRLF);
-    //         writer.append("Content-Type: " + URLConnection.guessContentTypeFromName(uploadFile.getName())).append(CRLF);
-    //         writer.append("Content-Transfer-Encoding: binary").append(CRLF);
-    //         writer.append(CRLF).flush();
-    //         Files.copy(uploadFile.toPath(), output);
-    //         output.flush();
+    // try (
+    // OutputStream output = connection.getOutputStream();
+    // PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, charset),
+    // true);
+    // ) {
+    // writer.append("--" + boundary).append(CRLF);
+    // writer.append("Content-Disposition: form-data; name=\"binaryFile\";
+    // filename=\"" + uploadFile.getName() + "\"").append(CRLF);
+    // writer.append("Content-Length: " + uploadFile.length()).append(CRLF);
+    // writer.append("Content-Type: " +
+    // URLConnection.guessContentTypeFromName(uploadFile.getName())).append(CRLF);
+    // writer.append("Content-Transfer-Encoding: binary").append(CRLF);
+    // writer.append(CRLF).flush();
+    // Files.copy(uploadFile.toPath(), output);
+    // output.flush();
 
-    //         int responseCode = ((HttpURLConnection) connection).getResponseCode();
-    //         System.out.println("Response code: [" + responseCode + "]");
-    //     }
+    // int responseCode = ((HttpURLConnection) connection).getResponseCode();
+    // System.out.println("Response code: [" + responseCode + "]");
+    // }
 
-    //     BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-    //     StringBuilder response = new StringBuilder();
-    //     String line;
-    //     while ((line = reader.readLine()) != null) {
-    //         response.append(line);
-    //     }
-    //     return response.toString();
-        
+    // BufferedReader reader = new BufferedReader(new
+    // InputStreamReader(connection.getInputStream()));
+    // StringBuilder response = new StringBuilder();
+    // String line;
+    // while ((line = reader.readLine()) != null) {
+    // response.append(line);
+    // }
+    // return response.toString();
+
     // }
 }

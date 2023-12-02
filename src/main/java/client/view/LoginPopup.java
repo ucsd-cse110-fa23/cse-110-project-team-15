@@ -73,7 +73,7 @@ public class LoginPopup extends Stage {
         if (loggedIn) {
             // If logged in successfully, close the login popup
             this.close();
-            AppFrame.setLogoutButtonVisible();
+            AppFrame.setLoggedInUI();
         }
         sendDataToServerAndMongoDB(username, password);
     }

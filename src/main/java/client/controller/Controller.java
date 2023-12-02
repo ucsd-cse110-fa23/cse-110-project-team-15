@@ -73,11 +73,16 @@ public class Controller {
                 recipePopup.getRecipe().getInstruction().setText(instructions[2]);
                 recipePopup.mealTypeSet = false;
 
+                if (recipePopup.getRecipe().isComplete()) {
+                    recipePopup.getRecipe().saveRecipetoDB();
+                } else {
+                    System.out.println("Incomplete recipe. Please fill all fields.");
+                }
             } catch (IOException | InterruptedException | URISyntaxException e1) {
                 e1.printStackTrace();
             }
             recipePopup.close();
-            recipePopup.getRecipe().saveRecipe();
+            // recipePopup.getRecipe().saveRecipe();
         } else {
             audioToMealType();
         }

@@ -68,8 +68,10 @@ class Header extends HBox {
         this.setAlignment(Pos.CENTER); // Align the text to the Center
     }
 
-    public Button getCreateAccountButton() {
+    public Button getCreateAccountButton(boolean visible) {
+        createAccountButton.setVisible(visible);
         return createAccountButton;
+
     }
 
     public Button getLoginButton() {
@@ -91,7 +93,7 @@ public class AppFrame extends BorderPane {
 
     public static Header header;
     private Footer footer;
-    private RecipeList recipeList;
+    private static RecipeList recipeList;
     private RecipePopup recipePopup;
     private DetailsPopup detailsPopup;
     private AccountPopup accountPopup;
@@ -128,24 +130,9 @@ public class AppFrame extends BorderPane {
         this.setBottom(footer);
 
         createButton = footer.getCreateButton();
-        createAccountButton = header.getCreateAccountButton();
+        createAccountButton = header.getCreateAccountButton(true);
         loginButton = header.getLoginButton();
         logoutButton = header.getLogoutButton(false);
-
-        try (BufferedReader reader = new BufferedReader(new FileReader("recipes.csv"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] info = line.split("-");
-                Recipe recipe = new Recipe(this);
-                recipe.getName().setText(info[0]);
-                recipe.getIngredient().setText(info[1]);
-                recipe.getInstruction().setText(info[2]);
-                recipe.getMealType().setText(info[3]);
-                recipeList.getChildren().add(recipe);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         // Call Event Listeners for the Buttons
         addListeners();
@@ -166,12 +153,15 @@ public class AppFrame extends BorderPane {
         });
     }
 
-    public static void setLogoutButtonVisible() {
+    public static void setLoggedInUI() {
         header.getLogoutButton(true);
         header.getLoginButton(false);
+        header.getCreateAccountButton(false);
+        getRecipes().loadTasks();
+
     }
 
-    public RecipeList getRecipes() {
+    public static RecipeList getRecipes() {
         return recipeList;
     }
 
