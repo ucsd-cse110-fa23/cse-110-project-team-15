@@ -39,6 +39,7 @@ public class Controller {
         this.recipePopup.setStartRecordingButtonAction(this::handleStartRecordingButton);
         this.recipePopup.setStopRecordingButtonAction(this::handleStopRecordingButton);
         this.detailsPopup.setRefreshButtonAction(this::handleRefreshButton);
+        this.detailsPopup.setSaveButtonAction(this::handleSaveButton);
         this.accountPopup.setCreateAccountButtonAction(this::handleCreateAccountButton);
         this.loginPopup.setLoginAccountButtonAction(this::handleLoginAccountButton);
     }
@@ -156,6 +157,10 @@ public class Controller {
         System.out.println("Instructions: " + instructions[2]);
 
         return instructions;
+    }
+
+    public void handleSaveButton(ActionEvent event) {
+        
     }
 
 }

@@ -33,24 +33,14 @@ public class Recipe extends HBox {
         this.detailsPopup = appframe.getDetailsPopup();
 
         this.setPrefSize(500, 50); // sets size of task
-        this.setStyle(
-                "-fx-background-color: #659966; -fx-border-width: 0; -fx-font-weight: bold; -fx-font-size: 11; -fx-font-family: 'Times New Roman';"); // sets
-                                                                                                                                                      // background
-                                                                                                                                                      // color
-                                                                                                                                                      // of
-                                                                                                                                                      // task
+        this.setStyle( "-fx-background-color: #659966; -fx-border-width: 0; -fx-font-weight: bold; -fx-font-size: 11; -fx-font-family: 'Times New Roman';"); 
 
         recipeInfo = new VBox();
         // nameLabel = new Label("Recipe Name:");
 
         this.name = new TextField(); // create task name text field
         this.name.setPrefSize(200, 10); // set size of text field
-        this.name.setStyle(
-                "-fx-background-color: #659966; -fx-border-width: 0; -fx-font-size: 17; -fx-font-family: 'Times New Roman';"); // set
-                                                                                                                               // background
-                                                                                                                               // color
-                                                                                                                               // of
-                                                                                                                               // texfield
+        this.name.setStyle( "-fx-background-color: #659966; -fx-border-width: 0; -fx-font-size: 17; -fx-font-family: 'Times New Roman';"); 
         this.name.setPadding(new Insets(10, 0, 10, 0)); // adds some padding to the text field
         this.name.setAlignment(Pos.CENTER_LEFT);
         this.name.setEditable(false);
