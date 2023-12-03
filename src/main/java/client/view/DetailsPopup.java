@@ -4,10 +4,26 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Path;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import java.util.*;
+import java.nio.file.Files;
+import java.nio.file.*;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.nio.file.Paths;
+import java.net.URISyntaxException;
+import java.net.URL;
+
+//import com.google.common.io.Files;
+import client.model.Model;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
@@ -19,11 +35,14 @@ public class DetailsPopup extends Stage {
     private TextField ingredients;
     private TextArea instruction;
 
+    private ImageView recipeImage;
+
     private Button editButton;
     private Button deleteButton;
     private Button saveButton;
     private Button backButton;
     private Button refreshButton;
+
 
     public DetailsPopup() {
         // setTitle(name.getText());
@@ -63,11 +82,16 @@ public class DetailsPopup extends Stage {
         refreshButton = new Button("Refresh");
         refreshButton.setStyle(defaultButtonStyle);
 
+        Image defaultImage = new Image(getClass().getResource("/image/default.jpg").toExternalForm());
+        recipeImage = new ImageView(defaultImage);
+        recipeImage.setFitWidth(200);
+        recipeImage.setFitHeight(200);
+
         // Create a layout for the controls
         VBox layout = new VBox(10); // 10 pixels spacing
         layout.setAlignment(Pos.CENTER);
         layout.setStyle("-fx-background-color: #93c994;");
-        layout.getChildren().addAll(name, ingredients, instruction, backButton, editButton, deleteButton, saveButton,
+        layout.getChildren().addAll(recipeImage, name, ingredients, instruction, backButton, editButton, deleteButton, saveButton,
                 refreshButton);
 
         // Add an action for the "Add" button
@@ -104,11 +128,25 @@ public class DetailsPopup extends Stage {
         return this.recipe;
     }
 
-    public void setRecipe(Recipe recipe) {
+    public void setRecipe(Recipe recipe) throws IOException, InterruptedException, URISyntaxException{
         this.recipe = recipe;
         name.setText(recipe.getName().getText());
         ingredients.setText(recipe.getIngredient().getText());
         instruction.setText(recipe.getInstruction().getText());
+        String[] nameArr = name.getText().split(" ");
+        String sb = "";
+        for(String name: nameArr) {
+            sb = sb + name;
+        }
+        String imagePath = "/image/" + sb + ".jpg";
+        URL imageURL = getClass().getResource(imagePath);
+        if (imageURL != null) {
+            Image image = new Image(imageURL.toExternalForm());
+            this.recipeImage.setImage(image);
+        } else {
+            // Handle the case where the image resource is not found
+            System.err.println("Image resource not found: " + imagePath);
+        }
     }
 
     public Button getEditButton() {
