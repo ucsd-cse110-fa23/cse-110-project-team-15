@@ -1,4 +1,5 @@
 package client.controller;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -20,7 +21,8 @@ public class AudioRecorder {
     }
 
     public void startRecording() {
-        if (isRecording) return;
+        if (isRecording)
+            return;
         isRecording = true;
         AudioFormat audioFormat = new AudioFormat(16000, 16, 1, true, false);
         int bufferSize = 4096;
@@ -71,6 +73,6 @@ public class AudioRecorder {
     }
 
     // public void setIsRecording(TargetDataLine recording) {
-    //     isRecording = recording;
+    // isRecording = recording;
     // }
 }

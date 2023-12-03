@@ -31,6 +31,9 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import org.bson.types.ObjectId;
+
+import client.view.Recipe;
 
 import org.bson.types.ObjectId;
 import org.json.JSONObject;
@@ -41,7 +44,7 @@ import server.Login;
 import java.net.URI;
 
 public class Model {
-
+    // Doesnt work
     public String recipeRequest(String method, String language, String year, String query) {
         try {
             String urlString = "http://localhost:8100/";
@@ -218,4 +221,5 @@ public class Model {
     // return response.toString();
 
     // }
+
 }

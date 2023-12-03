@@ -14,8 +14,10 @@ public class LoadRecipes {
         MongoClient mongoClient = MongoClients.create(uri);
         MongoDatabase PantryPalDB = mongoClient.getDatabase("recipe_db");
         MongoCollection<Document> recipesCollection = PantryPalDB.getCollection("recipes");
-        System.out.println(userID);
-        List<Document> recipes = recipesCollection.find(gte("userID", userID)).into(new ArrayList<>());
+        List<Document> recipes = new ArrayList<>();
+        if (userID != null) {
+            recipes = recipesCollection.find(eq("userID", userID)).into(new ArrayList<>());
+        }
         return recipes;
     }
 }

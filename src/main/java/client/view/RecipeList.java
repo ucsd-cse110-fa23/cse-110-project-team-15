@@ -5,16 +5,11 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListCell;
 import org.controlsfx.control.CheckComboBox;
 
 import java.util.List;
 
 import javafx.scene.layout.*;
-import javafx.util.Callback;
 
 import java.io.*;
 import java.net.URI;
@@ -30,8 +25,9 @@ public class RecipeList extends VBox {
     Recipe[] list;
     AppFrame appFrame;
     private VBox filterDropdown;
-    CheckComboBox<String> mealOptions;
+    public CheckComboBox<String> mealOptions;
     ObservableList<String> mealtypes;
+    private ArrayList<Recipe> recipeContainer;
 
     public RecipeList(AppFrame appFrame) {
         this.appFrame = appFrame;
@@ -40,6 +36,8 @@ public class RecipeList extends VBox {
         this.setStyle("-fx-background-color: #93c994;");
         mealtypes = FXCollections.observableArrayList();
         mealtypes.addAll(new String[] { "Breakfast", "Lunch", "Dinner" });
+
+        recipeContainer = new ArrayList<Recipe>();
 
         mealOptions = new CheckComboBox<String>(mealtypes);
 
@@ -54,26 +52,37 @@ public class RecipeList extends VBox {
 
     public void removeRecipe(Recipe Recipe) {
         this.getChildren().remove(Recipe);
+        recipeContainer.remove(Recipe);
+        filterRecipes();
+    }
+
+    public void clearRecipes() {
+        ArrayList<Node> filterAndOtherNodes = new ArrayList<>();
+        for (Node node : getChildren()) {
+            if (node == filterDropdown) {
+                filterAndOtherNodes.add(node);
+            }
+        }
+        getChildren().clear();
+        getChildren().addAll(filterAndOtherNodes);
+        recipeContainer.clear();
     }
 
     /*
-     * Save tasks to a file called "Recipes.csv"
+     * Save tasks to a file called "Recipes.csv". DO NOT DO THIS ON UI
      */
     // TODO: Change it to update the recipe in mongo instead of csv
     public void saveRecipes() {
         try {
             File csvfile = new File("recipes.csv");
             FileWriter fw = new FileWriter(csvfile);
-            for (int i = 0; i < this.getChildren().size(); i++) {
-                if (this.getChildren().get(i) instanceof Recipe) {
-                    Recipe Recipe = (Recipe) this.getChildren().get(i);
-                    String name = Recipe.getName().getText();
-                    String ingredients = Recipe.getIngredient().getText();
-                    String instruction = Recipe.getInstruction().getText();
-                    String mealType = Recipe.getMealType().getText();
-                    fw.write(name + "-" + ingredients + "-" + instruction + "-" + mealType +
-                            "\n");
-                }
+            for (int i = 0; i < recipeContainer.size(); i++) {
+                Recipe Recipe = recipeContainer.get(i);
+                String name = Recipe.getName().getText();
+                String ingredients = Recipe.getIngredient().getText();
+                String instruction = Recipe.getInstruction().getText();
+                String mealType = Recipe.getMealType().getText();
+                fw.write(name + "-" + ingredients + "-" + instruction + "-" + mealType + "\n");
             }
             fw.close();
         } catch (Exception e) {
@@ -116,7 +125,6 @@ public class RecipeList extends VBox {
     // loadTasks from Mongo
     public void loadTasks() {
         List<Document> recipeList = server.LoadRecipes.loadRecipes(server.Login.getID());
-        // System.out.println(recipeList);
         for (Document recipeDoc : recipeList) {
             Recipe recipe = new Recipe(appFrame);
 
@@ -129,21 +137,30 @@ public class RecipeList extends VBox {
             recipe.getIngredient().setText(recipeIngredients);
             recipe.getInstruction().setText(recipeInstructions);
             recipe.getMealType().setText(mealType);
-
+            recipeContainer.add(recipe);
             this.getChildren().add(recipe);
         }
     }
 
     public void filterRecipes() {
         String[] selectedMealTypes = mealOptions.getCheckModel().getCheckedItems().toArray(new String[0]);
+
+        ArrayList<Node> list = new ArrayList<Node>();
         for (Node node : this.getChildren()) {
-            if (node instanceof Recipe) {
-                Recipe recipe = (Recipe) node;
-                String mealType = recipe.getMealType().getText().toLowerCase();
-                boolean shouldShow = selectedMealTypes.length == 0 || ifContains(selectedMealTypes, mealType);
-                node.setVisible(shouldShow);
+            if (node instanceof Recipe)
+                continue;
+            list.add(node);
+        }
+
+        for (Recipe recipe : recipeContainer) {
+            String mealType = recipe.getMealType().getText().toLowerCase();
+            System.out.println(mealType);
+            if (selectedMealTypes.length == 0 || ifContains(selectedMealTypes, mealType)) {
+                list.add(recipe);
             }
         }
+        this.getChildren().clear();
+        this.getChildren().addAll(list);
     }
 
     private boolean ifContains(String[] array, String value) {
@@ -153,5 +170,14 @@ public class RecipeList extends VBox {
             }
         }
         return false;
+    }
+
+    public ArrayList<Recipe> getRecipes() {
+        return recipeContainer;
+    }
+
+    public void addRecipe(Recipe recipe) {
+        recipeContainer.add(recipe);
+        filterRecipes();
     }
 }

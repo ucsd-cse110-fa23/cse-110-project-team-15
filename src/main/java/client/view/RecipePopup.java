@@ -74,7 +74,7 @@ public class RecipePopup extends Stage {
             Scene scene = new Scene(layout, 400, 500);
             setScene(scene);
         } else {
-            recordingStatusLabel.setVisible(false);
+            
         }
         this.show();
     }

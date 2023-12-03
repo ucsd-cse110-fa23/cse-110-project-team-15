@@ -1,6 +1,10 @@
 package client.view;
 
-import javafx.application.Platform;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import server.ChatGPT;
+import server.Whisper;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -9,6 +13,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.text.*;
 
 import java.io.*;
+
+import javax.swing.text.View;
 
 class Footer extends HBox {
 
@@ -26,7 +32,6 @@ class Footer extends HBox {
         createButton.setStyle(defaultButtonStyle); // styling the button
 
         this.getChildren().addAll(createButton);
-
         this.setAlignment(Pos.CENTER); // aligning the buttons to center
     }
 
@@ -95,8 +100,8 @@ public class AppFrame extends BorderPane {
     private Footer footer;
     private static RecipeList recipeList;
     private RecipePopup recipePopup;
-    private DetailsPopup detailsPopup;
     private AccountPopup accountPopup;
+    private DetailsPopup detailsPopup;
     private LoginPopup loginPopup;
 
     private Button createButton;
@@ -108,12 +113,15 @@ public class AppFrame extends BorderPane {
         // Initialise the header Object
         header = new Header();
 
+        // Create a RecipeList Object to hold the tasks
         recipeList = new RecipeList(this);
 
         // Initialise the Footer Object
         footer = new Footer();
 
         recipePopup = new RecipePopup();
+
+        accountPopup = new AccountPopup();
         detailsPopup = new DetailsPopup();
         accountPopup = new AccountPopup();
         loginPopup = new LoginPopup();
@@ -134,6 +142,8 @@ public class AppFrame extends BorderPane {
         loginButton = header.getLoginButton();
         logoutButton = header.getLogoutButton(false);
 
+        // recipeList.loadTasks();
+
         // Call Event Listeners for the Buttons
         addListeners();
     }
@@ -141,7 +151,7 @@ public class AppFrame extends BorderPane {
     public void addListeners() {
         createButton.setOnAction(e -> {
             Recipe recipe = new Recipe(this);
-            recipeList.getChildren().add(recipe);
+            // recipeList.getChildren().add(recipe);
             recipePopup.setRecipe(recipe);
             recipePopup.display();
         });
@@ -168,10 +178,8 @@ public class AppFrame extends BorderPane {
         header.getLogoutButton(false);
         header.getLoginButton(true);
         header.getCreateAccountButton(true);
-        recipeList = getRecipes();
-        recipeList.getChildren().clear();
+        recipeList.clearRecipes();
     }
-
 
     public static RecipeList getRecipes() {
         return recipeList;

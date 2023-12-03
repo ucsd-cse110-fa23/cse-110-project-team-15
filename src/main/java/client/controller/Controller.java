@@ -12,6 +12,7 @@ import client.view.AppFrame;
 import client.view.DetailsPopup;
 import client.view.LoginPopup;
 import client.view.RecipePopup;
+import client.view.AccountPopup;
 
 public class Controller {
     private AppFrame appFrame;
@@ -32,6 +33,7 @@ public class Controller {
         this.detailsPopup = appFrame.getDetailsPopup();
         this.recipePopup = appFrame.getRecipePopup();
         this.accountPopup = appFrame.getAccountPopup();
+        this.accountPopup = appFrame.getAccountPopup();
         this.loginPopup = appFrame.getLoginPopup();
 
         this.recipePopup.setStartRecordingButtonAction(this::handleStartRecordingButton);
@@ -41,12 +43,14 @@ public class Controller {
         this.loginPopup.setLoginAccountButtonAction(this::handleLoginAccountButton);
     }
 
-    private void handleLoginAccountButton(ActionEvent event) {
-        model.sendAccount(loginPopup.getUsername().getText(), loginPopup.getPassword().getText());
-    }
-
     private void handleCreateAccountButton(ActionEvent event) {
         model.sendAccount(accountPopup.getUsername().getText(), accountPopup.getPassword().getText());
+        this.accountPopup.setCreateAccountButtonAction(this::handleCreateAccountButton);
+        this.loginPopup.setLoginAccountButtonAction(this::handleLoginAccountButton);
+    }
+
+    private void handleLoginAccountButton(ActionEvent event) {
+        model.sendAccount(loginPopup.getUsername().getText(), loginPopup.getPassword().getText());
     }
 
     private void handleStartRecordingButton(ActionEvent event) {
@@ -83,6 +87,8 @@ public class Controller {
             }
             recipePopup.close();
             // recipePopup.getRecipe().saveRecipe();
+            recipePopup.getRecipe().addRecipe();
+            recipePopup.getRecipe().saveRecipe();
         } else {
             audioToMealType();
         }
@@ -151,4 +157,5 @@ public class Controller {
 
         return instructions;
     }
+
 }
