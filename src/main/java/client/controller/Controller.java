@@ -118,6 +118,14 @@ public class Controller {
     public void audioToMealType() {
         String generatedText = model.requestTranscript();
         System.out.println(generatedText);
+        generatedText = generatedText.strip();
+        String[] mealOptions = {"breakfast", "lunch", "dinner"};
+        for (String option : mealOptions) {
+            if (generatedText.toLowerCase().contains(option)) {
+                generatedText = option;
+                break;
+            }
+        }
         if (generatedText.toLowerCase().contains("breakfast")
                 || generatedText.toLowerCase().contains("lunch")
                 || generatedText.toLowerCase().contains("dinner")) {
