@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import server.ChatGPT;
 import server.Whisper;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
@@ -31,7 +32,6 @@ class Footer extends HBox {
         createButton.setStyle(defaultButtonStyle); // styling the button
 
         this.getChildren().addAll(createButton);
-
         this.setAlignment(Pos.CENTER); // aligning the buttons to center
     }
 
@@ -42,40 +42,72 @@ class Footer extends HBox {
 
 class Header extends HBox {
     private Button createAccountButton;
+    private Button loginButton;
+    private Button logoutButton;
+    boolean loggedIn = false;
 
     Header() {
-        this.setPrefSize(500, 60); // Size of the header
+        this.setPrefSize(500, 100); // Size of the header
         this.setStyle("-fx-background-color: #93c994;");
+        this.setSpacing(10);
+        this.setPadding(new Insets(10));
 
         // set a default style for buttons - background color, font size, italics
         String defaultButtonStyle = ("-fx-background-color: #bdd9bd;  -fx-font-weight: bold; -fx-font-size: 13; -fx-font-family: 'Lucida Bright';");
-
-        Text titleText = new Text("Recipe Creation App"); // Text of the Header
-        titleText.setStyle("-fx-font-weight: bold;  -fx-font-size: 25; -fx-font-family: 'Lucida Bright';");
-
         createAccountButton = new Button("Create Account"); // text displayed on account button
         createAccountButton.setStyle(defaultButtonStyle);
+        // createAccountButton.setAlignment(Pos.CENTER_RIGHT);
 
-        this.getChildren().addAll(titleText, createAccountButton);
+        loginButton = new Button("Login");
+        loginButton.setStyle(defaultButtonStyle);
+        // loginButton.setAlignment(Pos.CENTER_RIGHT);
+
+        logoutButton = new Button("Logout");
+        logoutButton.setStyle(defaultButtonStyle);
+        logoutButton.setVisible(false);
+
+        Text titleText = new Text("PantryPal"); // Text of the Header
+        titleText.setStyle("-fx-font-weight: bold;  -fx-font-size: 25; -fx-font-family: 'Lucida Bright';");
+
+        this.getChildren().addAll(titleText, createAccountButton, loginButton, logoutButton);
         this.setAlignment(Pos.CENTER); // Align the text to the Center
     }
 
-    public Button getCreateAccountButton() {
+    public Button getCreateAccountButton(boolean visible) {
+        createAccountButton.setVisible(visible);
         return createAccountButton;
+
+    }
+
+    public Button getLoginButton() {
+        return loginButton;
+    }
+
+    public Button getLogoutButton(boolean visible) {
+        logoutButton.setVisible(visible);
+        return logoutButton;
+    }
+
+    public Button getLoginButton(boolean visible) {
+        loginButton.setVisible(visible);
+        return loginButton;
     }
 }
 
 public class AppFrame extends BorderPane {
 
-    private Header header;
+    public static Header header;
     private Footer footer;
-    private RecipeList recipeList;
+    private static RecipeList recipeList;
     private RecipePopup recipePopup;
     private AccountPopup accountPopup;
     private DetailsPopup detailsPopup;
+    private LoginPopup loginPopup;
 
     private Button createButton;
     private Button createAccountButton;
+    private Button loginButton;
+    private Button logoutButton;
 
     public AppFrame() {
         // Initialise the header Object
@@ -91,6 +123,8 @@ public class AppFrame extends BorderPane {
 
         accountPopup = new AccountPopup();
         detailsPopup = new DetailsPopup();
+        accountPopup = new AccountPopup();
+        loginPopup = new LoginPopup();
 
         ScrollPane scroll = new ScrollPane(recipeList);
         scroll.setFitToWidth(true);
@@ -104,23 +138,11 @@ public class AppFrame extends BorderPane {
         this.setBottom(footer);
 
         createButton = footer.getCreateButton();
-        createAccountButton = header.getCreateAccountButton();
+        createAccountButton = header.getCreateAccountButton(true);
+        loginButton = header.getLoginButton();
+        logoutButton = header.getLogoutButton(false);
 
-        recipeList.loadTasks();
-
-        // try (BufferedReader reader = new BufferedReader(new FileReader("recipes.csv"))) {
-        //     String line;
-        //     while ((line = reader.readLine()) != null) {
-        //         String[] info = line.split("-");
-        //         Recipe recipe = new Recipe(this);
-        //         recipe.getName().setText(info[0]);
-        //         recipe.getIngredient().setText(info[1]);
-        //         recipe.getInstruction().setText(info[2]);
-        //         // recipeList.getChildren().add(recipe);
-        //     }
-        // } catch (IOException e) {
-        //     e.printStackTrace();
-        // }
+        // recipeList.loadTasks();
 
         // Call Event Listeners for the Buttons
         addListeners();
@@ -133,14 +155,33 @@ public class AppFrame extends BorderPane {
             recipePopup.setRecipe(recipe);
             recipePopup.display();
         });
-
         createAccountButton.setOnAction(e -> {
-            /* TO DO */
             accountPopup.display();
+        });
+        loginButton.setOnAction(e -> {
+            loginPopup.display();
+        });
+        logoutButton.setOnAction(e -> {
+            setLoggedOutUI();
         });
     }
 
-    public RecipeList getRecipes() {
+    public static void setLoggedInUI() {
+        header.getLogoutButton(true);
+        header.getLoginButton(false);
+        header.getCreateAccountButton(false);
+        getRecipes().loadTasks();
+
+    }
+
+    public static void setLoggedOutUI() {
+        header.getLogoutButton(false);
+        header.getLoginButton(true);
+        header.getCreateAccountButton(true);
+        recipeList.clearRecipes();
+    }
+
+    public static RecipeList getRecipes() {
         return recipeList;
     }
 
@@ -148,15 +189,20 @@ public class AppFrame extends BorderPane {
         return recipePopup;
     }
 
+    public DetailsPopup getDetailsPopup() {
+        return detailsPopup;
+    }
+
     public AccountPopup getAccountPopup() {
         return accountPopup;
     }
 
-    public DetailsPopup getDetailsPopup() {
-        return detailsPopup;
+    public LoginPopup getLoginPopup() {
+        return loginPopup;
     }
 
     public RecipeList getRecipeList() {
         return recipeList;
     }
+
 }

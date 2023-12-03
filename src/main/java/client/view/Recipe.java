@@ -1,4 +1,5 @@
 package client.view;
+
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -30,16 +31,26 @@ public class Recipe extends HBox {
 
         this.recipeList = appframe.getRecipeList();
         this.detailsPopup = appframe.getDetailsPopup();
-        
+
         this.setPrefSize(500, 50); // sets size of task
-        this.setStyle("-fx-background-color: #659966; -fx-border-width: 0; -fx-font-weight: bold; -fx-font-size: 11; -fx-font-family: 'Times New Roman';"); // sets background color of task
+        this.setStyle(
+                "-fx-background-color: #659966; -fx-border-width: 0; -fx-font-weight: bold; -fx-font-size: 11; -fx-font-family: 'Times New Roman';"); // sets
+                                                                                                                                                      // background
+                                                                                                                                                      // color
+                                                                                                                                                      // of
+                                                                                                                                                      // task
 
         recipeInfo = new VBox();
         // nameLabel = new Label("Recipe Name:");
 
         this.name = new TextField(); // create task name text field
         this.name.setPrefSize(200, 10); // set size of text field
-        this.name.setStyle("-fx-background-color: #659966; -fx-border-width: 0; -fx-font-size: 17; -fx-font-family: 'Times New Roman';"); // set background color of texfield
+        this.name.setStyle(
+                "-fx-background-color: #659966; -fx-border-width: 0; -fx-font-size: 17; -fx-font-family: 'Times New Roman';"); // set
+                                                                                                                               // background
+                                                                                                                               // color
+                                                                                                                               // of
+                                                                                                                               // texfield
         this.name.setPadding(new Insets(10, 0, 10, 0)); // adds some padding to the text field
         this.name.setAlignment(Pos.CENTER_LEFT);
         this.name.setEditable(false);
@@ -47,8 +58,9 @@ public class Recipe extends HBox {
         detailButton = new Button("View");
         detailButton.setPrefSize(50, 10);
         detailButton.setPrefHeight(Double.MAX_VALUE);
-        detailButton.setStyle(" -fx-background-color: #bdd9bd;  -fx-font-weight: bold; -fx-font-size: 13; -fx-font-family: 'Times New Roman';");
-        this.setPadding(new Insets(0, 0, 0, 100)); 
+        detailButton.setStyle(
+                " -fx-background-color: #bdd9bd;  -fx-font-weight: bold; -fx-font-size: 13; -fx-font-family: 'Times New Roman';");
+        this.setPadding(new Insets(0, 0, 0, 100));
 
         HBox recipecontainer = new HBox();
         recipecontainer.setAlignment(Pos.CENTER);
@@ -67,6 +79,13 @@ public class Recipe extends HBox {
 
         this.getChildren().addAll(recipeInfo);
         addListeners();
+
+    }
+
+    public void saveRecipetoDB() {
+        server.SendRecipeDB.sendRecipeDB(server.Login.getID(), this.name.getText(),
+                this.ingredient.getText(),
+                this.instruction.getText(), this.mealType.getText());
     }
 
     public TextField getName() {
@@ -96,9 +115,11 @@ public class Recipe extends HBox {
         });
     }
 
-    // Checks if it is a completed recipe (if createRecipe -> RecipePopup -> mealtype -> ingredients -> name -> instructions)
+    // Checks if it is a completed recipe (if createRecipe -> RecipePopup ->
+    // mealtype -> ingredients -> name -> instructions)
     public Boolean isComplete() {
-        return !this.name.getText().isEmpty() && !this.mealType.getText().isEmpty() && !this.ingredient.getText().isEmpty() && !this.instruction.getText().isEmpty();
+        return !this.name.getText().isEmpty() && !this.mealType.getText().isEmpty()
+                && !this.ingredient.getText().isEmpty() && !this.instruction.getText().isEmpty();
     }
 
     public void deleteRecipe() {

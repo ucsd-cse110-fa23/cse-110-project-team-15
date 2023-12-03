@@ -8,7 +8,7 @@ import org.json.*;
 
 public class Whisper implements HttpHandler {
     private static final String API_ENDPOINT = "https://api.openai.com/v1/audio/transcriptions";
-    private static final String TOKEN = "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";
+    private static final String TOKEN = "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";
     private static final String MODEL = "whisper-1";
 
     public Whisper() {}
@@ -24,6 +24,8 @@ public class Whisper implements HttpHandler {
         // Process the incoming request and extract the audio file
         InputStream requestBody = exchange.getRequestBody();
         File audioFile = createFileFromInputStream(requestBody);
+
+        System.out.println(" BOGOS BINTED  "+audioFile);
 
         // Transcribe the audio file
         String transcription = transcribeAudio(audioFile);
@@ -100,8 +102,7 @@ public class Whisper implements HttpHandler {
         return generatedText;
     }
 
-    private void handleErrorResponse(HttpURLConnection connection)
-            throws IOException, JSONException {
+    private void handleErrorResponse(HttpURLConnection connection) throws IOException, JSONException {
         BufferedReader errorReader = new BufferedReader(
                 new InputStreamReader(connection.getErrorStream()));
         String errorLine;
@@ -114,8 +115,8 @@ public class Whisper implements HttpHandler {
         System.out.println("Error Result: " + errorResult);
     }
 
-    public String transcribeAudio(File audioFile) {
-        File file = new File("../../../bin/audio/recording.wav");
+    public String transcribeAudio(File file) {
+
         String transcription = null;
         try {
             URL url = new URI(API_ENDPOINT).toURL();
@@ -147,7 +148,9 @@ public class Whisper implements HttpHandler {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        System.out.println("Transcription: " + transcription);
+
         return transcription;
     }
-
 }

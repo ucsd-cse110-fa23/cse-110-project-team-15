@@ -1,7 +1,6 @@
 package client.view;
 
 import javafx.stage.Stage;
-import server.Create;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -18,18 +17,19 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import com.sun.net.httpserver.HttpExchange;
 
-public class AccountPopup extends Stage {
-    private Button createAccountButton;
+public class LoginPopup extends Stage {
+    private Button loginAccountButton;
     private TextField username;
     private TextField password;
     private HBox buttonBox;
     private VBox layout;
     private Label usernameLabel;
     private Label passwordLabel;
+    private boolean loggedIn = false;
 
-    public AccountPopup() {
+    public LoginPopup() {
 
-        setTitle("Create Account");
+        setTitle("Login");
         setWidth(300);
         setHeight(200);
 
@@ -47,35 +47,41 @@ public class AccountPopup extends Stage {
         username.setStyle("-fx-alignment: center; -fx-font-weight: bold;");
         password.setStyle("-fx-alignment: center; -fx-font-weight: bold;");
 
-        createAccountButton = new Button("Create Account");
-        createAccountButton.setStyle(
+        loginAccountButton = new Button("Login");
+        loginAccountButton.setStyle(
                 "-fx-background-color: #bdd9bd;  -fx-font-weight: bold; -fx-font-size: 13; -fx-font-family: 'Lucida Bright';");
 
         buttonBox = new HBox(10);
         buttonBox.setAlignment(Pos.CENTER);
-        buttonBox.getChildren().addAll(createAccountButton);
-
+        buttonBox.getChildren().addAll(loginAccountButton);
     }
 
-    public void setCreateAccountButtonAction(EventHandler<ActionEvent> eventHandler) {
-        createAccountButton.setOnAction(event -> {
+    public boolean isLoggedIn() {
+        return loggedIn;
+    }
+
+    public void setLoginAccountButtonAction(EventHandler<ActionEvent> eventHandler) {
+        loginAccountButton.setOnAction(event -> {
             String enteredUsername = username.getText();
             String enteredPassword = password.getText();
-            createAccount(enteredUsername, enteredPassword);
+            loginAccount(enteredUsername, enteredPassword);
         });
-
     }
 
-    private void createAccount(String username, String password) {
-        // Use the entered username and password and send it to the Create class
-        server.Create.createAccount(username, password);
+    public void loginAccount(String username, String password) {
+        loggedIn = server.Login.loginAccount(username, password);
+        if (loggedIn) {
+            // If logged in successfully, close the login popup
+            this.close();
+            AppFrame.setLoggedInUI();
+        }
         sendDataToServerAndMongoDB(username, password);
     }
 
     private void sendDataToServerAndMongoDB(String username, String password) {
         try {
             // Sending data to your server using HttpClient
-            String serverUrl = "http://localhost:8100/create_account"; // Replace with your server URL
+            String serverUrl = "http://localhost:8100/login_account"; // Replace with your server URL
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(serverUrl))
@@ -116,7 +122,8 @@ public class AccountPopup extends Stage {
         return this.password;
     }
 
-    public Button getCreateAccountButton() {
-        return this.createAccountButton;
+    public Button getLoginAccountButton() {
+        return this.loginAccountButton;
     }
+
 }

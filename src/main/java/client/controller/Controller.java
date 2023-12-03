@@ -1,4 +1,5 @@
 package client.controller;
+
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 
@@ -6,8 +7,10 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 import client.model.Model;
+import client.view.AccountPopup;
 import client.view.AppFrame;
 import client.view.DetailsPopup;
+import client.view.LoginPopup;
 import client.view.RecipePopup;
 import client.view.AccountPopup;
 
@@ -18,6 +21,7 @@ public class Controller {
     private RecipePopup recipePopup;
     private AccountPopup accountPopup;
     private DetailsPopup detailsPopup;
+    private LoginPopup loginPopup;
 
     public Controller(AppFrame appFrame, Model model) {
         this.appFrame = appFrame;
@@ -29,16 +33,24 @@ public class Controller {
         this.detailsPopup = appFrame.getDetailsPopup();
         this.recipePopup = appFrame.getRecipePopup();
         this.accountPopup = appFrame.getAccountPopup();
+        this.accountPopup = appFrame.getAccountPopup();
+        this.loginPopup = appFrame.getLoginPopup();
 
         this.recipePopup.setStartRecordingButtonAction(this::handleStartRecordingButton);
         this.recipePopup.setStopRecordingButtonAction(this::handleStopRecordingButton);
         this.detailsPopup.setRefreshButtonAction(this::handleRefreshButton);
         this.accountPopup.setCreateAccountButtonAction(this::handleCreateAccountButton);
-
+        this.loginPopup.setLoginAccountButtonAction(this::handleLoginAccountButton);
     }
 
     private void handleCreateAccountButton(ActionEvent event) {
         model.sendAccount(accountPopup.getUsername().getText(), accountPopup.getPassword().getText());
+        this.accountPopup.setCreateAccountButtonAction(this::handleCreateAccountButton);
+        this.loginPopup.setLoginAccountButtonAction(this::handleLoginAccountButton);
+    }
+
+    private void handleLoginAccountButton(ActionEvent event) {
+        model.sendAccount(loginPopup.getUsername().getText(), loginPopup.getPassword().getText());
     }
 
     private void handleStartRecordingButton(ActionEvent event) {
@@ -58,15 +70,23 @@ public class Controller {
         if (recipePopup.mealTypeSet) {
             audioToIngredient();
             try {
-                instructions = generateInstruction(recipePopup.getRecipe().getMealType().getText(), recipePopup.getRecipe().getIngredient().getText());
+                instructions = generateInstruction(recipePopup.getRecipe().getMealType().getText(),
+                        recipePopup.getRecipe().getIngredient().getText());
                 recipePopup.getRecipe().getName().setText(instructions[0]);
                 recipePopup.getRecipe().getIngredient().setText(instructions[1]);
                 recipePopup.getRecipe().getInstruction().setText(instructions[2]);
                 recipePopup.mealTypeSet = false;
+
+                if (recipePopup.getRecipe().isComplete()) {
+                    recipePopup.getRecipe().saveRecipetoDB();
+                } else {
+                    System.out.println("Incomplete recipe. Please fill all fields.");
+                }
             } catch (IOException | InterruptedException | URISyntaxException e1) {
                 e1.printStackTrace();
             }
             recipePopup.close();
+            // recipePopup.getRecipe().saveRecipe();
             recipePopup.getRecipe().addRecipe();
             recipePopup.getRecipe().saveRecipe();
         } else {
@@ -80,7 +100,8 @@ public class Controller {
         Button refreshButton = detailsPopup.getRefreshButton();
         refreshButton.setDisable(true);
         try {
-            instructions = generateInstruction(detailsPopup.getRecipe().getMealType().getText(),detailsPopup.getRecipe().getIngredient().getText());
+            instructions = generateInstruction(detailsPopup.getRecipe().getMealType().getText(),
+                    detailsPopup.getRecipe().getIngredient().getText());
             detailsPopup.getRecipe().getName().setText(instructions[0]);
             detailsPopup.getRecipe().getIngredient().setText(instructions[1]);
             detailsPopup.getRecipe().getInstruction().setText(instructions[2]);
@@ -95,7 +116,7 @@ public class Controller {
     public void audioToMealType() {
         String generatedText = model.requestTranscript();
         System.out.println(generatedText);
-        if (generatedText.toLowerCase().contains("breakfast") 
+        if (generatedText.toLowerCase().contains("breakfast")
                 || generatedText.toLowerCase().contains("lunch")
                 || generatedText.toLowerCase().contains("dinner")) {
             System.out.println("Transcription Result: " + generatedText);
@@ -116,12 +137,18 @@ public class Controller {
         String generatedText = model.requestTranscript();
         System.out.println("Ingredients: " + generatedText);
         recipePopup.getRecipe().getIngredient().setText(generatedText);
+        recipePopup.getOptionsLabel().setText("Say one of the following options:");
+        recipePopup.getOptionsLabel().setVisible(true);
+        recipePopup.getOptionsText().setVisible(true);
     }
 
-    public String[] generateInstruction(String mealtype, String ingredients) throws IOException, InterruptedException, URISyntaxException {
-        // TODO: figure out how to parse ChatGPT response for name/ingredients/instructions
+    public String[] generateInstruction(String mealtype, String ingredients)
+            throws IOException, InterruptedException, URISyntaxException {
+        // TODO: figure out how to parse ChatGPT response for
+        // name/ingredients/instructions
         // System.out.println("")
-        String prompt = "List the instructions to making a " + mealtype + " with these ingredients " + ingredients +". Respond in this format \"name of recipe - ingredients - instructions\"";
+        String prompt = "List the instructions to making a " + mealtype + " with these ingredients " + ingredients
+                + ". Respond in this format \"name of recipe - ingredients - instructions\"";
         String instruction = model.requestInstruction(prompt);
         String[] instructions = instruction.split("-");
         System.out.println("Recipe Name: " + instructions[0]);
@@ -130,6 +157,5 @@ public class Controller {
 
         return instructions;
     }
-
 
 }

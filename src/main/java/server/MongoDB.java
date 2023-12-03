@@ -33,9 +33,10 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
 public class MongoDB implements HttpHandler {
-    private static  MongoCollection<Document> accountsCollection;
+    private static MongoCollection<Document> accountsCollection;
 
-    public MongoDB() {}
+    public MongoDB() {
+    }
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
@@ -45,14 +46,13 @@ public class MongoDB implements HttpHandler {
         MongoDatabase database = mongoClient.getDatabase("PantryPal");
         accountsCollection = database.getCollection("accounts");
 
-
         String response;
         int statusCode;
 
         Document doc = accountsCollection.find(eq("username", "group15")).first();
         System.out.println(doc.toJson());
         System.out.println(exchange.getRequestMethod());
-            
+
         // Handle only the GET request for simplicity
         if ("GET".equals(exchange.getRequestMethod())) {
             try {
@@ -64,7 +64,7 @@ public class MongoDB implements HttpHandler {
                 Document document = Document.parse(jsonData);
                 accountsCollection.insertOne(document);
 
-                System.out.println("username on server: "+ jsonData);
+                System.out.println("username on server: " + jsonData);
 
                 response = "Data added to MongoDB collection 'accounts'";
                 statusCode = 200;
@@ -75,7 +75,7 @@ public class MongoDB implements HttpHandler {
             }
         } else {
             response = "Unsupported HTTP method";
-            statusCode = 405;  // Method Not Allowed
+            statusCode = 405; // Method Not Allowed
         }
 
         // Set response headers
@@ -87,5 +87,4 @@ public class MongoDB implements HttpHandler {
             os.write(response.getBytes());
         }
     }
-
 }

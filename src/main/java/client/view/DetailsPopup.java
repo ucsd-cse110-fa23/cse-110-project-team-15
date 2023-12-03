@@ -1,4 +1,5 @@
 package client.view;
+
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
@@ -17,7 +18,7 @@ public class DetailsPopup extends Stage {
     private TextField name;
     private TextField ingredients;
     private TextArea instruction;
-    
+
     private Button editButton;
     private Button deleteButton;
     private Button saveButton;
@@ -31,7 +32,8 @@ public class DetailsPopup extends Stage {
         // Create controls for the popup window
         name = new TextField();
         this.name.setPrefSize(200, 10); // set size of text field
-        this.name.setStyle(" -fx-background-color: #659966;  -fx-font-weight: bold; -fx-font-size: 17; -fx-font-family: 'Times New Roman';");
+        this.name.setStyle(
+                " -fx-background-color: #659966;  -fx-font-weight: bold; -fx-font-size: 17; -fx-font-family: 'Times New Roman';");
         this.name.setAlignment(Pos.CENTER);
         this.name.setPadding(new Insets(10, 0, 10, 0)); // adds some padding to the text field
         name.setEditable(false);
@@ -50,21 +52,23 @@ public class DetailsPopup extends Stage {
         String defaultButtonStyle = ("-fx-background-color: #bdd9bd;  -fx-font-weight: bold; -fx-font-size: 13; -fx-font-family: 'Times New Roman';");
 
         backButton = new Button("<-");
-        backButton.setStyle("-fx-background-color: #bdd9bd;  -fx-font-weight: bold; -fx-font-size: 13; -fx-font-family: 'Arial';"); 
+        backButton.setStyle(
+                "-fx-background-color: #bdd9bd;  -fx-font-weight: bold; -fx-font-size: 13; -fx-font-family: 'Arial';");
         editButton = new Button("Edit");
-        editButton.setStyle(defaultButtonStyle); 
+        editButton.setStyle(defaultButtonStyle);
         saveButton = new Button("Save");
-        saveButton.setStyle(defaultButtonStyle); 
+        saveButton.setStyle(defaultButtonStyle);
         deleteButton = new Button("Delete");
-        deleteButton.setStyle(defaultButtonStyle); 
+        deleteButton.setStyle(defaultButtonStyle);
         refreshButton = new Button("Refresh");
-        refreshButton.setStyle(defaultButtonStyle); 
+        refreshButton.setStyle(defaultButtonStyle);
 
         // Create a layout for the controls
         VBox layout = new VBox(10); // 10 pixels spacing
         layout.setAlignment(Pos.CENTER);
         layout.setStyle("-fx-background-color: #93c994;");
-        layout.getChildren().addAll(name, ingredients, instruction, backButton, editButton, deleteButton, saveButton, refreshButton);
+        layout.getChildren().addAll(name, ingredients, instruction, backButton, editButton, deleteButton, saveButton,
+                refreshButton);
 
         // Add an action for the "Add" button
         saveButton.setOnAction(e -> {
@@ -73,12 +77,12 @@ public class DetailsPopup extends Stage {
             recipe.getInstruction().setText(instruction.getText());
             recipe.saveRecipe();
             close(); // Close the popup window
-            });
+        });
 
         editButton.setOnAction(e -> {
             ingredients.setEditable(!ingredients.isEditable());
             instruction.setEditable(!instruction.isEditable());
-            });
+        });
 
         // Add an action for the "Delete" button
         deleteButton.setOnAction(e -> {
@@ -110,15 +114,16 @@ public class DetailsPopup extends Stage {
     public Button getEditButton() {
         return this.editButton;
     }
-    public Button getDeleteButton(){
+
+    public Button getDeleteButton() {
         return this.deleteButton;
     }
 
-    public Button getSaveButton(){
+    public Button getSaveButton() {
         return this.saveButton;
     }
 
-    public Button getRefreshButton(){
+    public Button getRefreshButton() {
         return this.refreshButton;
     }
 
