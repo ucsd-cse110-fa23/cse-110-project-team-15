@@ -81,7 +81,9 @@ public class RecipeList extends VBox {
                 String mealType = Recipe.getMealType().getText();
         }
         String id = server.Login.getID();
-        server.UpdateRecipes(id, name, ingredients, )
+        
+        // needs to go through controller
+        server.UpdateRecipes(id, name, ingredients, ) 
         /**try {
             File csvfile = new File("recipes.csv");
             FileWriter fw = new FileWriter(csvfile);
