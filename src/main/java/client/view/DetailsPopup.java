@@ -6,6 +6,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.event.ActionEvent;
@@ -70,26 +71,12 @@ public class DetailsPopup extends Stage {
         layout.getChildren().addAll(name, ingredients, instruction, backButton, editButton, deleteButton, saveButton,
                 refreshButton);
 
-        // Add an action for the "Add" button
-        saveButton.setOnAction(e -> {
-            recipe.getName().setText(name.getText());
-            recipe.getIngredient().setText(ingredients.getText());
-            recipe.getInstruction().setText(instruction.getText());
-            recipe.saveRecipe();
-            close(); // Close the popup window
-        });
 
         editButton.setOnAction(e -> {
             ingredients.setEditable(!ingredients.isEditable());
             instruction.setEditable(!instruction.isEditable());
         });
 
-        // Add an action for the "Delete" button
-        deleteButton.setOnAction(e -> {
-            recipe.deleteRecipe();
-            recipe.saveRecipe();
-            close();
-        });
 
         backButton.setOnAction(e -> {
             close();
@@ -127,7 +114,27 @@ public class DetailsPopup extends Stage {
         return this.refreshButton;
     }
 
+    public TextField getName() {
+        return name;
+    }
+    
+    public TextField getIngredients() {
+        return ingredients;
+    }
+
+    public TextArea getInstruction() {
+        return instruction;
+    }
+
     public void setRefreshButtonAction(EventHandler<ActionEvent> eventHandler) {
         refreshButton.setOnAction(eventHandler);
+    }
+
+    public void setSaveButtonAction(EventHandler<ActionEvent> eventHandler) {
+        saveButton.setOnAction(eventHandler);
+    }
+
+    public void setDeleteButtonAction(EventHandler<ActionEvent> eventHandler) {
+        deleteButton.setOnAction(eventHandler);
     }
 }

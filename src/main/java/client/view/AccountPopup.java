@@ -61,15 +61,10 @@ public class AccountPopup extends Stage {
         createAccountButton.setOnAction(event -> {
             String enteredUsername = username.getText();
             String enteredPassword = password.getText();
-            createAccount(enteredUsername, enteredPassword);
+            server.CreateAccount.createAccount(enteredUsername, enteredPassword);
+            sendDataToServerAndMongoDB(enteredUsername, enteredPassword);
         });
 
-    }
-
-    private void createAccount(String username, String password) {
-        // Use the entered username and password and send it to the Create class
-        server.CreateAccount.createAccount(username, password);
-        sendDataToServerAndMongoDB(username, password);
     }
 
     private void sendDataToServerAndMongoDB(String username, String password) {

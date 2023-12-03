@@ -73,17 +73,17 @@ public class RecipeList extends VBox {
      */
     // TODO: Change it to update the recipe in mongo instead of csv
     public void saveRecipes() {
-        for (int i = 0; i < recipeContainer.size(); i++) {
-                Recipe Recipe = recipeContainer.get(i);
-                String name = Recipe.getName().getText();
-                String ingredients = Recipe.getIngredient().getText();
-                String instruction = Recipe.getInstruction().getText();
-                String mealType = Recipe.getMealType().getText();
-        }
-        String id = server.Login.getID();
+        // for (int i = 0; i < recipeContainer.size(); i++) {
+        //         Recipe Recipe = recipeContainer.get(i);
+        //         String name = Recipe.getName().getText();
+        //         String ingredients = Recipe.getIngredient().getText();
+        //         String instruction = Recipe.getInstruction().getText();
+        //         String mealType = Recipe.getMealType().getText();
+        // }
+        // String id = server.Login.getID();
         
         // needs to go through controller
-        server.UpdateRecipes(id, name, ingredients, ) 
+        // server.UpdateRecipes(id, name, ingredients, instruction, mealType);
         /**try {
             File csvfile = new File("recipes.csv");
             FileWriter fw = new FileWriter(csvfile);

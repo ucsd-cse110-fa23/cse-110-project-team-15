@@ -24,10 +24,11 @@ public class Server {
         new InetSocketAddress(SERVER_HOSTNAME, SERVER_PORT),
         0);
 
-    server.createContext("/", new RequestHandler(data));
+    // server.createContext("/", new RequestHandler(data));
     server.createContext("/transcribe", new Whisper());
     server.createContext("/instruction", new ChatGPT());
-    server.createContext("/api/accounts", new MongoDB());
+//    server.createContext("/api/accounts", new MongoDB());
+    server.createContext("/api/recipes", new UpdateRecipes());
     server.setExecutor(threadPoolExecutor);
     server.start();
 

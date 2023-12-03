@@ -4,7 +4,7 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.result.UpdateResult;
+import com.mongodb.client.result.DeleteResult;
 import com.sun.net.httpserver.*;
 
 import org.bson.Document;
@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class UpdateRecipes implements HttpHandler{
+public class DeleteRecipe implements HttpHandler{
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
@@ -64,12 +64,10 @@ public class UpdateRecipes implements HttpHandler{
             MongoCollection<Document> recipesCollection = RecipeDB.getCollection("recipes");
 
             Bson filter = recipesCollection.find(and(eq("userID", id), eq("recipeName", recipeName))).first();
-            System.out.println(filter);
-            Bson updateOperation = combine(set("recipeIngredients", recipeIngredients), set("recipeInstructions", recipeInstructions));
-               
-            UpdateResult updateResult = recipesCollection.updateOne(filter, updateOperation);
+            System.out.println(filter);               
+            DeleteResult delteteResult = recipesCollection.deleteOne(filter);
             System.out.println("Updated");
-            System.out.println(updateResult);
+            System.out.println(delteteResult);
         } catch (Exception e) {
             e.printStackTrace();
         }

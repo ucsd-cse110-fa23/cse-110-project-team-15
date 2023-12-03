@@ -40,6 +40,7 @@ public class Controller {
         this.recipePopup.setStopRecordingButtonAction(this::handleStopRecordingButton);
         this.detailsPopup.setRefreshButtonAction(this::handleRefreshButton);
         this.detailsPopup.setSaveButtonAction(this::handleSaveButton);
+        this.detailsPopup.setDeleteButtonAction(this::handleDeleteButton);
         this.accountPopup.setCreateAccountButtonAction(this::handleCreateAccountButton);
         this.loginPopup.setLoginAccountButtonAction(this::handleLoginAccountButton);
     }
@@ -160,7 +161,18 @@ public class Controller {
     }
 
     public void handleSaveButton(ActionEvent event) {
-        
+        detailsPopup.getRecipe().getName().setText(detailsPopup.getName().getText());
+        detailsPopup.getRecipe().getIngredient().setText(detailsPopup.getIngredients().getText());
+        detailsPopup.getRecipe().getInstruction().setText(detailsPopup.getInstruction().getText());
+        model.sendRecipe(detailsPopup.getRecipe());
+        detailsPopup.close();
+        System.out.println("DONE");
+    }
+
+    public void handleDeleteButton(ActionEvent event) {
+        detailsPopup.getRecipe().deleteRecipe();
+        model.deleteRecipe(detailsPopup.getRecipe());
+        detailsPopup.close();
     }
 
 }
