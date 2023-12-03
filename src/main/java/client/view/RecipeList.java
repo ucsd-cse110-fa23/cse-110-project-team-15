@@ -73,7 +73,16 @@ public class RecipeList extends VBox {
      */
     // TODO: Change it to update the recipe in mongo instead of csv
     public void saveRecipes() {
-        try {
+        for (int i = 0; i < recipeContainer.size(); i++) {
+                Recipe Recipe = recipeContainer.get(i);
+                String name = Recipe.getName().getText();
+                String ingredients = Recipe.getIngredient().getText();
+                String instruction = Recipe.getInstruction().getText();
+                String mealType = Recipe.getMealType().getText();
+        }
+        String id = server.Login.getID();
+        server.UpdateRecipes(id, name, ingredients, )
+        /**try {
             File csvfile = new File("recipes.csv");
             FileWriter fw = new FileWriter(csvfile);
             for (int i = 0; i < recipeContainer.size(); i++) {
@@ -87,7 +96,7 @@ public class RecipeList extends VBox {
             fw.close();
         } catch (Exception e) {
             System.out.println("savetasks() not implemented!");
-        }
+        }**/
     }
 
     /*

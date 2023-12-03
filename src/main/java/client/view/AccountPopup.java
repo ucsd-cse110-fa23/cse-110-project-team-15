@@ -1,7 +1,7 @@
 package client.view;
 
 import javafx.stage.Stage;
-import server.Create;
+import server.CreateAccount;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -68,7 +68,7 @@ public class AccountPopup extends Stage {
 
     private void createAccount(String username, String password) {
         // Use the entered username and password and send it to the Create class
-        server.Create.createAccount(username, password);
+        server.CreateAccount.createAccount(username, password);
         sendDataToServerAndMongoDB(username, password);
     }
 
