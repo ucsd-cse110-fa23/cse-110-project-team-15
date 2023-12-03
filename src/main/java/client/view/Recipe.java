@@ -25,7 +25,6 @@ public class Recipe extends HBox {
     private TextField instruction;
     private Button detailButton;
     public Map<String, String[]> recipe = new HashMap<>();
-    String[] recipeDetails = new String[3];
 
     public Recipe(AppFrame appframe) {
 
@@ -45,27 +44,30 @@ public class Recipe extends HBox {
         this.name.setAlignment(Pos.CENTER_LEFT);
         this.name.setEditable(false);
 
+        this.mealType = new TextField();
+        this.mealType.setPrefSize(100, 10); // set size of text field
+        this.mealType.setStyle( "-fx-background-color: #659966; -fx-border-width: 0; -fx-font-size: 17; -fx-font-family: 'Times New Roman';"); 
+        this.mealType.setPadding(new Insets(10, 0, 10, 0)); // adds some padding to the text field
+        this.mealType.setAlignment(Pos.CENTER_LEFT);
+        this.mealType.setEditable(false);
+
         detailButton = new Button("View");
         detailButton.setPrefSize(50, 10);
         detailButton.setPrefHeight(Double.MAX_VALUE);
+        detailButton.setAlignment(Pos.CENTER_RIGHT);
         detailButton.setStyle(
                 " -fx-background-color: #bdd9bd;  -fx-font-weight: bold; -fx-font-size: 13; -fx-font-family: 'Times New Roman';");
-        this.setPadding(new Insets(0, 0, 0, 100));
+        this.setPadding(new Insets(0, 0, 0, 20));
 
         HBox recipecontainer = new HBox();
         recipecontainer.setAlignment(Pos.CENTER);
         recipecontainer.setSpacing(50);
-        recipecontainer.getChildren().addAll(name, detailButton);
+        recipecontainer.getChildren().addAll(mealType, name, detailButton);
         this.getChildren().addAll(recipecontainer);
 
-        this.mealType = new TextField();
+        
         this.ingredient = new TextField();
         this.instruction = new TextField();
-
-        recipeDetails[0] = mealType.toString();
-        recipeDetails[1] = ingredient.toString();
-        recipeDetails[2] = instruction.toString();
-        recipe.put(name.toString(), recipeDetails);
 
         this.getChildren().addAll(recipeInfo);
         addListeners();
