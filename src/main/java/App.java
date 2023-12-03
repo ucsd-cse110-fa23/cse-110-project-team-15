@@ -14,7 +14,6 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        
         AppFrame root = new AppFrame();
 
         Model model = new Model();

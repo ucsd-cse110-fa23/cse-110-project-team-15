@@ -10,12 +10,6 @@ import org.controlsfx.control.CheckComboBox;
 import java.util.List;
 
 import javafx.scene.layout.*;
-
-import java.io.*;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -165,6 +159,7 @@ public class RecipeList extends VBox {
 
         for (Recipe recipe : recipeContainer) {
             String mealType = recipe.getMealType().getText().toLowerCase();
+            if (mealType.charAt(mealType.length() - 1) == '.') mealType = mealType.substring(0,mealType.length() - 1);
             System.out.println(mealType);
             if (selectedMealTypes.length == 0 || ifContains(selectedMealTypes, mealType)) {
                 list.add(recipe);
