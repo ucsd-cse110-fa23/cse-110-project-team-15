@@ -69,9 +69,16 @@ public class Recipe extends HBox {
         recipecontainer.getChildren().addAll(mealType, name, detailButton);
         this.getChildren().addAll(recipecontainer);
 
-        
+        this.mealType = new TextField();
         this.ingredient = new TextField();
         this.instruction = new TextField();
+        this.imageURL = new TextField();
+
+        recipeDetails[0] = mealType.toString();
+        recipeDetails[1] = ingredient.toString();
+        recipeDetails[2] = instruction.toString();
+        recipeDetails[3] = imageURL.toString();
+        recipe.put(name.toString(), recipeDetails);
 
         this.getChildren().addAll(recipeInfo);
         addListeners();

@@ -96,6 +96,7 @@ public class Controller {
                 recipePopup.getRecipe().getIngredient().setText(instructions[1]);
                 recipePopup.getRecipe().getInstruction().setText(instructions[2]);
                 String url = Model.generateImage(recipePopup.getRecipe().getName().getText());
+                // String url = Model.generateImage(instructions[0]); 
                 recipePopup.getRecipe().getImageURL().setText(url);
                 recipePopup.mealTypeSet = false;
 
@@ -194,6 +195,8 @@ public class Controller {
         detailsPopup.getRecipe().getName().setText(detailsPopup.getName().getText());
         detailsPopup.getRecipe().getIngredient().setText(detailsPopup.getIngredients().getText());
         detailsPopup.getRecipe().getInstruction().setText(detailsPopup.getInstruction().getText());
+        // String url = Model.generateImage(recipePopup.getRecipe().getName().getText());
+        // detailsPopup.getRecipe().getImageURL().setText(url);
         model.sendRecipe(detailsPopup.getRecipe());
         detailsPopup.close();
         System.out.println("DONE");
