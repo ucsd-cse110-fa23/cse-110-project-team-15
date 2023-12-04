@@ -47,13 +47,13 @@ public class DeleteRecipe implements HttpHandler{
             String recipeMealType = json.getString("mealType");
             String recipeIngredients = json.getString("ingredients");
             String recipeInstructions = json.getString("instructions");
-            updateRecipe(userID, recipeName, recipeIngredients, recipeInstructions, recipeMealType);
+            deleteRecipe(userID, recipeName, recipeIngredients, recipeInstructions, recipeMealType);
         }
         return;
 
     }
 
-    public void updateRecipe(String id, String recipeName, String recipeIngredients, String recipeInstructions,
+    public void deleteRecipe(String id, String recipeName, String recipeIngredients, String recipeInstructions,
             String mealType) {
         String uri = "mongodb+srv://aditijain:cse110project@cluster0.yu0exzy.mongodb.net/?retryWrites=true&w=majority";
         try (MongoClient mongoClient = MongoClients.create(uri)) {
@@ -63,10 +63,11 @@ public class DeleteRecipe implements HttpHandler{
             MongoDatabase RecipeDB = mongoClient.getDatabase("recipe_db");
             MongoCollection<Document> recipesCollection = RecipeDB.getCollection("recipes");
 
+            // DOESNT ACTUALLY DELETE FIND OUT HOW TO DO THIS MAYBE FILTER IS WRONG LOL
             Bson filter = recipesCollection.find(and(eq("userID", id), eq("recipeName", recipeName))).first();
             System.out.println(filter);               
             DeleteResult delteteResult = recipesCollection.deleteOne(filter);
-            System.out.println("Updated");
+            System.out.println("Deleted");
             System.out.println(delteteResult);
         } catch (Exception e) {
             e.printStackTrace();
