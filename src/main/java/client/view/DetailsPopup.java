@@ -4,13 +4,29 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.scene.shape.Path;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import java.util.*;
+import java.nio.file.Files;
+import java.nio.file.*;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.nio.file.Paths;
+import java.net.URISyntaxException;
+import java.net.URL;
+
+//import com.google.common.io.Files;
+import client.model.Model;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
@@ -23,11 +39,14 @@ public class DetailsPopup extends Stage {
     private TextField ingredients;
     private TextArea instruction;
 
+    private ImageView recipeImage;
+
     private Button editButton;
     private Button deleteButton;
     private Button saveButton;
     private Button backButton;
     private Button refreshButton;
+
 
     public DetailsPopup() {
         // setTitle(name.getText());
@@ -75,11 +94,16 @@ public class DetailsPopup extends Stage {
         refreshButton = new Button("Refresh");
         refreshButton.setStyle(defaultButtonStyle);
 
+        Image defaultImage = new Image("https://oaidalleapiprodscus.blob.core.windows.net/private/org-Sd9bwBmEf5IDns4KIh3k3fXp/user-DgtoVZso5Yqo57hZ4b0PreAg/img-J5bN9XvbTsOKfNxM4jZ5nZeA.png?st=2023-12-04T00%3A19%3A56Z&se=2023-12-04T02%3A19%3A56Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-12-03T22%3A44%3A30Z&ske=2023-12-04T22%3A44%3A30Z&sks=b&skv=2021-08-06&sig=xfmsjhcQXD23/A8KzCCNsB/Q0tJ5h3IknRwQNI7hnLo%3D");
+        recipeImage = new ImageView(defaultImage);
+        recipeImage.setFitWidth(200);
+        recipeImage.setFitHeight(200);
+
         // Create a layout for the controls
         VBox layout = new VBox(10); // 10 pixels spacing
         layout.setAlignment(Pos.CENTER);
         layout.setStyle("-fx-background-color: #93c994;");
-        layout.getChildren().addAll(name, mealType, ingredients, instruction, backButton, editButton, deleteButton, saveButton,
+        layout.getChildren().addAll(recipeImage, name, mealType, ingredients, instruction, backButton, editButton, deleteButton, saveButton,
                 refreshButton);
 
 
@@ -102,12 +126,15 @@ public class DetailsPopup extends Stage {
         return this.recipe;
     }
 
-    public void setRecipe(Recipe recipe) {
+    public void setRecipe(Recipe recipe) throws IOException, InterruptedException, URISyntaxException{
         this.recipe = recipe;
         name.setText(recipe.getName().getText());
         ingredients.setText(recipe.getIngredient().getText());
         instruction.setText(recipe.getInstruction().getText());
         mealType.setText(recipe.getMealType().getText());
+        String url = recipe.getImageURL().getText();
+        Image image = new Image(url);
+        recipeImage.setImage(image);
     }
 
     public Button getEditButton() {

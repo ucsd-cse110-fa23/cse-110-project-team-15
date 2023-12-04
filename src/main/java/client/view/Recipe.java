@@ -6,6 +6,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.geometry.Insets;
 import java.util.Map;
+import java.io.IOException;
+import java.net.URISyntaxException;
 
 //import RecipeManagement.RecipePopup.DetailsPopup;
 
@@ -23,8 +25,10 @@ public class Recipe extends HBox {
     private TextField mealType;
     private TextField ingredient;
     private TextField instruction;
+    private TextField imageURL;
     private Button detailButton;
     public Map<String, String[]> recipe = new HashMap<>();
+    String[] recipeDetails = new String[4];
 
     public Recipe(AppFrame appframe) {
 
@@ -77,7 +81,7 @@ public class Recipe extends HBox {
     public void saveRecipetoDB() {
         server.SendRecipeDB.sendRecipeDB(server.Login.getID(), this.name.getText(),
                 this.ingredient.getText(),
-                this.instruction.getText(), this.mealType.getText());
+                this.instruction.getText(), this.mealType.getText(), this.imageURL.getText());
     }
 
     public TextField getName() {
@@ -96,13 +100,25 @@ public class Recipe extends HBox {
         return this.instruction;
     }
 
+    public TextField getImageURL() {
+        return this.imageURL;
+    }
+
     public Button getDetailButton() {
         return this.detailButton;
     }
 
     public void addListeners() {
         detailButton.setOnAction(e -> {
-            detailsPopup.setRecipe(this);
+            try {
+                detailsPopup.setRecipe(this);
+            } catch (IOException | InterruptedException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            } catch (URISyntaxException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
             detailsPopup.show();
         });
     }
@@ -111,7 +127,7 @@ public class Recipe extends HBox {
     // mealtype -> ingredients -> name -> instructions)
     public Boolean isComplete() {
         return !this.name.getText().isEmpty() && !this.mealType.getText().isEmpty()
-                && !this.ingredient.getText().isEmpty() && !this.instruction.getText().isEmpty();
+                && !this.ingredient.getText().isEmpty() && !this.instruction.getText().isEmpty() && !this.imageURL.getText().isEmpty();
     }
 
     public void deleteRecipe() {

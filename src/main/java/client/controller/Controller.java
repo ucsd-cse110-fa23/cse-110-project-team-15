@@ -5,6 +5,9 @@ import javafx.scene.control.Button;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.*;
+
+//import com.google.common.io.Files;
 
 import client.model.Model;
 import client.view.AccountPopup;
@@ -12,7 +15,11 @@ import client.view.AppFrame;
 import client.view.DetailsPopup;
 import client.view.LoginPopup;
 import client.view.RecipePopup;
+import java.nio.file.Files;
 import client.view.AccountPopup;
+import java.nio.file.Paths;
+import java.io.InputStream;
+import java.net.URI;
 
 public class Controller {
     private AppFrame appFrame;
@@ -88,6 +95,8 @@ public class Controller {
                 recipePopup.getRecipe().getName().setText(instructions[0]);
                 recipePopup.getRecipe().getIngredient().setText(instructions[1]);
                 recipePopup.getRecipe().getInstruction().setText(instructions[2]);
+                String url = Model.generateImage(recipePopup.getRecipe().getName().getText());
+                recipePopup.getRecipe().getImageURL().setText(url);
                 recipePopup.mealTypeSet = false;
 
                 if (recipePopup.getRecipe().isComplete()) {
@@ -118,6 +127,8 @@ public class Controller {
             detailsPopup.getRecipe().getName().setText(instructions[0]);
             detailsPopup.getRecipe().getIngredient().setText(instructions[1]);
             detailsPopup.getRecipe().getInstruction().setText(instructions[2]);
+            String url = Model.generateImage(instructions[0]);
+            detailsPopup.getRecipe().getImageURL().setText(url);
             detailsPopup.setRecipe(detailsPopup.getRecipe());
         } catch (IOException | InterruptedException | URISyntaxException e1) {
             e1.printStackTrace();
