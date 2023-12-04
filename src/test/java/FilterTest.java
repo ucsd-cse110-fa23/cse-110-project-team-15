@@ -54,28 +54,28 @@ public class FilterTest extends ApplicationTest {
         recipe1.getMealType().setText("breakfast");
         recipe1.getIngredient().setText("ingredient");
         recipe1.getInstruction().setText("instruction");
-        recipe1.addRecipe();
+        list.addRecipe(recipe1);
 
         Recipe recipe2 = new Recipe(mockAppFrame);
         recipe2.getName().setText("Recipe 2");
         recipe2.getMealType().setText("lunch");
         recipe2.getIngredient().setText("ingredient");
         recipe2.getInstruction().setText("instruction");
-        recipe2.addRecipe();
+        list.addRecipe(recipe2);
 
         Recipe recipe3 = new Recipe(mockAppFrame);
         recipe3.getName().setText("Recipe 3");
         recipe3.getMealType().setText("breakfast");
         recipe3.getIngredient().setText("ingredient");
         recipe3.getInstruction().setText("instruction");
-        recipe3.addRecipe();
+        list.addRecipe(recipe3);
 
         Recipe recipe4 = new Recipe(mockAppFrame);
         recipe4.getName().setText("Recipe 4");
         recipe4.getMealType().setText("dinner");
         recipe4.getIngredient().setText("ingredient");
         recipe4.getInstruction().setText("instruction");
-        recipe4.addRecipe();
+         list.addRecipe(recipe4);
 
         list.mealOptions.getCheckModel().check("Breakfast");
         assertEquals(1, list.mealOptions.getCheckModel().getCheckedItems().size());
@@ -100,28 +100,28 @@ public class FilterTest extends ApplicationTest {
         recipe1.getMealType().setText("breakfast");
         recipe1.getIngredient().setText("ingredient");
         recipe1.getInstruction().setText("instruction");
-        recipe1.addRecipe();
+        list.addRecipe(recipe1);
 
         Recipe recipe2 = new Recipe(mockAppFrame);
         recipe2.getName().setText("Recipe 2");
         recipe2.getMealType().setText("lunch");
         recipe2.getIngredient().setText("ingredient");
         recipe2.getInstruction().setText("instruction");
-        recipe2.addRecipe();
+        list.addRecipe(recipe2);
 
         Recipe recipe3 = new Recipe(mockAppFrame);
         recipe3.getName().setText("Recipe 3");
         recipe3.getMealType().setText("breakfast");
         recipe3.getIngredient().setText("ingredient");
         recipe3.getInstruction().setText("instruction");
-        recipe3.addRecipe();
+        list.addRecipe(recipe3);
 
         Recipe recipe4 = new Recipe(mockAppFrame);
         recipe4.getName().setText("Recipe 4");
         recipe4.getMealType().setText("dinner");
         recipe4.getIngredient().setText("ingredient");
         recipe4.getInstruction().setText("instruction");
-        recipe4.addRecipe();
+        list.addRecipe(recipe4);
 
         list.mealOptions.getCheckModel().check("Breakfast");
         list.mealOptions.getCheckModel().check("Lunch");
@@ -148,28 +148,28 @@ public class FilterTest extends ApplicationTest {
         recipe1.getMealType().setText("breakfast");
         recipe1.getIngredient().setText("ingredient");
         recipe1.getInstruction().setText("instruction");
-        recipe1.addRecipe();
+        list.addRecipe(recipe1);
 
         Recipe recipe2 = new Recipe(mockAppFrame);
         recipe2.getName().setText("Recipe 2");
         recipe2.getMealType().setText("lunch");
         recipe2.getIngredient().setText("ingredient");
         recipe2.getInstruction().setText("instruction");
-        recipe2.addRecipe();
+        list.addRecipe(recipe2);
 
         Recipe recipe3 = new Recipe(mockAppFrame);
         recipe3.getName().setText("Recipe 3");
         recipe3.getMealType().setText("breakfast");
         recipe3.getIngredient().setText("ingredient");
         recipe3.getInstruction().setText("instruction");
-        recipe3.addRecipe();
+        list.addRecipe(recipe3);
 
         Recipe recipe4 = new Recipe(mockAppFrame);
         recipe4.getName().setText("Recipe 4");
         recipe4.getMealType().setText("dinner");
         recipe4.getIngredient().setText("ingredient");
         recipe4.getInstruction().setText("instruction");
-        recipe4.addRecipe();
+        list.addRecipe(recipe4);
 
         list.mealOptions.getCheckModel().check("Breakfast");
         list.mealOptions.getCheckModel().clearCheck("Breakfast");
