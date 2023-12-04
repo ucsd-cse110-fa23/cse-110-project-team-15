@@ -82,7 +82,7 @@ public class DetailsPopup extends Stage {
         refreshButton = new Button("Refresh");
         refreshButton.setStyle(defaultButtonStyle);
 
-        Image defaultImage = new Image(getClass().getResource("/image/default.jpg").toExternalForm());
+        Image defaultImage = new Image("https://oaidalleapiprodscus.blob.core.windows.net/private/org-Sd9bwBmEf5IDns4KIh3k3fXp/user-DgtoVZso5Yqo57hZ4b0PreAg/img-J5bN9XvbTsOKfNxM4jZ5nZeA.png?st=2023-12-04T00%3A19%3A56Z&se=2023-12-04T02%3A19%3A56Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-12-03T22%3A44%3A30Z&ske=2023-12-04T22%3A44%3A30Z&sks=b&skv=2021-08-06&sig=xfmsjhcQXD23/A8KzCCNsB/Q0tJ5h3IknRwQNI7hnLo%3D");
         recipeImage = new ImageView(defaultImage);
         recipeImage.setFitWidth(200);
         recipeImage.setFitHeight(200);

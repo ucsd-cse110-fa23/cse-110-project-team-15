@@ -84,17 +84,6 @@ public class Controller {
                 recipePopup.getRecipe().getInstruction().setText(instructions[2]);
                 String url = Model.generateImage(recipePopup.getRecipe().getName().getText());
                 recipePopup.getRecipe().getImageURL().setText(url);
-                /*String[] nameArr = recipePopup.getRecipe().getName().getText().split(" ");
-                String sb = "";
-                for(String name: nameArr) {
-                    sb = sb + name;
-                }
-                try(
-                    InputStream in = new URI(url).toURL().openStream()
-                )
-                {
-                    Files.copy(in, Paths.get("src/main/resources/image/" + sb + ".jpg"));
-                }*/
                 recipePopup.mealTypeSet = false;
 
                 if (recipePopup.getRecipe().isComplete()) {
@@ -125,6 +114,8 @@ public class Controller {
             detailsPopup.getRecipe().getName().setText(instructions[0]);
             detailsPopup.getRecipe().getIngredient().setText(instructions[1]);
             detailsPopup.getRecipe().getInstruction().setText(instructions[2]);
+            String url = Model.generateImage(instructions[0]);
+            detailsPopup.getRecipe().getImageURL().setText(url);
             detailsPopup.setRecipe(detailsPopup.getRecipe());
         } catch (IOException | InterruptedException | URISyntaxException e1) {
             e1.printStackTrace();

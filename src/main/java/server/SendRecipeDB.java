@@ -12,7 +12,7 @@ import static java.util.Arrays.asList;
 public class SendRecipeDB {
 
     public static void sendRecipeDB(String id, String recipeName, String recipeIngredients, String recipeInstructions,
-            String mealType) {
+            String mealType, String url) {
         String uri = "mongodb+srv://aditijain:cse110project@cluster0.yu0exzy.mongodb.net/?retryWrites=true&w=majority";
         try (MongoClient mongoClient = MongoClients.create(uri)) {
 
@@ -22,7 +22,8 @@ public class SendRecipeDB {
             Document recipe = new Document("_id", new ObjectId())
                     .append("userID", server.Login.getID()).append("recipeName", recipeName)
                     .append("recipeIngredients", recipeIngredients).append("recipeInstructions", recipeInstructions)
-                    .append("mealType", mealType);
+                    .append("mealType", mealType)
+                    .append("url", url);
             accountsCollection.insertOne(recipe);
 
             System.out.println("Recipe Stored for user:" + id);

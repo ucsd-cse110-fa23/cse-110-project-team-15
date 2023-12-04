@@ -90,7 +90,7 @@ public class Recipe extends HBox {
     public void saveRecipetoDB() {
         server.SendRecipeDB.sendRecipeDB(server.Login.getID(), this.name.getText(),
                 this.ingredient.getText(),
-                this.instruction.getText(), this.mealType.getText());
+                this.instruction.getText(), this.mealType.getText(), this.imageURL.getText());
     }
 
     public TextField getName() {
