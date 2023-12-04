@@ -93,13 +93,15 @@ public class RecipeListTest extends ApplicationTest {
         recipe1.getMealType().setText("breakfast");
         recipe1.getIngredient().setText("ingredient");
         recipe1.getInstruction().setText("instruction");
+        recipe1.getImageURL().setText("https...");
         recipe1.addRecipe();
 
         Recipe recipe2 = new Recipe(mockAppFrame);
         recipe2.getName().setText("Recipe 2");
-        recipe2.getMealType().setText("breakfast");
-        recipe2.getIngredient().setText("ingredient");
-        recipe2.getInstruction().setText("instruction");
+        recipe2.getMealType().setText("breakfast2");
+        recipe2.getIngredient().setText("ingredient2");
+        recipe2.getInstruction().setText("instruction2");
+        recipe2.getInstruction().setText("https123");
         recipe2.addRecipe();
 
         try {
@@ -110,10 +112,12 @@ public class RecipeListTest extends ApplicationTest {
             
             List<String> lines = Files.readAllLines(Path.of("recipes.csv"));
 
-            String[] parts1 = lines.get(0).split("-");
+            System.out.print(lines.get(0));
+
+            String[] parts1 = lines.get(0).split("-", 4);
             assertEquals("Recipe 1", parts1[0]);
 
-            String[] parts2 = lines.get(1).split("-");
+            String[] parts2 = lines.get(1).split("-", 4);
             assertEquals("Recipe 2", parts2[0]);
         } catch (IOException e) {
             fail("Error occurred: " + e.getMessage());
