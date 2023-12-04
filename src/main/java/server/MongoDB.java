@@ -5,30 +5,18 @@ import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Updates.combine;
 import static com.mongodb.client.model.Updates.set;
 
+import java.sql.Timestamp;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-import org.bson.types.ObjectId;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.http.HttpRequest;
-import java.net.http.HttpClient;
-import java.net.http.HttpResponse;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.CompletableFuture;
-import java.util.Scanner;
-import java.net.InetSocketAddress;
-import java.nio.charset.StandardCharsets;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.stream.Collectors;
 
 import com.sun.net.httpserver.*;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.mongodb.client.MongoClient;
@@ -54,7 +42,6 @@ public class MongoDB implements HttpHandler {
             String line;
             while ((line = br.readLine()) != null) {
                 requestData.append(line);
-                System.out.println(line);
             }
 
             // Parse the JSON data
@@ -66,11 +53,14 @@ public class MongoDB implements HttpHandler {
             String recipeMealType = json.getString("mealType");
             String recipeIngredients = json.getString("ingredients");
             String recipeInstructions = json.getString("instructions");
-            if (requestUri == "create") {
+
+            System.out.println("URI: " + requestUri);
+            System.out.println("Name: " + recipeName);
+            if (requestUri.contains("create")) {
                 createRecipe(userID, recipeName, recipeIngredients, recipeInstructions, recipeMealType);
-            } else if (requestUri == "delete") {
+            } else if (requestUri.contains("delete")) {
                 deleteRecipe(userID, recipeName, recipeIngredients, recipeInstructions, recipeMealType);
-            } else if (requestUri == "update") {
+            } else if (requestUri.contains("update")) {
                 updateRecipe(userID, recipeName, recipeIngredients, recipeInstructions, recipeMealType);
             }
         }
@@ -136,10 +126,10 @@ public class MongoDB implements HttpHandler {
 
             MongoDatabase RecipeDB = mongoClient.getDatabase("recipe_db");
             MongoCollection<Document> accountsCollection = RecipeDB.getCollection("recipes");
-            ObjectId recipeId = new ObjectId();
+            Timestamp recipeId = new Timestamp(System.currentTimeMillis());
 
             Document recipe = new Document("_id", recipeId)
-                    .append("userID", server.Login.getID()).append("recipeName", recipeName)
+                    .append("userID", id).append("recipeName", recipeName)
                     .append("recipeIngredients", recipeIngredients).append("recipeInstructions", recipeInstructions)
                     .append("mealType", mealType);
             accountsCollection.insertOne(recipe);

@@ -146,8 +146,10 @@ public class Model {
                     .header("Content-Type", "application/json")
                     .method("PUT", HttpRequest.BodyPublishers.ofString(jsonObject.toString()))
                     .build();
-
+            
+            System.out.println(prompt);
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println("sent prompt");
             return response.body();
         } catch (Exception ex) {
             ex.printStackTrace();

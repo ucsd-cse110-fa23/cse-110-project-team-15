@@ -43,6 +43,7 @@ public class Controller {
         this.detailsPopup.setDeleteButtonAction(this::handleDeleteButton);
         this.accountPopup.setCreateAccountButtonAction(this::handleCreateAccountButton);
         this.loginPopup.setLoginAccountButtonAction(this::handleLoginAccountButton);
+
     }
 
     private void handleCreateAccountButton(ActionEvent event) {
@@ -159,9 +160,9 @@ public class Controller {
         // name/ingredients/instructions
         // System.out.println("")
         String prompt = "List the instructions to making a " + mealtype + " with these ingredients " + ingredients
-                + ". Respond in this format \"name of recipe - ingredients - instructions\"";
+                + ". Respond in this format \"name of recipe | ingredients | instructions\"";
         String instruction = model.requestInstruction(prompt);
-        String[] instructions = instruction.split("-");
+        String[] instructions = instruction.split("\\|");
         System.out.println("Recipe Name: " + instructions[0]);
         System.out.println("Ingredients: " + instructions[1]);
         System.out.println("Instructions: " + instructions[2]);
