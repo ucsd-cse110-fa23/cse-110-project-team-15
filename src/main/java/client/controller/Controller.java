@@ -6,13 +6,19 @@ import javafx.scene.control.Button;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+import org.bson.Document;
+
 import client.model.Model;
 import client.view.AccountPopup;
 import client.view.AppFrame;
 import client.view.DetailsPopup;
 import client.view.LoginPopup;
+import client.view.Recipe;
 import client.view.RecipePopup;
 import client.view.AccountPopup;
+
+import java.sql.Timestamp;
+
 
 public class Controller {
     private AppFrame appFrame;
@@ -41,19 +47,22 @@ public class Controller {
         this.detailsPopup.setRefreshButtonAction(this::handleRefreshButton);
         this.detailsPopup.setSaveButtonAction(this::handleSaveButton);
         this.detailsPopup.setDeleteButtonAction(this::handleDeleteButton);
+
         this.accountPopup.setCreateAccountButtonAction(this::handleCreateAccountButton);
+
         this.loginPopup.setLoginAccountButtonAction(this::handleLoginAccountButton);
+
 
     }
 
     private void handleCreateAccountButton(ActionEvent event) {
-        model.sendAccount(accountPopup.getUsername().getText(), accountPopup.getPassword().getText());
+        model.sendAccount("create", accountPopup.getUsername().getText(), accountPopup.getPassword().getText());
         this.accountPopup.setCreateAccountButtonAction(this::handleCreateAccountButton);
         this.loginPopup.setLoginAccountButtonAction(this::handleLoginAccountButton);
     }
 
     private void handleLoginAccountButton(ActionEvent event) {
-        model.sendAccount(loginPopup.getUsername().getText(), loginPopup.getPassword().getText());
+        model.sendAccount("login", loginPopup.getUsername().getText(), loginPopup.getPassword().getText());
     }
 
     private void handleStartRecordingButton(ActionEvent event) {
@@ -81,6 +90,7 @@ public class Controller {
                 recipePopup.mealTypeSet = false;
 
                 if (recipePopup.getRecipe().isComplete()) {
+                    recipePopup.getRecipe().setRecipeId(new Timestamp(System.currentTimeMillis()));
                     model.sendRecipe("create", recipePopup.getRecipe());
                 } else {
                     System.out.println("Incomplete recipe. Please fill all fields.");
@@ -185,5 +195,6 @@ public class Controller {
         detailsPopup.close();
         System.out.println("DELETED AND CLOSE");
     }
+
 
 }

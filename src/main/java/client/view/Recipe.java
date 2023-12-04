@@ -7,6 +7,8 @@ import javafx.scene.layout.*;
 import javafx.geometry.Insets;
 import java.util.Map;
 
+import java.sql.Timestamp;
+
 //import RecipeManagement.RecipePopup.DetailsPopup;
 
 import java.util.HashMap;
@@ -23,6 +25,7 @@ public class Recipe extends HBox {
     private TextField mealType;
     private TextField ingredient;
     private TextField instruction;
+    private Timestamp id;
     private Button detailButton;
     public Map<String, String[]> recipe = new HashMap<>();
 
@@ -92,6 +95,14 @@ public class Recipe extends HBox {
 
     public Button getDetailButton() {
         return this.detailButton;
+    }
+
+    public Timestamp getRecipeId() {
+        return this.id;
+    }
+
+    public Timestamp setRecipeId(Timestamp id) {
+        return this.id = id;
     }
 
     public void addListeners() {

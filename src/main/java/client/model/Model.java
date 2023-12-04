@@ -46,37 +46,9 @@ import server.Login;
 import java.net.URI;
 
 public class Model {
-    // Doesnt work
-    public String recipeRequest(String method, String language, String year, String query) {
-        try {
-            String urlString = "http://localhost:8100/";
-            if (query != null) {
-                urlString += "?=" + query;
-            }
-            URL url = new URI(urlString).toURL();
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod(method);
-            conn.setDoOutput(true);
 
-            if (method.equals("POST") || method.equals("PUT")) {
-                OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream());
-                out.write(language + "," + year);
-                out.flush();
-                out.close();
-            }
-
-            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String response = in.readLine();
-            in.close();
-            return response;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return "Error: " + ex.getMessage();
-        }
-    }
-
-    public String sendAccount(String username, String password) {
-        String url = "http://localhost:8100/api/accounts";
+    public String sendAccount(String method, String username, String password) {
+        String url = "http://localhost:8100/account/" + method;
 
         try {
             HttpClient client = HttpClient.newHttpClient();
@@ -108,6 +80,7 @@ public class Model {
             HttpClient client = HttpClient.newHttpClient();
             JSONObject json = new JSONObject();
             json.put("id", server.Login.getID());
+            json.put("recipeId", recipe.getRecipeId().toString());
             json.put("name", recipe.getName().getText());
             json.put("mealType", recipe.getMealType().getText());
             json.put("ingredients", recipe.getIngredient().getText());
@@ -131,7 +104,6 @@ public class Model {
         }
     }
     
-
     // Doenst work all the time because of byte fixed content-lenth
     public String requestInstruction(String prompt) {
         String url = "http://localhost:8100/instruction";

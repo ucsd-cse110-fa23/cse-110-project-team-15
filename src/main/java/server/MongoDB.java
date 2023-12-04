@@ -5,7 +5,6 @@ import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Updates.combine;
 import static com.mongodb.client.model.Updates.set;
 
-import java.sql.Timestamp;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
@@ -25,6 +24,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
+import java.sql.Timestamp;
 
 public class MongoDB implements HttpHandler {
 
@@ -49,6 +49,7 @@ public class MongoDB implements HttpHandler {
 
             // Extract necessary data from the JSON
             String userID = json.getString("id");
+            String recipeId = json.getString("recipeId");
             String recipeName = json.getString("name");
             String recipeMealType = json.getString("mealType");
             String recipeIngredients = json.getString("ingredients");
@@ -57,11 +58,11 @@ public class MongoDB implements HttpHandler {
             System.out.println("URI: " + requestUri);
             System.out.println("Name: " + recipeName);
             if (requestUri.contains("create")) {
-                createRecipe(userID, recipeName, recipeIngredients, recipeInstructions, recipeMealType);
+                createRecipe(userID, recipeId, recipeName, recipeIngredients, recipeInstructions, recipeMealType);
             } else if (requestUri.contains("delete")) {
-                deleteRecipe(userID, recipeName, recipeIngredients, recipeInstructions, recipeMealType);
+                deleteRecipe(userID, recipeId, recipeName, recipeIngredients, recipeInstructions, recipeMealType);
             } else if (requestUri.contains("update")) {
-                updateRecipe(userID, recipeName, recipeIngredients, recipeInstructions, recipeMealType);
+                updateRecipe(userID, recipeId, recipeName, recipeIngredients, recipeInstructions, recipeMealType);
             }
         }
         //Sending back response to the client
@@ -73,7 +74,7 @@ public class MongoDB implements HttpHandler {
 
     }
 
-    public void updateRecipe(String id, String recipeName, String recipeIngredients, String recipeInstructions,
+    public void updateRecipe(String id, String recipeId, String recipeName, String recipeIngredients, String recipeInstructions,
             String mealType) {
         String uri = "mongodb+srv://aditijain:cse110project@cluster0.yu0exzy.mongodb.net/?retryWrites=true&w=majority";
         try (MongoClient mongoClient = MongoClients.create(uri)) {
@@ -97,7 +98,7 @@ public class MongoDB implements HttpHandler {
         }
     }
 
-    public void deleteRecipe(String id, String recipeName, String recipeIngredients, String recipeInstructions,
+    public void deleteRecipe(String id, String recipeId, String recipeName, String recipeIngredients, String recipeInstructions,
             String mealType) {
         String uri = "mongodb+srv://aditijain:cse110project@cluster0.yu0exzy.mongodb.net/?retryWrites=true&w=majority";
         try (MongoClient mongoClient = MongoClients.create(uri)) {
@@ -108,7 +109,7 @@ public class MongoDB implements HttpHandler {
             MongoCollection<Document> recipesCollection = RecipeDB.getCollection("recipes");
 
             // DOESNT ACTUALLY DELETE FIND OUT HOW TO DO THIS MAYBE FILTER IS WRONG LOL
-            Bson filter = recipesCollection.find(and(eq("userID", id), eq("recipeName", recipeName))).first();
+            Bson filter = recipesCollection.find(and(eq("userID", id), eq("_id", recipeId))).first();
             System.out.println(filter);               
             DeleteResult delteteResult = recipesCollection.deleteOne(filter);
             System.out.println("Deleted");
@@ -119,14 +120,13 @@ public class MongoDB implements HttpHandler {
         return;
     }
 
-    public void createRecipe(String id, String recipeName, String recipeIngredients, String recipeInstructions,
+    public void createRecipe(String id, String recipeId, String recipeName, String recipeIngredients, String recipeInstructions,
     String mealType) {
         String uri = "mongodb+srv://aditijain:cse110project@cluster0.yu0exzy.mongodb.net/?retryWrites=true&w=majority";
         try (MongoClient mongoClient = MongoClients.create(uri)) {
 
             MongoDatabase RecipeDB = mongoClient.getDatabase("recipe_db");
             MongoCollection<Document> accountsCollection = RecipeDB.getCollection("recipes");
-            Timestamp recipeId = new Timestamp(System.currentTimeMillis());
 
             Document recipe = new Document("_id", recipeId)
                     .append("userID", id).append("recipeName", recipeName)

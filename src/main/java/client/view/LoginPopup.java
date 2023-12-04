@@ -52,8 +52,7 @@ public class LoginPopup extends Stage {
         password.setStyle("-fx-alignment: center; -fx-font-weight: bold;");
 
         loginAccountButton = new Button("Login");
-        loginAccountButton.setStyle(
-                "-fx-background-color: #bdd9bd;  -fx-font-weight: bold; -fx-font-size: 13; -fx-font-family: 'Lucida Bright';");
+        loginAccountButton.setStyle("-fx-background-color: #bdd9bd;  -fx-font-weight: bold; -fx-font-size: 13; -fx-font-family: 'Lucida Bright';");
 
         buttonBox = new HBox(10);
         buttonBox.setAlignment(Pos.CENTER);
