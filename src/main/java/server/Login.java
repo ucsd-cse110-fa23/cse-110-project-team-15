@@ -30,6 +30,9 @@ public class Login {
             if (autoLogin){
                 storeCredentials(username, password);
             }
+            else {
+                clearCredentials();
+            }
 
             return true;
         }
@@ -46,6 +49,13 @@ public class Login {
         Preferences prefs = Preferences.userNodeForPackage(Login.class);
         prefs.put("username", username);
         prefs.put("password", password);
+    }
+
+    public static void clearCredentials() {
+        // Use Preferences API to securely store credentials
+        Preferences prefs = Preferences.userNodeForPackage(Login.class);
+        prefs.remove("username");
+        prefs.remove("password");
     }
 
     public static boolean attemptAutoLogin() {

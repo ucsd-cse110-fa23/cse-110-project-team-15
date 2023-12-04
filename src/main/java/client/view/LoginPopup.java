@@ -37,7 +37,7 @@ public class LoginPopup extends Stage {
 
         setTitle("Login");
         setWidth(300);
-        setHeight(200);
+        setHeight(300);
 
         usernameLabel = new Label("Username:");
         usernameLabel.setStyle("-fx-alignment: center; -fx-font-weight: bold; -fx-font-family: 'Lucida Bright';");

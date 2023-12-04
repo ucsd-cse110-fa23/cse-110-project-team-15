@@ -162,6 +162,7 @@ public class AppFrame extends BorderPane {
             loginPopup.display();
         });
         logoutButton.setOnAction(e -> {
+            server.Login.clearCredentials();
             setLoggedOutUI();
         });
     }

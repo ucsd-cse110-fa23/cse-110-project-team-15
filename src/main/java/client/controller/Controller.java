@@ -22,6 +22,7 @@ public class Controller {
     private AccountPopup accountPopup;
     private DetailsPopup detailsPopup;
     private LoginPopup loginPopup;
+    private boolean loggedIn;
 
     public Controller(AppFrame appFrame, Model model) {
         this.appFrame = appFrame;
@@ -43,6 +44,16 @@ public class Controller {
         this.detailsPopup.setDeleteButtonAction(this::handleDeleteButton);
         this.accountPopup.setCreateAccountButtonAction(this::handleCreateAccountButton);
         this.loginPopup.setLoginAccountButtonAction(this::handleLoginAccountButton);
+
+        loggedIn = server.Login.attemptAutoLogin();
+        if (loggedIn) {
+            System.out.println("Auto-login successful");
+            this.appFrame.setLoggedInUI();
+        } else {
+            System.out.println("Auto-login failed or credentials not stored");
+            loginPopup.show();
+        }
+
     }
 
     private void handleCreateAccountButton(ActionEvent event) {
