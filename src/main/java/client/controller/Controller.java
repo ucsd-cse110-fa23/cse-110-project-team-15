@@ -80,7 +80,7 @@ public class Controller {
                 recipePopup.mealTypeSet = false;
 
                 if (recipePopup.getRecipe().isComplete()) {
-                    recipePopup.getRecipe().saveRecipetoDB();
+                    model.sendRecipe("create", recipePopup.getRecipe());
                 } else {
                     System.out.println("Incomplete recipe. Please fill all fields.");
                 }
@@ -108,6 +108,7 @@ public class Controller {
             detailsPopup.getRecipe().getIngredient().setText(instructions[1]);
             detailsPopup.getRecipe().getInstruction().setText(instructions[2]);
             detailsPopup.setRecipe(detailsPopup.getRecipe());
+            model.sendRecipe("update", detailsPopup.getRecipe());
         } catch (IOException | InterruptedException | URISyntaxException e1) {
             e1.printStackTrace();
         }
@@ -172,15 +173,16 @@ public class Controller {
         detailsPopup.getRecipe().getName().setText(detailsPopup.getName().getText());
         detailsPopup.getRecipe().getIngredient().setText(detailsPopup.getIngredients().getText());
         detailsPopup.getRecipe().getInstruction().setText(detailsPopup.getInstruction().getText());
-        model.sendRecipe(detailsPopup.getRecipe());
+        model.sendRecipe("update", detailsPopup.getRecipe());
         detailsPopup.close();
         System.out.println("DONE");
     }
 
     public void handleDeleteButton(ActionEvent event) {
         detailsPopup.getRecipe().deleteRecipe();
-        model.deleteRecipe(detailsPopup.getRecipe());
+        model.sendRecipe("delete", detailsPopup.getRecipe());
         detailsPopup.close();
+        System.out.println("DELETED AND CLOSE");
     }
 
 }

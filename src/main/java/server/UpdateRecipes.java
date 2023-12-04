@@ -19,6 +19,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 
 public class UpdateRecipes implements HttpHandler{
 
@@ -49,6 +50,11 @@ public class UpdateRecipes implements HttpHandler{
             String recipeInstructions = json.getString("instructions");
             updateRecipe(userID, recipeName, recipeIngredients, recipeInstructions, recipeMealType);
         }
+        //Sending back response to the client
+        exchange.sendResponseHeaders(200, "Bruh".length());
+        OutputStream outStream = exchange.getResponseBody();
+        outStream.write("BRUH".getBytes());
+        outStream.close();
         return;
 
     }
@@ -70,9 +76,10 @@ public class UpdateRecipes implements HttpHandler{
             UpdateResult updateResult = recipesCollection.updateOne(filter, updateOperation);
             System.out.println("Updated");
             System.out.println(updateResult);
+            return;
         } catch (Exception e) {
             e.printStackTrace();
+            return;
         }
-        return;
     }
 }

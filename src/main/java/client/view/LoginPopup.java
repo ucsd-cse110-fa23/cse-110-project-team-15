@@ -15,12 +15,16 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+
+import org.bson.types.ObjectId;
+
 import com.sun.net.httpserver.HttpExchange;
 
 public class LoginPopup extends Stage {
     private Button loginAccountButton;
     private TextField username;
     private TextField password;
+    private String id;
     private HBox buttonBox;
     private VBox layout;
     private Label usernameLabel;
@@ -120,6 +124,10 @@ public class LoginPopup extends Stage {
 
     public TextField getPassword() {
         return this.password;
+    }
+
+    public String getId() {
+        return this.id;
     }
 
     public Button getLoginAccountButton() {

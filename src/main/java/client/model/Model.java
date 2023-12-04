@@ -32,6 +32,8 @@ import java.net.http.HttpRequest.BodyPublishers;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import org.bson.types.ObjectId;
+import java.time.Duration;
+import java.net.URI;
 
 import client.view.Recipe;
 
@@ -99,8 +101,8 @@ public class Model {
         }
     }
 
-    public String sendRecipe(Recipe recipe) {
-        String url = "http://localhost:8100/api/recipes";
+    public String sendRecipe(String method, Recipe recipe) {
+        String url = "http://localhost:8100/api/" + method;
 
         try {
             HttpClient client = HttpClient.newHttpClient();
@@ -119,33 +121,7 @@ public class Model {
                     .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
                     .build();
 
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            return response.body();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return "Error: " + ex.getMessage();
-        }
-    }
-
-    public String deleteRecipe(Recipe recipe) {
-        String url = "http://localhost:8100/api/delete";
-
-        try {
-            HttpClient client = HttpClient.newHttpClient();
-            JSONObject json = new JSONObject();
-            json.put("id", server.Login.getID());
-            json.put("name", recipe.getName().getText());
-            json.put("mealType", recipe.getMealType().getText());
-            json.put("ingredients", recipe.getIngredient().getText());
-            json.put("instructions", recipe.getInstruction().getText());
-
-            System.out.println(json);
-
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(url))
-                    .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
-                    .build();
+            System.out.println("HELLO");
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             return response.body();
@@ -154,7 +130,6 @@ public class Model {
             return "Error: " + ex.getMessage();
         }
     }
-
     
 
     // Doenst work all the time because of byte fixed content-lenth
