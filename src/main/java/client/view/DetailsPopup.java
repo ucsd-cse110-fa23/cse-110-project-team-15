@@ -133,20 +133,9 @@ public class DetailsPopup extends Stage {
         name.setText(recipe.getName().getText());
         ingredients.setText(recipe.getIngredient().getText());
         instruction.setText(recipe.getInstruction().getText());
-        String[] nameArr = name.getText().split(" ");
-        String sb = "";
-        for(String name: nameArr) {
-            sb = sb + name;
-        }
-        String imagePath = "/image/" + sb + ".jpg";
-        URL imageURL = getClass().getResource(imagePath);
-        if (imageURL != null) {
-            Image image = new Image(imageURL.toExternalForm());
-            this.recipeImage.setImage(image);
-        } else {
-            // Handle the case where the image resource is not found
-            System.err.println("Image resource not found: " + imagePath);
-        }
+        String url = recipe.getImageURL().getText();
+        Image image = new Image(url);
+        recipeImage.setImage(image);
     }
 
     public Button getEditButton() {

@@ -84,7 +84,7 @@ public class Controller {
                 recipePopup.getRecipe().getInstruction().setText(instructions[2]);
                 String url = Model.generateImage(recipePopup.getRecipe().getName().getText());
                 recipePopup.getRecipe().getImageURL().setText(url);
-                String[] nameArr = recipePopup.getRecipe().getName().getText().split(" ");
+                /*String[] nameArr = recipePopup.getRecipe().getName().getText().split(" ");
                 String sb = "";
                 for(String name: nameArr) {
                     sb = sb + name;
@@ -94,7 +94,7 @@ public class Controller {
                 )
                 {
                     Files.copy(in, Paths.get("src/main/resources/image/" + sb + ".jpg"));
-                }
+                }*/
                 recipePopup.mealTypeSet = false;
 
                 if (recipePopup.getRecipe().isComplete()) {
