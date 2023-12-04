@@ -101,7 +101,7 @@ public class RecipeListTest extends ApplicationTest {
         recipe2.getMealType().setText("breakfast2");
         recipe2.getIngredient().setText("ingredient2");
         recipe2.getInstruction().setText("instruction2");
-        recipe2.getInstruction().setText("https123");
+        recipe2.getImageURL().setText("https123");
         recipe2.addRecipe();
 
         try {
@@ -111,8 +111,6 @@ public class RecipeListTest extends ApplicationTest {
             assertTrue(file.exists());
             
             List<String> lines = Files.readAllLines(Path.of("recipes.csv"));
-
-            System.out.print(lines.get(0));
 
             String[] parts1 = lines.get(0).split("-", 4);
             assertEquals("Recipe 1", parts1[0]);
