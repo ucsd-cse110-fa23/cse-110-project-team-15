@@ -159,7 +159,9 @@ public class RecipeList extends VBox {
 
         for (Recipe recipe : recipeContainer) {
             String mealType = recipe.getMealType().getText().toLowerCase();
-            if (mealType.charAt(mealType.length() - 1) == '.') mealType = mealType.substring(0,mealType.length() - 1);
+            if (mealType.charAt(mealType.length()-1)=='.'){
+                mealType = mealType.substring(0, mealType.length()-1);
+            }
             System.out.println(mealType);
             if (selectedMealTypes.length == 0 || ifContains(selectedMealTypes, mealType)) {
                 list.add(recipe);

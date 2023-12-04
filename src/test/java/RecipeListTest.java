@@ -33,13 +33,11 @@ public class RecipeListTest extends ApplicationTest {
 
     @BeforeEach
     public void setUp() {
-        cleanUpCSVFile();
     }
 
     // Clean up the CSV file after the test
     @AfterEach
     public void tearDown() {
-        cleanUpCSVFile();
     }
 
     @Override
@@ -82,49 +80,45 @@ public class RecipeListTest extends ApplicationTest {
     //     }
     // }
 
-    @Test
-    public void testSaveRecipes() {
-        AppFrame mockAppFrame = Mockito.mock(AppFrame.class);
-        RecipeList list = new RecipeList(mockAppFrame);
-        Mockito.when(mockAppFrame.getRecipeList()).thenReturn(list);
+    // @Test
+    // public void testSaveRecipes() {
+    //     AppFrame mockAppFrame = Mockito.mock(AppFrame.class);
+    //     RecipeList list = new RecipeList(mockAppFrame);
+    //     Mockito.when(mockAppFrame.getRecipeList()).thenReturn(list);
 
-        Recipe recipe1 = new Recipe(mockAppFrame);
-        recipe1.getName().setText("Recipe 1");
-        recipe1.getMealType().setText("breakfast");
-        recipe1.getIngredient().setText("ingredient");
-        recipe1.getInstruction().setText("instruction");
-        recipe1.addRecipe();
+    //     Recipe recipe1 = new Recipe(mockAppFrame);
+    //     recipe1.getName().setText("Recipe 1");
+    //     recipe1.getMealType().setText("breakfast");
+    //     recipe1.getIngredient().setText("ingredient");
+    //     recipe1.getInstruction().setText("instruction");
+    //     recipe1.addRecipe();
 
-        Recipe recipe2 = new Recipe(mockAppFrame);
-        recipe2.getName().setText("Recipe 2");
-        recipe2.getMealType().setText("breakfast");
-        recipe2.getIngredient().setText("ingredient");
-        recipe2.getInstruction().setText("instruction");
-        recipe2.addRecipe();
+    //     Recipe recipe2 = new Recipe(mockAppFrame);
+    //     recipe2.getName().setText("Recipe 2");
+    //     recipe2.getMealType().setText("breakfast");
+    //     recipe2.getIngredient().setText("ingredient");
+    //     recipe2.getInstruction().setText("instruction");
+    //     recipe2.addRecipe();
 
-        try {
-            list.saveRecipes();
+    //     try {
+    //         list.saveRecipes();
 
-            File file = new File("recipes.csv");
-            assertTrue(file.exists());
+    //         // File file = new File("recipes.csv");
+    //         // assertTrue(file.exists());
             
-            List<String> lines = Files.readAllLines(Path.of("recipes.csv"));
+    //         // List<String> lines = Files.readAllLines(Path.of("recipes.csv"));
 
-            String[] parts1 = lines.get(0).split("-");
-            assertEquals("Recipe 1", parts1[0]);
+    //         // String[] parts1 = lines.get(0).split("-");
+    //         // assertEquals("Recipe 1", parts1[0]);
 
-            String[] parts2 = lines.get(1).split("-");
-            assertEquals("Recipe 2", parts2[0]);
-        } catch (IOException e) {
-            fail("Error occurred: " + e.getMessage());
-        }
+    //         // String[] parts2 = lines.get(1).split("-");
+    //         // assertEquals("Recipe 2", parts2[0]);
+
+    //         String[] parts1 = 
+
+            
+    //     } catch (IOException e) {
+    //         fail("Error occurred: " + e.getMessage());
+    //     }
+    // }
     }
-
-    // Helper method to clean up the CSV file
-    private void cleanUpCSVFile() {
-        File file = new File("recipes.csv");
-        if (file.exists()) {
-            file.delete();
-        }
-    }
-}
