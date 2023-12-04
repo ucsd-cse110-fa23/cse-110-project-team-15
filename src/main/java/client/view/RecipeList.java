@@ -82,7 +82,8 @@ public class RecipeList extends VBox {
                 String ingredients = Recipe.getIngredient().getText();
                 String instruction = Recipe.getInstruction().getText();
                 String mealType = Recipe.getMealType().getText();
-                fw.write(name + "-" + ingredients + "-" + instruction + "-" + mealType + "\n");
+                String url = Recipe.getImageURL().getText();
+                fw.write(name + "-" + ingredients + "-" + instruction + "-" + mealType + "-" + url + "\n");
             }
             fw.close();
         } catch (Exception e) {
@@ -132,11 +133,13 @@ public class RecipeList extends VBox {
             String recipeIngredients = recipeDoc.getString("recipeIngredients");
             String recipeInstructions = recipeDoc.getString("recipeInstructions");
             String mealType = recipeDoc.getString("mealType");
+            String url = recipeDoc.getString("url");
 
             recipe.getName().setText(recipeName);
             recipe.getIngredient().setText(recipeIngredients);
             recipe.getInstruction().setText(recipeInstructions);
             recipe.getMealType().setText(mealType);
+            recipe.getImageURL().setText(url);
             recipeContainer.add(recipe);
             this.getChildren().add(recipe);
         }

@@ -178,6 +178,47 @@ public class Model {
         return response.body();
     }
 
+    public static String generateImage(String prompt) throws IOException, InterruptedException {
+        String API_ENDPOINT = "https://api.openai.com/v1/images/generations";
+        String API_KEY = "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";
+        String MODEL = "dall-e-2";
+        int n = 1;
+
+        // Create a request body which you will pass into request object
+        JSONObject requestBody = new JSONObject();
+        requestBody.put("model", MODEL);
+        requestBody.put("prompt", prompt);
+        requestBody.put("n", n);
+        requestBody.put("size", "256x256");
+
+        // Create the HTTP client
+        HttpClient client = HttpClient.newHttpClient();
+
+        // Create the request object
+        HttpRequest request = HttpRequest
+        .newBuilder()
+        .uri(URI.create(API_ENDPOINT))
+        .header("Content-Type", "application/json")
+        .header("Authorization", String.format("Bearer %s", API_KEY))
+        .POST(HttpRequest.BodyPublishers.ofString(requestBody.toString()))
+        .build();
+
+        // Send the request and receive the response
+        HttpResponse<String> response = client.send(
+        request,
+        HttpResponse.BodyHandlers.ofString());
+
+        // Process the response
+        String responseBody = response.body();
+
+        JSONObject responseJson = new JSONObject(responseBody);
+
+        // TODO: Process the response
+        String generatedImageURL = responseJson.getJSONArray("data").getJSONObject(0).getString("url");
+        return generatedImageURL;
+
+    }
+
     // private static String sendAudio(String urlString, String filePath) throws
     // IOException{
     // final String POST_URL = urlString;

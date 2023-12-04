@@ -33,6 +33,7 @@ public class RecipeTest extends ApplicationTest {
         assertNotNull(recipe.getIngredient());
         assertNotNull(recipe.getInstruction());
         assertNotNull(recipe.getDetailButton());
+        assertNotNull(recipe.getImageURL());
     }
 
     @Test
@@ -44,6 +45,7 @@ public class RecipeTest extends ApplicationTest {
         recipe.getMealType().setText("Dinner");
         recipe.getIngredient().setText("Chicken, vegetables");
         recipe.getInstruction().setText("Stir-fry the ingredients.");
+        recipe.getImageURL().setText("https...");
 
         assertTrue(recipe.isComplete());
     }
