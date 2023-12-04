@@ -14,13 +14,12 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        
         AppFrame root = new AppFrame();
 
         Model model = new Model();
         Controller controller = new Controller(root, model);
         
-        primaryStage.setResizable(false);
+        primaryStage.setResizable(true);
         primaryStage.setScene(new Scene(root, 500, 600));
         primaryStage.setTitle("Recipe Management App");
         primaryStage.show();

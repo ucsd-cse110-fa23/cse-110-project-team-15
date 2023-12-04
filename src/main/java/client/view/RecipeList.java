@@ -10,12 +10,6 @@ import org.controlsfx.control.CheckComboBox;
 import java.util.List;
 
 import javafx.scene.layout.*;
-
-import java.io.*;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -73,7 +67,18 @@ public class RecipeList extends VBox {
      */
     // TODO: Change it to update the recipe in mongo instead of csv
     public void saveRecipes() {
-        try {
+        // for (int i = 0; i < recipeContainer.size(); i++) {
+        //         Recipe Recipe = recipeContainer.get(i);
+        //         String name = Recipe.getName().getText();
+        //         String ingredients = Recipe.getIngredient().getText();
+        //         String instruction = Recipe.getInstruction().getText();
+        //         String mealType = Recipe.getMealType().getText();
+        // }
+        // String id = server.Login.getID();
+        
+        // needs to go through controller
+        // server.UpdateRecipes(id, name, ingredients, instruction, mealType);
+        /**try {
             File csvfile = new File("recipes.csv");
             FileWriter fw = new FileWriter(csvfile);
             for (int i = 0; i < recipeContainer.size(); i++) {
@@ -88,7 +93,7 @@ public class RecipeList extends VBox {
             fw.close();
         } catch (Exception e) {
             System.out.println("savetasks() not implemented!");
-        }
+        }**/
     }
 
     /*
@@ -157,6 +162,9 @@ public class RecipeList extends VBox {
 
         for (Recipe recipe : recipeContainer) {
             String mealType = recipe.getMealType().getText().toLowerCase();
+            if (mealType.charAt(mealType.length()-1)=='.'){
+                mealType = mealType.substring(0, mealType.length()-1);
+            }
             System.out.println(mealType);
             if (selectedMealTypes.length == 0 || ifContains(selectedMealTypes, mealType)) {
                 list.add(recipe);

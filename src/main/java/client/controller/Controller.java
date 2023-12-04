@@ -29,6 +29,7 @@ public class Controller {
     private AccountPopup accountPopup;
     private DetailsPopup detailsPopup;
     private LoginPopup loginPopup;
+    private boolean loggedIn;
 
     public Controller(AppFrame appFrame, Model model) {
         this.appFrame = appFrame;
@@ -46,8 +47,20 @@ public class Controller {
         this.recipePopup.setStartRecordingButtonAction(this::handleStartRecordingButton);
         this.recipePopup.setStopRecordingButtonAction(this::handleStopRecordingButton);
         this.detailsPopup.setRefreshButtonAction(this::handleRefreshButton);
+        this.detailsPopup.setSaveButtonAction(this::handleSaveButton);
+        this.detailsPopup.setDeleteButtonAction(this::handleDeleteButton);
         this.accountPopup.setCreateAccountButtonAction(this::handleCreateAccountButton);
         this.loginPopup.setLoginAccountButtonAction(this::handleLoginAccountButton);
+
+        loggedIn = server.Login.attemptAutoLogin();
+        if (loggedIn) {
+            System.out.println("Auto-login successful");
+            this.appFrame.setLoggedInUI();
+        } else {
+            System.out.println("Auto-login failed or credentials not stored");
+            loginPopup.show();
+        }
+
     }
 
     private void handleCreateAccountButton(ActionEvent event) {
@@ -127,6 +140,14 @@ public class Controller {
     public void audioToMealType() {
         String generatedText = model.requestTranscript();
         System.out.println(generatedText);
+        generatedText = generatedText.strip();
+        String[] mealOptions = {"breakfast", "lunch", "dinner"};
+        for (String option : mealOptions) {
+            if (generatedText.toLowerCase().contains(option)) {
+                generatedText = option;
+                break;
+            }
+        }
         if (generatedText.toLowerCase().contains("breakfast")
                 || generatedText.toLowerCase().contains("lunch")
                 || generatedText.toLowerCase().contains("dinner")) {
@@ -167,6 +188,21 @@ public class Controller {
         System.out.println("Instructions: " + instructions[2]);
 
         return instructions;
+    }
+
+    public void handleSaveButton(ActionEvent event) {
+        detailsPopup.getRecipe().getName().setText(detailsPopup.getName().getText());
+        detailsPopup.getRecipe().getIngredient().setText(detailsPopup.getIngredients().getText());
+        detailsPopup.getRecipe().getInstruction().setText(detailsPopup.getInstruction().getText());
+        model.sendRecipe(detailsPopup.getRecipe());
+        detailsPopup.close();
+        System.out.println("DONE");
+    }
+
+    public void handleDeleteButton(ActionEvent event) {
+        detailsPopup.getRecipe().deleteRecipe();
+        model.deleteRecipe(detailsPopup.getRecipe());
+        detailsPopup.close();
     }
 
 }

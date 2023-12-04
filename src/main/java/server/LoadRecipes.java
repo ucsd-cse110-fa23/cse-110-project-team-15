@@ -18,6 +18,7 @@ public class LoadRecipes {
         if (userID != null) {
             recipes = recipesCollection.find(eq("userID", userID)).into(new ArrayList<>());
         }
+        System.out.println(recipes);
         return recipes;
     }
 }
