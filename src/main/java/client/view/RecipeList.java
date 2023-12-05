@@ -37,8 +37,6 @@ public class RecipeList extends VBox {
 
         filterDropdown = new VBox(mealOptions);
         filterDropdown.setAlignment(Pos.CENTER_RIGHT);
-        this.getChildren().addAll(filterDropdown);
-
         mealOptions.getCheckModel().getCheckedItems().addListener((ListChangeListener.Change<? extends String> c) -> {
             filterRecipes();
         });

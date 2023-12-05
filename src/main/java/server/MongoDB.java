@@ -85,7 +85,7 @@ public class MongoDB implements HttpHandler {
             MongoDatabase RecipeDB = mongoClient.getDatabase("recipe_db");
             MongoCollection<Document> recipesCollection = RecipeDB.getCollection("recipes");
 
-            Bson filter = recipesCollection.find(and(eq("userID", id), eq("recipeName", recipeName))).first();
+            Bson filter = recipesCollection.find(and(eq("userID", id), eq("_id", recipeId))).first();
             System.out.println(filter);
             Bson updateOperation = combine(set("recipeIngredients", recipeIngredients), set("recipeInstructions", recipeInstructions));
                
