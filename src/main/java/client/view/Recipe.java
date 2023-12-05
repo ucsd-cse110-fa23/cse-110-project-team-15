@@ -9,6 +9,8 @@ import java.util.Map;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+import java.sql.Timestamp;
+
 //import RecipeManagement.RecipePopup.DetailsPopup;
 
 import java.util.HashMap;
@@ -26,6 +28,7 @@ public class Recipe extends HBox {
     private TextField ingredient;
     private TextField instruction;
     private TextField imageURL;
+    private Timestamp id;
     private Button detailButton;
     public Map<String, String[]> recipe = new HashMap<>();
     String[] recipeDetails = new String[4];
@@ -58,10 +61,9 @@ public class Recipe extends HBox {
         detailButton = new Button("View");
         detailButton.setPrefSize(50, 10);
         detailButton.setPrefHeight(Double.MAX_VALUE);
-        detailButton.setAlignment(Pos.CENTER_RIGHT);
         detailButton.setStyle(
                 " -fx-background-color: #bdd9bd;  -fx-font-weight: bold; -fx-font-size: 13; -fx-font-family: 'Times New Roman';");
-        this.setPadding(new Insets(0, 0, 0, 20));
+        this.setPadding(new Insets(0, 0, 0, 100));
 
         HBox recipecontainer = new HBox();
         recipecontainer.setAlignment(Pos.CENTER);
@@ -69,19 +71,20 @@ public class Recipe extends HBox {
         recipecontainer.getChildren().addAll(mealType, name, detailButton);
         this.getChildren().addAll(recipecontainer);
 
-        
+        this.mealType = new TextField();
         this.ingredient = new TextField();
         this.instruction = new TextField();
+        this.imageURL = new TextField();
+
+        recipeDetails[0] = mealType.toString();
+        recipeDetails[1] = ingredient.toString();
+        recipeDetails[2] = instruction.toString();
+        recipeDetails[3] = imageURL.toString();
+        recipe.put(name.toString(), recipeDetails);
 
         this.getChildren().addAll(recipeInfo);
         addListeners();
 
-    }
-
-    public void saveRecipetoDB() {
-        server.SendRecipeDB.sendRecipeDB(server.Login.getID(), this.name.getText(),
-                this.ingredient.getText(),
-                this.instruction.getText(), this.mealType.getText(), this.imageURL.getText());
     }
 
     public TextField getName() {
@@ -106,6 +109,14 @@ public class Recipe extends HBox {
 
     public Button getDetailButton() {
         return this.detailButton;
+    }
+
+    public Timestamp getRecipeId() {
+        return this.id;
+    }
+
+    public Timestamp setRecipeId(Timestamp id) {
+        return this.id = id;
     }
 
     public void addListeners() {

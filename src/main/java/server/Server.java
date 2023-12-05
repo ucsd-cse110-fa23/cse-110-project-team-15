@@ -28,7 +28,8 @@ public class Server {
     server.createContext("/transcribe", new Whisper());
     server.createContext("/instruction", new ChatGPT());
 //    server.createContext("/api/accounts", new MongoDB());
-    server.createContext("/api/recipes", new UpdateRecipes());
+    server.createContext("/api", new MongoDB());
+    server.createContext("/accounts", new Account());
     server.setExecutor(threadPoolExecutor);
     server.start();
 

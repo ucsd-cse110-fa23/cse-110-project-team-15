@@ -32,6 +32,8 @@ import java.net.http.HttpRequest.BodyPublishers;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import org.bson.types.ObjectId;
+import java.time.Duration;
+import java.net.URI;
 
 import client.view.Recipe;
 
@@ -39,49 +41,21 @@ import org.bson.types.ObjectId;
 import org.json.JSONObject;
 
 import client.view.Recipe;
-import server.Login;
 
 import java.net.URI;
 
 public class Model {
-    // Doesnt work
-    public String recipeRequest(String method, String language, String year, String query) {
-        try {
-            String urlString = "http://localhost:8100/";
-            if (query != null) {
-                urlString += "?=" + query;
-            }
-            URL url = new URI(urlString).toURL();
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod(method);
-            conn.setDoOutput(true);
 
-            if (method.equals("POST") || method.equals("PUT")) {
-                OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream());
-                out.write(language + "," + year);
-                out.flush();
-                out.close();
-            }
-
-            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String response = in.readLine();
-            in.close();
-            return response;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return "Error: " + ex.getMessage();
-        }
-    }
-
-    public String sendAccount(String username, String password) {
-        String url = "http://localhost:8100/api/accounts";
+    public String sendAccount(String method, String username, String password, String autoLogin) {
+        String url = "http://localhost:8100/accounts/" + method;
 
         try {
             HttpClient client = HttpClient.newHttpClient();
             JSONObject json = new JSONObject();
-            json.put("_id", new ObjectId());
+            // json.put("_id", new ObjectId());
             json.put("username", username);
             json.put("password", password);
+            json.put("autoLogin", autoLogin);
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(url))
@@ -99,17 +73,20 @@ public class Model {
         }
     }
 
-    public String sendRecipe(Recipe recipe) {
-        String url = "http://localhost:8100/api/recipes";
+    public String sendRecipe(String method, String id, Recipe recipe) {
+        String url = "http://localhost:8100/api/" + method;
 
         try {
             HttpClient client = HttpClient.newHttpClient();
             JSONObject json = new JSONObject();
-            json.put("id", server.Login.getID());
+            System.out.println("Hello: " + id);
+            json.put("id", id);
+            json.put("recipeId", recipe.getRecipeId().toString());
             json.put("name", recipe.getName().getText());
             json.put("mealType", recipe.getMealType().getText());
             json.put("ingredients", recipe.getIngredient().getText());
             json.put("instructions", recipe.getInstruction().getText());
+            json.put("url", recipe.getImageURL().getText());
 
             System.out.println(json);
 
@@ -119,33 +96,7 @@ public class Model {
                     .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
                     .build();
 
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            return response.body();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return "Error: " + ex.getMessage();
-        }
-    }
-
-    public String deleteRecipe(Recipe recipe) {
-        String url = "http://localhost:8100/api/delete";
-
-        try {
-            HttpClient client = HttpClient.newHttpClient();
-            JSONObject json = new JSONObject();
-            json.put("id", server.Login.getID());
-            json.put("name", recipe.getName().getText());
-            json.put("mealType", recipe.getMealType().getText());
-            json.put("ingredients", recipe.getIngredient().getText());
-            json.put("instructions", recipe.getInstruction().getText());
-
-            System.out.println(json);
-
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(url))
-                    .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
-                    .build();
+            System.out.println("HELLO");
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             return response.body();
@@ -154,9 +105,7 @@ public class Model {
             return "Error: " + ex.getMessage();
         }
     }
-
     
-
     // Doenst work all the time because of byte fixed content-lenth
     public String requestInstruction(String prompt) {
         String url = "http://localhost:8100/instruction";
@@ -171,8 +120,10 @@ public class Model {
                     .header("Content-Type", "application/json")
                     .method("PUT", HttpRequest.BodyPublishers.ofString(jsonObject.toString()))
                     .build();
-
+            
+            System.out.println(prompt);
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println("sent prompt");
             return response.body();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -210,7 +161,7 @@ public class Model {
         return response.body();
     }
 
-    public static String generateImage(String prompt) throws IOException, InterruptedException {
+    public String generateImage(String prompt) throws IOException, InterruptedException {
         String API_ENDPOINT = "https://api.openai.com/v1/images/generations";
         String API_KEY = "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";
         String MODEL = "dall-e-2";

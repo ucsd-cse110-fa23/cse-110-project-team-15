@@ -162,20 +162,21 @@ public class AppFrame extends BorderPane {
             loginPopup.display();
         });
         logoutButton.setOnAction(e -> {
-            server.Login.clearCredentials();
+            server.Account.clearCredentials();
             setLoggedOutUI();
         });
     }
 
-    public static void setLoggedInUI() {
+    public void setLoggedInUI() {
         header.getLogoutButton(true);
         header.getLoginButton(false);
         header.getCreateAccountButton(false);
-        getRecipes().loadTasks();
+        recipeList.clearRecipes();
+        getRecipes().loadTasks(loginPopup.getId());
 
     }
 
-    public static void setLoggedOutUI() {
+    public void setLoggedOutUI() {
         header.getLogoutButton(false);
         header.getLoginButton(true);
         header.getCreateAccountButton(true);

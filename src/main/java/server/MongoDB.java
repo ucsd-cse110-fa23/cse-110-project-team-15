@@ -1,90 +1,149 @@
 package server;
 
+import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Updates.combine;
+import static com.mongodb.client.model.Updates.set;
 
 import org.bson.Document;
-import org.bson.types.ObjectId;
+import org.bson.conversions.Bson;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.http.HttpRequest;
-import java.net.http.HttpClient;
-import java.net.http.HttpResponse;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.CompletableFuture;
-import java.util.Scanner;
-import java.net.InetSocketAddress;
-import java.nio.charset.StandardCharsets;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.stream.Collectors;
 
 import com.sun.net.httpserver.*;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.UpdateResult;
+import java.sql.Timestamp;
 
 public class MongoDB implements HttpHandler {
-    private static MongoCollection<Document> accountsCollection;
-
-    public MongoDB() {
-    }
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        // MongoDB connection setup
-        String uri = "mongodb+srv://aditijain:cse110project@cluster0.yu0exzy.mongodb.net/?retryWrites=true&w=majority";
-        MongoClient mongoClient = MongoClients.create(uri);
-        MongoDatabase database = mongoClient.getDatabase("PantryPal");
-        accountsCollection = database.getCollection("accounts");
+        if ("POST".equals(exchange.getRequestMethod())) {
+            String requestUri = exchange.getRequestURI().toString();
+            // Obtain the input stream from the request
+            InputStream requestBody = exchange.getRequestBody();
+            InputStreamReader isr = new InputStreamReader(requestBody);
+            BufferedReader br = new BufferedReader(isr);
 
-        String response;
-        int statusCode;
-
-        Document doc = accountsCollection.find(eq("username", "group15")).first();
-        System.out.println(doc.toJson());
-        System.out.println(exchange.getRequestMethod());
-
-        // Handle only the GET request for simplicity
-        if ("GET".equals(exchange.getRequestMethod())) {
-            try {
-                // Read JSON data from the request body
-                InputStream requestBody = exchange.getRequestBody();
-                String jsonData = new String(requestBody.readAllBytes(), StandardCharsets.UTF_8);
-
-                // Parse JSON data and insert into MongoDB collection
-                Document document = Document.parse(jsonData);
-                accountsCollection.insertOne(document);
-
-                System.out.println("username on server: " + jsonData);
-
-                response = "Data added to MongoDB collection 'accounts'";
-                statusCode = 200;
-            } catch (Exception e) {
-                e.printStackTrace();
-                response = "Error processing the request";
-                statusCode = 500;
+            // Read the JSON data from the request
+            StringBuilder requestData = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                requestData.append(line);
             }
-        } else {
-            response = "Unsupported HTTP method";
-            statusCode = 405; // Method Not Allowed
+
+            // Parse the JSON data
+            JSONObject json = new JSONObject(requestData.toString());
+
+            // Extract necessary data from the JSON
+            String userID = json.getString("id");
+            String recipeId = json.getString("recipeId");
+            String recipeName = json.getString("name");
+            String recipeMealType = json.getString("mealType");
+            String recipeIngredients = json.getString("ingredients");
+            String recipeInstructions = json.getString("instructions");
+            String url = json.getString("url");
+
+            System.out.println("URI: " + requestUri);
+            System.out.println("Name: " + recipeName);
+            if (requestUri.contains("create")) {
+                createRecipe(userID, recipeId, recipeName, recipeIngredients, recipeInstructions, recipeMealType, url);
+            } else if (requestUri.contains("delete")) {
+                deleteRecipe(userID, recipeId, recipeName, recipeIngredients, recipeInstructions, recipeMealType, url);
+            } else if (requestUri.contains("update")) {
+                updateRecipe(userID, recipeId, recipeName, recipeIngredients, recipeInstructions, recipeMealType, url);
+            }
         }
+        //Sending back response to the client
+        exchange.sendResponseHeaders(200, "bruh".length());
+        OutputStream outStream = exchange.getResponseBody();
+        outStream.write("bruh".getBytes());
+        outStream.close();
+        return;
 
-        // Set response headers
-        exchange.getResponseHeaders().set("Content-Type", "text/plain");
-        exchange.sendResponseHeaders(statusCode, response.length());
+    }
 
-        // Send the response
-        try (OutputStream os = exchange.getResponseBody()) {
-            os.write(response.getBytes());
+    public void updateRecipe(String id, String recipeId, String recipeName, String recipeIngredients, String recipeInstructions,
+            String mealType, String url) {
+        String uri = "mongodb+srv://aditijain:cse110project@cluster0.yu0exzy.mongodb.net/?retryWrites=true&w=majority";
+        try (MongoClient mongoClient = MongoClients.create(uri)) {
+
+            System.out.println("Name: " + recipeName);
+            System.out.println("ID: " + id);
+            MongoDatabase RecipeDB = mongoClient.getDatabase("recipe_db");
+            MongoCollection<Document> recipesCollection = RecipeDB.getCollection("recipes");
+
+            Bson filter = recipesCollection.find(and(eq("userID", id), eq("recipeName", recipeName))).first();
+            System.out.println(filter);
+            Bson updateOperation = combine(set("recipeIngredients", recipeIngredients), set("recipeInstructions", recipeInstructions));
+               
+            UpdateResult updateResult = recipesCollection.updateOne(filter, updateOperation);
+            System.out.println("Updated");
+            System.out.println(updateResult);
+            return;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
         }
     }
+
+    public void deleteRecipe(String id, String recipeId, String recipeName, String recipeIngredients, String recipeInstructions,
+            String mealType, String url) {
+        String uri = "mongodb+srv://aditijain:cse110project@cluster0.yu0exzy.mongodb.net/?retryWrites=true&w=majority";
+        try (MongoClient mongoClient = MongoClients.create(uri)) {
+
+            System.out.println("Name: " + recipeName);
+            System.out.println("ID: " + id);
+            MongoDatabase RecipeDB = mongoClient.getDatabase("recipe_db");
+            MongoCollection<Document> recipesCollection = RecipeDB.getCollection("recipes");
+
+            // DOESNT ACTUALLY DELETE FIND OUT HOW TO DO THIS MAYBE FILTER IS WRONG LOL
+            Bson filter = recipesCollection.find(and(eq("userID", id), eq("_id", recipeId))).first();
+            System.out.println(filter);               
+            DeleteResult delteteResult = recipesCollection.deleteOne(filter);
+            System.out.println("Deleted");
+            System.out.println(delteteResult);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return;
+    }
+
+    public void createRecipe(String id, String recipeId, String recipeName, String recipeIngredients, String recipeInstructions,
+    String mealType, String url) {
+        String uri = "mongodb+srv://aditijain:cse110project@cluster0.yu0exzy.mongodb.net/?retryWrites=true&w=majority";
+        try (MongoClient mongoClient = MongoClients.create(uri)) {
+
+            MongoDatabase RecipeDB = mongoClient.getDatabase("recipe_db");
+            MongoCollection<Document> accountsCollection = RecipeDB.getCollection("recipes");
+
+            Document recipe = new Document("_id", recipeId)
+                    .append("userID", id)
+                    .append("recipeName", recipeName)
+                    .append("recipeIngredients", recipeIngredients)
+                    .append("recipeInstructions", recipeInstructions)
+                    .append("mealType", mealType)
+                    .append("url", url);
+            accountsCollection.insertOne(recipe);
+            
+            System.out.println("Created");
+            System.out.println("Recipe Stored for user:" + id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

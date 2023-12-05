@@ -129,8 +129,8 @@ public class RecipeList extends VBox {
     }
 
     // loadTasks from Mongo
-    public void loadTasks() {
-        List<Document> recipeList = server.LoadRecipes.loadRecipes(server.Login.getID());
+    public void loadTasks(String id) {
+        List<Document> recipeList = server.LoadRecipes.loadRecipes(id);
         for (Document recipeDoc : recipeList) {
             Recipe recipe = new Recipe(appFrame);
 

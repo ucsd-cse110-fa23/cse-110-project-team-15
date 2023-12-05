@@ -19,11 +19,6 @@ repositories {
 
 dependencies {
     def junitVersion = '5.8.1'
-    // implementation files(fileTree('lib') {include '*.jar'})
-    // implementation files(fileTree('lib') {include '*.dylib'})
-    // implementation files(fileTree('lib') {include '*.properties'})
-    // implementation 'org.openjfx:javafx-controls:16'
-    // implementation 'org.openjfx:javafx-fxml:16'
     implementation 'org.json:json:20171018'
     implementation 'com.google.guava:guava:31.1-jre'
     implementation 'org.mongodb:mongodb-driver-sync:4.11.0'
@@ -44,7 +39,6 @@ javafx {
     if (System.getenv("CI") == null && !(Os.isFamily(Os.FAMILY_WINDOWS))) {
         sdk = "./"
     }
-    // modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.swing', 'javafx.media', 'javafx.graphics']
     modules = [ 'javafx.base', 'javafx.controls', 'javafx.swing', 'javafx.fxml', 'javafx.graphics']
 
 }
@@ -54,5 +48,6 @@ test {
 }
 
 mainClassName = 'App'
+
 
 // mainClassName = 'server.Server'

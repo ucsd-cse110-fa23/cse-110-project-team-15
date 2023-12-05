@@ -12,19 +12,11 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-
-import javax.swing.JCheckBox;
-
-import com.sun.net.httpserver.HttpExchange;
-
 public class LoginPopup extends Stage {
     private Button loginAccountButton;
     private TextField username;
     private TextField password;
+    private String id;
     private HBox buttonBox;
     private VBox layout;
     private Label usernameLabel;
@@ -61,8 +53,7 @@ public class LoginPopup extends Stage {
 
 
         loginAccountButton = new Button("Login");
-        loginAccountButton.setStyle(
-                "-fx-background-color: #bdd9bd;  -fx-font-weight: bold; -fx-font-size: 13; -fx-font-family: 'Lucida Bright';");
+        loginAccountButton.setStyle("-fx-background-color: #bdd9bd;  -fx-font-weight: bold; -fx-font-size: 13; -fx-font-family: 'Lucida Bright';");
 
         buttonBox = new HBox(10);
         buttonBox.setAlignment(Pos.CENTER);
@@ -74,47 +65,17 @@ public class LoginPopup extends Stage {
     }
 
     public void setLoginAccountButtonAction(EventHandler<ActionEvent> eventHandler) {
-        loginAccountButton.setOnAction(event -> {
-            String enteredUsername = username.getText();
-            String enteredPassword = password.getText();
-            loginAccount(enteredUsername, enteredPassword);
-        });
+        loginAccountButton.setOnAction(eventHandler);
     }
 
-    public void loginAccount(String username, String password) {
-        loggedIn = server.Login.loginAccount(username, password, autoLogin);
-        if (loggedIn) {
-            // If logged in successfully, close the login popup
-            this.close();
-            AppFrame.setLoggedInUI();
-        }
-        sendDataToServerAndMongoDB(username, password);
-    }
-
-    private void sendDataToServerAndMongoDB(String username, String password) {
-        try {
-            // Sending data to your server using HttpClient
-            String serverUrl = "http://localhost:8100/login_account"; // Replace with your server URL
-            HttpClient client = HttpClient.newHttpClient();
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(serverUrl))
-                    .POST(HttpRequest.BodyPublishers.ofString("username=" + username + "&password=" + password))
-                    .build();
-
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            int statusCode = response.statusCode();
-            String responseBody = response.body();
-
-            // Handle response from server if needed
-            System.out.println("Server Response - Status code: " + statusCode);
-            System.out.println("Server Response - Body: " + responseBody);
-            System.out.println("Data inserted into MongoDB");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            // Handle exceptions
-        }
-    }
+    // public void loginAccount(String username, String password) {
+    //     loggedIn = server.Login.loginAccount(username, password);
+    //     if (loggedIn) {
+    //         // If logged in successfully, close the login popup
+    //         this.close();
+    //         AppFrame.setLoggedInUI();
+    //     }
+    // }
 
     public void display() {
         layout = new VBox(10);
@@ -135,7 +96,24 @@ public class LoginPopup extends Stage {
         return this.password;
     }
 
+    public String getId() {
+        return this.id;
+    }
+
+    public String setId(String id) {
+        return this.id = id;
+    }
+
     public Button getLoginAccountButton() {
         return this.loginAccountButton;
     }
+
+    public void setLoggedIn(boolean loggedin) {
+        this.loggedIn = loggedin;
+    }
+
+    public String getAutologin() {
+        return String.valueOf(autoLogin);
+    }
+
 }
