@@ -236,4 +236,16 @@ public class Controller {
         model.sendRecipe("delete", id, detailsPopup.getRecipe());
         detailsPopup.close();
     }
+
+    public boolean checkServerStatus() {
+        boolean checker = Model.isServerOnline();
+        if (!checker) {
+            loginPopup.close();
+        }
+        return Model.isServerOnline();
+    }
+
+    public AppFrame getAppFrame() {
+        return appFrame;
+    }
 }

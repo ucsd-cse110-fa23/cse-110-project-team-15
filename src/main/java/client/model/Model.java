@@ -32,6 +32,9 @@ import java.net.http.HttpRequest.BodyPublishers;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import org.bson.types.ObjectId;
+import java.net.Socket;
+import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.time.Duration;
 import java.net.URI;
 
@@ -46,8 +49,10 @@ import java.net.URI;
 
 public class Model {
 
+    private boolean isServerOnline = false;
+
     public String sendAccount(String method, String username, String password, String autoLogin) {
-        String url = "http://localhost:8100/accounts/" + method;
+        String url = "http://localhost:8100/api/accounts" + method;
 
         try {
             HttpClient client = HttpClient.newHttpClient();
@@ -202,6 +207,18 @@ public class Model {
 
     }
 
+    public static boolean isServerOnline() {
+        String urlString = "http://localhost:8100/api/online";
 
+        try (Socket socket = new Socket()) {
+            URL url = new URL(urlString);
+            socket.connect(new InetSocketAddress(url.getHost(), url.getPort()), 2000);
+            return true;
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            return false;
+        }
 
+    }
 }
