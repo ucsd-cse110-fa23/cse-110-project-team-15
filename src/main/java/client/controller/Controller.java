@@ -25,6 +25,8 @@ import java.io.InputStream;
 import java.net.URI;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Controller {
@@ -35,7 +37,7 @@ public class Controller {
     private AccountPopup accountPopup;
     private DetailsPopup detailsPopup;
     private LoginPopup loginPopup;
-    private String loggedIn;
+    private List<String> loggedIn;
 
     public Controller(AppFrame appFrame, Model model) {
         this.appFrame = appFrame;
@@ -61,9 +63,13 @@ public class Controller {
         this.loginPopup.setLoginAccountButtonAction(this::handleLoginAccountButton);
 
         loggedIn = server.Account.attemptAutoLogin();
-        if (loggedIn != null) {
+        if (loggedIn.get(2) == "true") {
             System.out.println("Auto-login successful");
-            loginPopup.setId(loggedIn);
+            loginPopup.setAutologin(true);
+            loginPopup.setUsername(loggedIn.get(0));
+            loginPopup.setPassword(loggedIn.get(1));
+            String userID = model.sendAccount("login", loginPopup.getUsername().getText(), loginPopup.getPassword().getText(), loginPopup.getAutologin());
+            loginPopup.setId(userID);
             this.appFrame.setLoggedInUI();
         } else {
             System.out.println("Auto-login failed or credentials not stored");
@@ -116,17 +122,12 @@ public class Controller {
                 recipePopup.getRecipe().getName().setText(instructions[0]);
                 recipePopup.getRecipe().getIngredient().setText(instructions[1]);
                 recipePopup.getRecipe().getInstruction().setText(instructions[2]);
-<<<<<<< HEAD
                 String url = model.generateImage(recipePopup.getRecipe().getName().getText());
-=======
-                String url = Model.generateImage(recipePopup.getRecipe().getName().getText());
-                // String url = Model.generateImage(instructions[0]); 
->>>>>>> 8617b98b7de408ff2d16c8df8faceb7f26999c46
                 recipePopup.getRecipe().getImageURL().setText(url);
                 recipePopup.mealTypeSet = false;
 
                 if (recipePopup.getRecipe().isComplete()) {
-                    recipePopup.getRecipe().setRecipeId(new Timestamp(System.currentTimeMillis()));
+                    recipePopup.getRecipe().setRecipeId(new Timestamp(System.currentTimeMillis()).toString());
                     System.out.println("Time: " + recipePopup.getRecipe().getRecipeId());
 
                     model.sendRecipe("create", loginPopup.getId(), recipePopup.getRecipe());
@@ -224,14 +225,8 @@ public class Controller {
         detailsPopup.getRecipe().getName().setText(detailsPopup.getName().getText());
         detailsPopup.getRecipe().getIngredient().setText(detailsPopup.getIngredients().getText());
         detailsPopup.getRecipe().getInstruction().setText(detailsPopup.getInstruction().getText());
-<<<<<<< HEAD
         String id = loginPopup.getId();
         model.sendRecipe("update", id, detailsPopup.getRecipe());
-=======
-        // String url = Model.generateImage(recipePopup.getRecipe().getName().getText());
-        // detailsPopup.getRecipe().getImageURL().setText(url);
-        model.sendRecipe(detailsPopup.getRecipe());
->>>>>>> 8617b98b7de408ff2d16c8df8faceb7f26999c46
         detailsPopup.close();
     }
 

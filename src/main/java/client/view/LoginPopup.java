@@ -116,4 +116,16 @@ public class LoginPopup extends Stage {
         return String.valueOf(autoLogin);
     }
 
+    public void setUsername(String u) {
+        this.username.setText(u);;
+    }
+
+    public void setPassword(String p) {
+        this.password.setText(p);
+    }
+
+    public void setAutologin(boolean a) {
+        autoLogin = a;
+    }
+
 }

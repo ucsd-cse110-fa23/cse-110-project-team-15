@@ -28,6 +28,8 @@ import com.mongodb.client.result.UpdateResult;
 import java.util.prefs.Preferences;
 
 import static java.util.Arrays.asList;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Account implements HttpHandler {
     private static volatile String userID;
@@ -146,14 +148,17 @@ public class Account implements HttpHandler {
         prefs.remove("password");
     }
 
-    public static String attemptAutoLogin() {
+    public static ArrayList<String> attemptAutoLogin() {
         // Attempt automatic login using stored credentials
         Preferences prefs = Preferences.userNodeForPackage(Account.class);
         String storedUsername = prefs.get("username", null);
         String storedPassword = prefs.get("password", null);
 
         boolean autoLogin = storedUsername != null && storedPassword != null;
-
-        return loginAccount(storedUsername, storedPassword, autoLogin);
+        ArrayList<String> arr = new ArrayList<>();
+        arr.add(storedUsername);
+        arr.add(storedPassword);
+        arr.add(String.valueOf(autoLogin));
+        return arr;
     }
 }
