@@ -6,6 +6,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -46,6 +48,7 @@ public class DetailsPopup extends Stage {
     private Button saveButton;
     private Button backButton;
     private Button refreshButton;
+    private Button shareButton;
 
 
     public DetailsPopup() {
@@ -93,6 +96,8 @@ public class DetailsPopup extends Stage {
         deleteButton.setStyle(defaultButtonStyle);
         refreshButton = new Button("Refresh");
         refreshButton.setStyle(defaultButtonStyle);
+        shareButton = new Button("Share");
+        shareButton.setStyle(defaultButtonStyle);
 
         Image defaultImage = new Image("https://oaidalleapiprodscus.blob.core.windows.net/private/org-Sd9bwBmEf5IDns4KIh3k3fXp/user-DgtoVZso5Yqo57hZ4b0PreAg/img-J5bN9XvbTsOKfNxM4jZ5nZeA.png?st=2023-12-04T00%3A19%3A56Z&se=2023-12-04T02%3A19%3A56Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-12-03T22%3A44%3A30Z&ske=2023-12-04T22%3A44%3A30Z&sks=b&skv=2021-08-06&sig=xfmsjhcQXD23/A8KzCCNsB/Q0tJ5h3IknRwQNI7hnLo%3D");
         recipeImage = new ImageView(defaultImage);
@@ -104,7 +109,7 @@ public class DetailsPopup extends Stage {
         layout.setAlignment(Pos.CENTER);
         layout.setStyle("-fx-background-color: #93c994;");
         layout.getChildren().addAll(recipeImage, name, mealType, ingredients, instruction, backButton, editButton, deleteButton, saveButton,
-                refreshButton);
+                refreshButton, shareButton);
 
 
         editButton.setOnAction(e -> {
@@ -116,6 +121,20 @@ public class DetailsPopup extends Stage {
         backButton.setOnAction(e -> {
             close();
         });
+
+        shareButton.setOnAction(e -> {
+            String recipeId = generateRecipeId(name.getText()); // You need to implement this method
+            String recipeUrl = buildRecipeUrl(recipeId); // You need to implement this method
+
+            // Copy the URL to the clipboard
+            Clipboard clipboard = Clipboard.getSystemClipboard();
+            ClipboardContent content = new ClipboardContent();
+            content.putString(recipeUrl);
+            clipboard.setContent(content);
+            
+            System.out.println("Recipe URL copied to clipboard: " + recipeUrl);
+        });
+
 
         // Create a scene and set it for the popup window
         Scene scene = new Scene(layout);
@@ -176,4 +195,15 @@ public class DetailsPopup extends Stage {
     public void setDeleteButtonAction(EventHandler<ActionEvent> eventHandler) {
         deleteButton.setOnAction(eventHandler);
     }
+
+    private String generateRecipeId(String recipeName) {
+        int hashCode = recipeName.hashCode();
+        return Integer.toString(Math.abs(hashCode));
+    }
+
+    private String buildRecipeUrl(String recipeId) {
+        String baseUrl = "https://your-base-url/recipe/";
+        return baseUrl + recipeId;
+    }
+    
 }
