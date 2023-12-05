@@ -84,7 +84,7 @@ public class Model {
         try {
             HttpClient client = HttpClient.newHttpClient();
             JSONObject json = new JSONObject();
-            System.out.println("Hello: " + id);
+            System.out.println("Hello: " + recipe.getRecipeId().toString());
             json.put("id", id);
             json.put("recipeId", recipe.getRecipeId().toString());
             json.put("name", recipe.getName().getText());

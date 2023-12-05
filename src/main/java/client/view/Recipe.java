@@ -28,7 +28,7 @@ public class Recipe extends HBox {
     private TextField ingredient;
     private TextField instruction;
     private TextField imageURL;
-    private Timestamp id;
+    private String id;
     private Button detailButton;
     public Map<String, String[]> recipe = new HashMap<>();
     String[] recipeDetails = new String[4];
@@ -71,7 +71,7 @@ public class Recipe extends HBox {
         recipecontainer.getChildren().addAll(mealType, name, detailButton);
         this.getChildren().addAll(recipecontainer);
 
-        this.mealType = new TextField();
+        // this.mealType = new TextField();
         this.ingredient = new TextField();
         this.instruction = new TextField();
         this.imageURL = new TextField();
@@ -111,12 +111,12 @@ public class Recipe extends HBox {
         return this.detailButton;
     }
 
-    public Timestamp getRecipeId() {
+    public String getRecipeId() {
         return this.id;
     }
 
-    public Timestamp setRecipeId(Timestamp id) {
-        return this.id = id;
+    public void setRecipeId(String id) {
+        this.id = id;
     }
 
     public void addListeners() {

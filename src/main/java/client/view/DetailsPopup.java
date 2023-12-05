@@ -131,7 +131,7 @@ public class DetailsPopup extends Stage {
         name.setText(recipe.getName().getText());
         ingredients.setText(recipe.getIngredient().getText());
         instruction.setText(recipe.getInstruction().getText());
-        // mealType.setText(recipe.getMealType().getText());
+        mealType.setText(recipe.getMealType().getText());
         String url = recipe.getImageURL().getText();
         Image image = new Image(url);
         recipeImage.setImage(image);
