@@ -48,12 +48,12 @@ import java.net.URI;
 public class Model {
 
     public String sendAccount(String method, String username, String password) {
-        String url = "http://localhost:8100/account/" + method;
+        String url = "http://localhost:8100/accounts/" + method;
 
         try {
             HttpClient client = HttpClient.newHttpClient();
             JSONObject json = new JSONObject();
-            json.put("_id", new ObjectId());
+            // json.put("_id", new ObjectId());
             json.put("username", username);
             json.put("password", password);
 
@@ -73,13 +73,14 @@ public class Model {
         }
     }
 
-    public String sendRecipe(String method, Recipe recipe) {
+    public String sendRecipe(String method, String id, Recipe recipe) {
         String url = "http://localhost:8100/api/" + method;
 
         try {
             HttpClient client = HttpClient.newHttpClient();
             JSONObject json = new JSONObject();
-            json.put("id", server.Login.getID());
+            System.out.println("Hello: " + id);
+            json.put("id", id);
             json.put("recipeId", recipe.getRecipeId().toString());
             json.put("name", recipe.getName().getText());
             json.put("mealType", recipe.getMealType().getText());
@@ -158,6 +159,4 @@ public class Model {
         // Parse the response as JSON and get the transcript field
         return response.body();
     }
-
-
 }

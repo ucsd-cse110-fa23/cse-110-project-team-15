@@ -47,7 +47,7 @@ test {
     useJUnitPlatform()
 }
 
-mainClassName = 'App'
+// mainClassName = 'App'
 
 
-// mainClassName = 'server.Server'
+mainClassName = 'server.Server'

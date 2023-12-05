@@ -94,7 +94,7 @@ public class LoadRecipes implements HttpHandler{
         if (userID != null) {
             recipes = recipesCollection.find(eq("userID", userID)).into(new ArrayList<>());
         }
-        System.out.println(recipes);
+        System.out.println(userID);
         return recipes;
     }
 }

@@ -66,9 +66,9 @@ public class MongoDB implements HttpHandler {
             }
         }
         //Sending back response to the client
-        exchange.sendResponseHeaders(200, "Bruh".length());
+        exchange.sendResponseHeaders(200, "bruh".length());
         OutputStream outStream = exchange.getResponseBody();
-        outStream.write("BRUH".getBytes());
+        outStream.write("bruh".getBytes());
         outStream.close();
         return;
 

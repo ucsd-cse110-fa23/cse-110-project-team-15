@@ -79,7 +79,7 @@ public class ChatGPT implements HttpHandler {
         JSONArray choices = responseJson.getJSONArray("choices");
         String generatedText = choices.getJSONObject(0).getString("text");
 
-        // System.out.println(generatedText);
+        System.out.println(generatedText);
         return generatedText;
     }
 }

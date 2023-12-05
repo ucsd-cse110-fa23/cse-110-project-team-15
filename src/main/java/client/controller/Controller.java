@@ -51,18 +51,28 @@ public class Controller {
         this.accountPopup.setCreateAccountButtonAction(this::handleCreateAccountButton);
 
         this.loginPopup.setLoginAccountButtonAction(this::handleLoginAccountButton);
-
-
     }
 
     private void handleCreateAccountButton(ActionEvent event) {
-        model.sendAccount("create", accountPopup.getUsername().getText(), accountPopup.getPassword().getText());
-        this.accountPopup.setCreateAccountButtonAction(this::handleCreateAccountButton);
-        this.loginPopup.setLoginAccountButtonAction(this::handleLoginAccountButton);
+        String userID = model.sendAccount("create", accountPopup.getUsername().getText(), accountPopup.getPassword().getText());
+        System.out.println(userID);
+        loginPopup.setLoggedIn(userID.length() != 0);
+        if (loginPopup.isLoggedIn()) {
+            loginPopup.setId(userID);
+            accountPopup.close();
+            appFrame.setLoggedInUI();
+        }
     }
 
     private void handleLoginAccountButton(ActionEvent event) {
-        model.sendAccount("login", loginPopup.getUsername().getText(), loginPopup.getPassword().getText());
+        String userID = model.sendAccount("login", loginPopup.getUsername().getText(), loginPopup.getPassword().getText());
+        System.out.println(userID);
+        loginPopup.setLoggedIn(userID.length() != 0);
+        if (loginPopup.isLoggedIn()) {
+            loginPopup.setId(userID);
+            loginPopup.close();
+            appFrame.setLoggedInUI();
+        }
     }
 
     private void handleStartRecordingButton(ActionEvent event) {
@@ -91,7 +101,7 @@ public class Controller {
 
                 if (recipePopup.getRecipe().isComplete()) {
                     recipePopup.getRecipe().setRecipeId(new Timestamp(System.currentTimeMillis()));
-                    model.sendRecipe("create", recipePopup.getRecipe());
+                    model.sendRecipe("create", loginPopup.getId(), recipePopup.getRecipe());
                 } else {
                     System.out.println("Incomplete recipe. Please fill all fields.");
                 }
@@ -119,7 +129,7 @@ public class Controller {
             detailsPopup.getRecipe().getIngredient().setText(instructions[1]);
             detailsPopup.getRecipe().getInstruction().setText(instructions[2]);
             detailsPopup.setRecipe(detailsPopup.getRecipe());
-            model.sendRecipe("update", detailsPopup.getRecipe());
+            model.sendRecipe("update", loginPopup.getId(), detailsPopup.getRecipe());
         } catch (IOException | InterruptedException | URISyntaxException e1) {
             e1.printStackTrace();
         }
@@ -131,9 +141,9 @@ public class Controller {
         String generatedText = model.requestTranscript();
         System.out.println(generatedText);
         generatedText = generatedText.strip();
-        String[] mealOptions = {"breakfast", "lunch", "dinner"};
+        String[] mealOptions = {"Breakfast", "Lunch", "Dinner"};
         for (String option : mealOptions) {
-            if (generatedText.toLowerCase().contains(option)) {
+            if (generatedText.toLowerCase().contains(option.toLowerCase())) {
                 generatedText = option;
                 break;
             }
@@ -184,17 +194,15 @@ public class Controller {
         detailsPopup.getRecipe().getName().setText(detailsPopup.getName().getText());
         detailsPopup.getRecipe().getIngredient().setText(detailsPopup.getIngredients().getText());
         detailsPopup.getRecipe().getInstruction().setText(detailsPopup.getInstruction().getText());
-        model.sendRecipe("update", detailsPopup.getRecipe());
+        String id = loginPopup.getId();
+        model.sendRecipe("update", id, detailsPopup.getRecipe());
         detailsPopup.close();
-        System.out.println("DONE");
     }
 
     public void handleDeleteButton(ActionEvent event) {
         detailsPopup.getRecipe().deleteRecipe();
-        model.sendRecipe("delete", detailsPopup.getRecipe());
+        String id = loginPopup.getId();
+        model.sendRecipe("delete", id, detailsPopup.getRecipe());
         detailsPopup.close();
-        System.out.println("DELETED AND CLOSE");
     }
-
-
 }

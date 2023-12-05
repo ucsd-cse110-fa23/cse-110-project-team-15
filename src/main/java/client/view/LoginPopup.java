@@ -64,47 +64,17 @@ public class LoginPopup extends Stage {
     }
 
     public void setLoginAccountButtonAction(EventHandler<ActionEvent> eventHandler) {
-        loginAccountButton.setOnAction(event -> {
-            String enteredUsername = username.getText();
-            String enteredPassword = password.getText();
-            loginAccount(enteredUsername, enteredPassword);
-        });
+        loginAccountButton.setOnAction(eventHandler);
     }
 
-    public void loginAccount(String username, String password) {
-        loggedIn = server.Login.loginAccount(username, password);
-        if (loggedIn) {
-            // If logged in successfully, close the login popup
-            this.close();
-            AppFrame.setLoggedInUI();
-        }
-        sendDataToServerAndMongoDB(username, password);
-    }
-
-    private void sendDataToServerAndMongoDB(String username, String password) {
-        try {
-            // Sending data to your server using HttpClient
-            String serverUrl = "http://localhost:8100/login_account"; // Replace with your server URL
-            HttpClient client = HttpClient.newHttpClient();
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(serverUrl))
-                    .POST(HttpRequest.BodyPublishers.ofString("username=" + username + "&password=" + password))
-                    .build();
-
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            int statusCode = response.statusCode();
-            String responseBody = response.body();
-
-            // Handle response from server if needed
-            System.out.println("Server Response - Status code: " + statusCode);
-            System.out.println("Server Response - Body: " + responseBody);
-            System.out.println("Data inserted into MongoDB");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            // Handle exceptions
-        }
-    }
+    // public void loginAccount(String username, String password) {
+    //     loggedIn = server.Login.loginAccount(username, password);
+    //     if (loggedIn) {
+    //         // If logged in successfully, close the login popup
+    //         this.close();
+    //         AppFrame.setLoggedInUI();
+    //     }
+    // }
 
     public void display() {
         layout = new VBox(10);
@@ -129,8 +99,16 @@ public class LoginPopup extends Stage {
         return this.id;
     }
 
+    public String setId(String id) {
+        return this.id = id;
+    }
+
     public Button getLoginAccountButton() {
         return this.loginAccountButton;
+    }
+
+    public void setLoggedIn(boolean loggedin) {
+        this.loggedIn = loggedin;
     }
 
 }

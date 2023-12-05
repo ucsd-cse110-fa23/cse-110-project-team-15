@@ -58,38 +58,8 @@ public class AccountPopup extends Stage {
     }
 
     public void setCreateAccountButtonAction(EventHandler<ActionEvent> eventHandler) {
-        createAccountButton.setOnAction(event -> {
-            String enteredUsername = username.getText();
-            String enteredPassword = password.getText();
-            server.CreateAccount.createAccount(enteredUsername, enteredPassword);
-            sendDataToServerAndMongoDB(enteredUsername, enteredPassword);
-        });
+        createAccountButton.setOnAction(eventHandler);
 
-    }
-
-    private void sendDataToServerAndMongoDB(String username, String password) {
-        try {
-            // Sending data to your server using HttpClient
-            String serverUrl = "http://localhost:8100/create_account"; // Replace with your server URL
-            HttpClient client = HttpClient.newHttpClient();
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(serverUrl))
-                    .POST(HttpRequest.BodyPublishers.ofString("username=" + username + "&password=" + password))
-                    .build();
-
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            int statusCode = response.statusCode();
-            String responseBody = response.body();
-
-            // Handle response from server if needed
-            System.out.println("Server Response - Status code: " + statusCode);
-            System.out.println("Server Response - Body: " + responseBody);
-            System.out.println("Data inserted into MongoDB");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            // Handle exceptions
-        }
     }
 
     public void display() {
