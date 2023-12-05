@@ -49,5 +49,4 @@ test {
 
 mainClassName = 'App'
 
-
 // mainClassName = 'server.Server'

@@ -62,12 +62,14 @@ public class Account implements HttpHandler {
             System.out.println("URI: " + requestUri);
             System.out.println("Name: " + username);
             if (requestUri.contains("create")) {
-                createAccount(username, password);
+                userID = createAccount(username, password);
             } else if (requestUri.contains("login")) {
+                System.out.println(autoLogin);
                 userID = loginAccount(username, password, Boolean.parseBoolean(autoLogin));
             }
         }
         //Sending back response to the client
+        System.out.println(userID);
         if (userID != null) {
             exchange.sendResponseHeaders(200, userID.length());
             OutputStream outStream = exchange.getResponseBody();
@@ -82,7 +84,7 @@ public class Account implements HttpHandler {
         }
     }
 
-    public static void createAccount(String username, String password) {
+    public static String createAccount(String username, String password) {
         String uri = "mongodb+srv://aditijain:cse110project@cluster0.yu0exzy.mongodb.net/?retryWrites=true&w=majority";
         try (MongoClient mongoClient = MongoClients.create(uri)) {
 
@@ -95,20 +97,25 @@ public class Account implements HttpHandler {
             userID = user.getObjectId("_id").toString();
 
             System.out.println("Account created for: " + username);
+            return userID;
         } catch (Exception e) {
             e.printStackTrace();
+            return userID;
         }
     }
     
     public static String loginAccount(String username, String password, boolean autoLogin) {
         String uri = "mongodb+srv://aditijain:cse110project@cluster0.yu0exzy.mongodb.net/?retryWrites=true&w=majority";
         MongoClient mongoClient = MongoClients.create(uri);
+        System.out.println("Auto:"+autoLogin);
         MongoDatabase PantryPalDB = mongoClient.getDatabase("PantryPal");
         MongoCollection<Document> accountsCollection = PantryPalDB.getCollection("accounts");
-
+        
+        System.out.println("U:"+username);
+        System.out.println("p:"+password);
         // find one document with Filters.eq()
         Document user = accountsCollection.find(and(eq("username", username), eq("password", password))).first();
-
+        System.out.println("User" + user);
         if (user != null) {
             System.out.println(user.toJson());
             System.out.println("Success");

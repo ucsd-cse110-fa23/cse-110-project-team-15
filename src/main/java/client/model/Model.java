@@ -52,7 +52,7 @@ public class Model {
     private boolean isServerOnline = false;
 
     public String sendAccount(String method, String username, String password, String autoLogin) {
-        String url = "http://localhost:8100/api/accounts" + method;
+        String url = "http://localhost:8100/accounts/" + method;
 
         try {
             HttpClient client = HttpClient.newHttpClient();

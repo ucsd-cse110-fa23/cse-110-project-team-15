@@ -64,16 +64,16 @@ public class Controller {
 
         loggedIn = server.Account.attemptAutoLogin();
         if (loggedIn.get(2) == "true") {
-            System.out.println("Auto-login successful");
             loginPopup.setAutologin(true);
             loginPopup.setUsername(loggedIn.get(0));
             loginPopup.setPassword(loggedIn.get(1));
             String userID = model.sendAccount("login", loginPopup.getUsername().getText(), loginPopup.getPassword().getText(), loginPopup.getAutologin());
             loginPopup.setId(userID);
             this.appFrame.setLoggedInUI();
+            System.out.println("Auto-login successful");
         } else {
-            System.out.println("Auto-login failed or credentials not stored");
             loginPopup.show();
+            System.out.println("Auto-login failed or credentials not stored");
         }
 
     }
