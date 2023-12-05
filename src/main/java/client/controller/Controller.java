@@ -116,7 +116,12 @@ public class Controller {
                 recipePopup.getRecipe().getName().setText(instructions[0]);
                 recipePopup.getRecipe().getIngredient().setText(instructions[1]);
                 recipePopup.getRecipe().getInstruction().setText(instructions[2]);
+<<<<<<< HEAD
                 String url = model.generateImage(recipePopup.getRecipe().getName().getText());
+=======
+                String url = Model.generateImage(recipePopup.getRecipe().getName().getText());
+                // String url = Model.generateImage(instructions[0]); 
+>>>>>>> 8617b98b7de408ff2d16c8df8faceb7f26999c46
                 recipePopup.getRecipe().getImageURL().setText(url);
                 recipePopup.mealTypeSet = false;
 
@@ -219,8 +224,14 @@ public class Controller {
         detailsPopup.getRecipe().getName().setText(detailsPopup.getName().getText());
         detailsPopup.getRecipe().getIngredient().setText(detailsPopup.getIngredients().getText());
         detailsPopup.getRecipe().getInstruction().setText(detailsPopup.getInstruction().getText());
+<<<<<<< HEAD
         String id = loginPopup.getId();
         model.sendRecipe("update", id, detailsPopup.getRecipe());
+=======
+        // String url = Model.generateImage(recipePopup.getRecipe().getName().getText());
+        // detailsPopup.getRecipe().getImageURL().setText(url);
+        model.sendRecipe(detailsPopup.getRecipe());
+>>>>>>> 8617b98b7de408ff2d16c8df8faceb7f26999c46
         detailsPopup.close();
     }
 
