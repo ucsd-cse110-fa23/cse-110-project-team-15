@@ -1,7 +1,6 @@
 package client.view;
 
 import javafx.stage.Stage;
-import server.CreateAccount;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;

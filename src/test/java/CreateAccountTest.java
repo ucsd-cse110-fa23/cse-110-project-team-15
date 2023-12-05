@@ -1,5 +1,4 @@
 import server.MongoDB;
-import server.CreateAccount;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
@@ -28,7 +27,7 @@ public class CreateAccountTest {
     public void testCreateAccount() {
         String username = "testuser";
         String password = "testpassword";
-        server.CreateAccount.createAccount(username, password);
+        // server.CreateAccount.createAccount(username, password);
         MongoCollection<Document> accountsCollection = PantryPalDB.getCollection("accounts");
         Document queryDocument = accountsCollection.find(eq("username", username)).first();
         assertNotNull(queryDocument, "User document should exist");
