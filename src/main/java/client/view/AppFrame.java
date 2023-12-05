@@ -74,7 +74,7 @@ class Header extends HBox {
 
         loginPopup = new LoginPopup();
         username = new Label();
-        username.setStyle("-fx-font-size: 10; -fx-font-family: 'Lucida Bright';");
+        username.setStyle("-fx-font-size: 13; -fx-font-family: 'Lucida Bright';");
         username.setAlignment(Pos.CENTER_RIGHT);
         username.setVisible(false);
 
@@ -193,7 +193,7 @@ public class AppFrame extends BorderPane {
         header.getLogoutButton(true);
         header.getLoginButton(false);
         header.getCreateAccountButton(false);
-        header.getUsername().setText("@" + loginPopup.getUsername());
+        header.getUsername().setText("@" + loginPopup.getUsername().getText());
         header.getUsername().setVisible(true);
         recipeList.clearRecipes();
         getRecipes().loadTasks(loginPopup.getId());

@@ -117,7 +117,7 @@ public class LoginPopup extends Stage {
     }
 
     public void setUsername(String u) {
-        this.username.setText(u);;
+        this.username.setText(u);
     }
 
     public void setPassword(String p) {

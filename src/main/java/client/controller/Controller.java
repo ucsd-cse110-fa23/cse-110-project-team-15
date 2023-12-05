@@ -85,6 +85,8 @@ public class Controller {
         if (loginPopup.isLoggedIn()) {
             loginPopup.setId(userID);
             accountPopup.close();
+            loginPopup.setUsername(accountPopup.getUsername().getText());
+            loginPopup.setPassword(accountPopup.getPassword().getText());
             appFrame.setLoggedInUI();
         }
     }

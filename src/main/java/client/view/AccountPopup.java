@@ -29,6 +29,7 @@ public class AccountPopup extends Stage {
     private boolean loggedIn = false;
     private CheckBox autoLoginCheckbox;
     private boolean autoLogin = false;
+    private LoginPopup loginPopup;
 
     public AccountPopup() {
 
@@ -63,6 +64,8 @@ public class AccountPopup extends Stage {
         buttonBox = new HBox(10);
         buttonBox.setAlignment(Pos.CENTER);
         buttonBox.getChildren().addAll(createAccountButton);
+
+        loginPopup = new LoginPopup();
 
 
     }
