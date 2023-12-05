@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import server.ChatGPT;
+import server.Server;
 import server.Whisper;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -103,6 +104,7 @@ public class AppFrame extends BorderPane {
     private AccountPopup accountPopup;
     private DetailsPopup detailsPopup;
     private LoginPopup loginPopup;
+    private ServerUnavailable serverUnavailable;
 
     private Button createButton;
     private Button createAccountButton;
@@ -125,6 +127,7 @@ public class AppFrame extends BorderPane {
         detailsPopup = new DetailsPopup();
         accountPopup = new AccountPopup();
         loginPopup = new LoginPopup();
+        serverUnavailable = new ServerUnavailable();
 
         ScrollPane scroll = new ScrollPane(recipeList);
         scroll.setFitToWidth(true);
@@ -201,6 +204,13 @@ public class AppFrame extends BorderPane {
 
     public LoginPopup getLoginPopup() {
         return loginPopup;
+    }
+
+    public ServerUnavailable getServerUnavailable() {
+        if (serverUnavailable == null){
+            serverUnavailable = new ServerUnavailable();
+        }
+        return serverUnavailable;
     }
 
     public RecipeList getRecipeList() {

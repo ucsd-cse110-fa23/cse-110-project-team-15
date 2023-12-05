@@ -3,6 +3,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import client.view.AppFrame;
+import client.view.ServerUnavailable;
 import client.model.Model;
 import client.controller.Controller;
 
@@ -19,9 +20,23 @@ public class App extends Application {
         Model model = new Model();
         Controller controller = new Controller(root, model);
         
-        primaryStage.setResizable(true);
-        primaryStage.setScene(new Scene(root, 500, 600));
-        primaryStage.setTitle("Recipe Management App");
-        primaryStage.show();
+                boolean isServerOnline = controller.checkServerStatus();
+
+        if (isServerOnline) {
+            primaryStage.setResizable(true);
+            primaryStage.setScene(new Scene(root, 500, 600));
+            primaryStage.setTitle("Recipe Management App");
+            primaryStage.show();
+        } else {
+            // Server is offline, show the "Server Unavailable" window
+            ServerUnavailable serverUnavailable = root.getServerUnavailable();
+            serverUnavailable.show();
+        }
+
+
+        // primaryStage.setResizable(true);
+        // primaryStage.setScene(new Scene(root, 500, 600));
+        // primaryStage.setTitle("Recipe Management App");
+        // primaryStage.show();
     }
 }
