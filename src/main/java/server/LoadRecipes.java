@@ -66,6 +66,7 @@ public class LoadRecipes implements HttpHandler{
             recipes = recipesCollection.find(eq("userID", userID)).into(new ArrayList<>());
         }
         System.out.println(userID);
+        mongoClient.close();
         return recipes;
     }
 }

@@ -28,7 +28,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class Controller {
     private AppFrame appFrame;
     private Model model;
@@ -67,7 +66,8 @@ public class Controller {
             loginPopup.setAutologin(true);
             loginPopup.setUsername(loggedIn.get(0));
             loginPopup.setPassword(loggedIn.get(1));
-            String userID = model.sendAccount("login", loginPopup.getUsername().getText(), loginPopup.getPassword().getText(), loginPopup.getAutologin());
+            String userID = model.sendAccount("login", loginPopup.getUsername().getText(),
+                    loginPopup.getPassword().getText(), loginPopup.getAutologin());
             loginPopup.setId(userID);
             this.appFrame.setLoggedInUI();
             System.out.println("Auto-login successful");
@@ -79,7 +79,8 @@ public class Controller {
     }
 
     private void handleCreateAccountButton(ActionEvent event) {
-        String userID = model.sendAccount("create", accountPopup.getUsername().getText(), accountPopup.getPassword().getText(), accountPopup.getAutologin());
+        String userID = model.sendAccount("create", accountPopup.getUsername().getText(),
+                accountPopup.getPassword().getText(), accountPopup.getAutologin());
         System.out.println(userID);
         loginPopup.setLoggedIn(userID.length() != 0);
         if (loginPopup.isLoggedIn()) {
@@ -90,7 +91,8 @@ public class Controller {
     }
 
     private void handleLoginAccountButton(ActionEvent event) {
-        String userID = model.sendAccount("login", loginPopup.getUsername().getText(), loginPopup.getPassword().getText(), loginPopup.getAutologin());
+        String userID = model.sendAccount("login", loginPopup.getUsername().getText(),
+                loginPopup.getPassword().getText(), loginPopup.getAutologin());
         System.out.println(userID);
         loginPopup.setLoggedIn(userID.length() != 0);
         if (loginPopup.isLoggedIn()) {
@@ -141,7 +143,7 @@ public class Controller {
             recipePopup.close();
             // recipePopup.getRecipe().saveRecipe();
             recipePopup.getRecipe().addRecipe();
-            recipePopup.getRecipe().saveRecipe();
+            // recipePopup.getRecipe().saveRecipe();
         } else {
             audioToMealType();
         }
@@ -168,7 +170,7 @@ public class Controller {
         } catch (IOException | InterruptedException | URISyntaxException e1) {
             e1.printStackTrace();
         }
-        detailsPopup.getRecipe().saveRecipe();
+        // detailsPopup.getRecipe().saveRecipe();
         refreshButton.setDisable(false);
     }
 
@@ -176,7 +178,7 @@ public class Controller {
         String generatedText = model.requestTranscript();
         System.out.println(generatedText);
         generatedText = generatedText.strip();
-        String[] mealOptions = {"Breakfast", "Lunch", "Dinner"};
+        String[] mealOptions = { "Breakfast", "Lunch", "Dinner" };
         for (String option : mealOptions) {
             if (generatedText.toLowerCase().contains(option.toLowerCase())) {
                 generatedText = option;
