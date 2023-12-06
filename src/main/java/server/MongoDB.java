@@ -128,7 +128,7 @@ public class MongoDB implements HttpHandler {
         }
     }
 
-    public String createRecipe(String id, String recipeId, String recipeName, String recipeIngredients, String recipeInstructions,
+    public static String createRecipe(String id, String recipeId, String recipeName, String recipeIngredients, String recipeInstructions,
     String mealType, String url) {
         String uri = "mongodb+srv://sraswan:pandapanda777@cluster0.fefhkg8.mongodb.net/?retryWrites=true&w=majority";
         try (MongoClient mongoClient = MongoClients.create(uri)) {
