@@ -95,10 +95,6 @@ public class Recipe extends HBox {
         return this.name;
     }
 
-    public String getNameText() {
-        return this.name.getText();
-    }
-
     public TextField getMealType() {
         return this.mealType;
     }
