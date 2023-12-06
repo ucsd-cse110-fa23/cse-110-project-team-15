@@ -146,10 +146,6 @@ public class Recipe extends HBox {
         recipeList.removeRecipe(this);
     }
 
-    public void saveRecipe() {
-        recipeList.saveRecipes();
-    }
-
     public void addRecipe() {
         if (isComplete())
             recipeList.addRecipe(this);

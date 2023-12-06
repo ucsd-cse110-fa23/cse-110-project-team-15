@@ -140,9 +140,7 @@ public class Controller {
                 e1.printStackTrace();
             }
             recipePopup.close();
-            // recipePopup.getRecipe().saveRecipe();
             recipePopup.getRecipe().addRecipe();
-            recipePopup.getRecipe().saveRecipe();
         } else {
             audioToMealType();
         }
@@ -166,7 +164,6 @@ public class Controller {
         } catch (IOException | InterruptedException | URISyntaxException e1) {
             e1.printStackTrace();
         }
-        detailsPopup.getRecipe().saveRecipe();
         refreshButton.setDisable(false);
     }
 
