@@ -167,4 +167,8 @@ public class Recipe extends HBox {
         else
             System.err.println("Failed to add recipe: Recipe incomplete");
     }
+
+    public String getNameText() {
+        return this.name.getText();
+    }
 }

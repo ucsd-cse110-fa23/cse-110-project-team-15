@@ -75,32 +75,34 @@ public class Account implements HttpHandler {
             OutputStream outStream = exchange.getResponseBody();
             outStream.write(userID.getBytes());
             outStream.close();
-        }
-        else {
-            exchange.sendResponseHeaders(500, 0);
+        } else {
+            exchange.sendResponseHeaders(200, "".length());
             OutputStream outStream = exchange.getResponseBody();
-            outStream.write(null);
+            outStream.write("".getBytes());
             outStream.close();
         }
     }
 
     public static String createAccount(String username, String password) {
-        String uri = "mongodb+srv://sraswan:pandapanda777@cluster0.fefhkg8.mongodb.net/?retryWrites=true&w=majorityy";
+        String uri = "mongodb+srv://sraswan:pandapanda777@cluster0.fefhkg8.mongodb.net/?retryWrites=true&w=majority";
         try (MongoClient mongoClient = MongoClients.create(uri)) {
-
+            userID = null;
             MongoDatabase PantryPalDB = mongoClient.getDatabase("PantryPal");
             MongoCollection<Document> accountsCollection = PantryPalDB.getCollection("accounts");
-
-            Document user = new Document("_id", new ObjectId())
+            Document u = accountsCollection.find(and(eq("username", username), eq("password", password))).first();
+            Document user;
+            if (u == null) {
+                user = new Document("_id", new ObjectId())
                     .append("username", username).append("password", password);
-            accountsCollection.insertOne(user);
-            userID = user.getObjectId("_id").toString();
-
-            System.out.println("Account created for: " + username);
-            return userID;
+                accountsCollection.insertOne(user);
+                userID = user.getObjectId("_id").toString();
+                System.out.println("Account created for: " + username);
+                return userID;
+            }
+            return null;
         } catch (Exception e) {
             e.printStackTrace();
-            return userID;
+            return null;
         }
     }
     
@@ -131,7 +133,7 @@ public class Account implements HttpHandler {
 
             return userID;
         }
-        return userID;
+        return null;
     }
 
     public static String getID() {

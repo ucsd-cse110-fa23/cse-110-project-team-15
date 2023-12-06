@@ -85,8 +85,12 @@ public class Controller {
         loginPopup.setLoggedIn(userID.length() != 0);
         if (loginPopup.isLoggedIn()) {
             loginPopup.setId(userID);
+            loginPopup.setUsername(accountPopup.getUsername().getText());
+            loginPopup.setPassword(accountPopup.getPassword().getText());
             accountPopup.close();
             appFrame.setLoggedInUI();
+        } else {
+            appFrame.setLoggedOutUI();
         }
     }
 
@@ -95,10 +99,13 @@ public class Controller {
                 loginPopup.getPassword().getText(), loginPopup.getAutologin());
         System.out.println(userID);
         loginPopup.setLoggedIn(userID.length() != 0);
+        System.out.println("Loggedin:" + loginPopup.isLoggedIn());
         if (loginPopup.isLoggedIn()) {
             loginPopup.setId(userID);
             loginPopup.close();
             appFrame.setLoggedInUI();
+        } else {
+            appFrame.setLoggedOutUI();
         }
     }
 
