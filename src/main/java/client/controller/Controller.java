@@ -230,7 +230,6 @@ public class Controller {
         detailsPopup.getRecipe().getIngredient().setText(detailsPopup.getIngredients().getText());
         detailsPopup.getRecipe().getInstruction().setText(detailsPopup.getInstruction().getText());
         String id = loginPopup.getId();
-        System.out.println("update ID lorem" + detailsPopup.getRecipe().getRecipeId());
         model.sendRecipe("update", id, detailsPopup.getRecipe());
         detailsPopup.close();
     }
