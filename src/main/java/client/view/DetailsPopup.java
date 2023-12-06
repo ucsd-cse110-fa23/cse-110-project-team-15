@@ -53,8 +53,8 @@ public class DetailsPopup extends Stage {
 
     public DetailsPopup() {
         // setTitle(name.getText());
-        setWidth(525);
-        setHeight(650);
+        setWidth(610);
+        setHeight(700);
 
         // Create controls for the popup window
         name = new TextField();

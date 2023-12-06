@@ -22,7 +22,7 @@ class Footer extends HBox {
     private Button createButton;
 
     Footer() {
-        this.setPrefSize(500, 60);
+        this.setPrefSize(600, 60);
         this.setStyle("-fx-background-color: #93c994;");
         this.setSpacing(15);
 
@@ -51,7 +51,7 @@ class Header extends HBox {
     private VBox headerContent;
 
     Header() {
-        this.setPrefSize(500, 100); // Size of the header
+        this.setPrefSize(600, 100); // Size of the header
         this.setStyle("-fx-background-color: #93c994;");
         this.setSpacing(10);
         this.setPadding(new Insets(10));

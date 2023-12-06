@@ -39,7 +39,7 @@ public class Recipe extends HBox {
         this.recipeList = appframe.getRecipeList();
         this.detailsPopup = appframe.getDetailsPopup();
 
-        this.setPrefSize(500, 50); // sets size of task
+        this.setPrefSize(600, 50); // sets size of task
         this.setStyle(
                 "-fx-background-color: #659966; -fx-border-width: 0; -fx-font-weight: bold; -fx-font-size: 11; -fx-font-family: 'Times New Roman';");
 

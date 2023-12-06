@@ -24,7 +24,7 @@ public class App extends Application {
 
         if (isServerOnline) {
             primaryStage.setResizable(true);
-            primaryStage.setScene(new Scene(root, 500, 600));
+            primaryStage.setScene(new Scene(root, 600, 600));
             primaryStage.setTitle("Recipe Management App");
             primaryStage.show();
         } else {
@@ -32,11 +32,5 @@ public class App extends Application {
             ServerUnavailable serverUnavailable = root.getServerUnavailable();
             serverUnavailable.show();
         }
-
-
-        // primaryStage.setResizable(true);
-        // primaryStage.setScene(new Scene(root, 500, 600));
-        // primaryStage.setTitle("Recipe Management App");
-        // primaryStage.show();
     }
 }
