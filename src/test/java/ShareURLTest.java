@@ -19,6 +19,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.URI;
+import java.text.Normalizer;
 
 public class ShareURLTest extends ApplicationTest {
     private static MongoClient mongoClient;
@@ -85,12 +86,18 @@ public class ShareURLTest extends ApplicationTest {
 
         String[] actualRecipeDetails = MongoDB.fetchRecipeDetails("123");
 
+        String encodedRecipeName = actualRecipeDetails[0];
+        String encodedImageUrl = actualRecipeDetails[1];
+
+        String normalizedString = Normalizer.normalize(encodedRecipeName, Normalizer.Form.NFD);
+        encodedRecipeName = normalizedString.replaceAll("[^\\p{ASCII}]", "");
+
         String expectedHtml = "<html><head><title>Recipe Details</title></head><body>"
                 + "<h1>Recipe Details</h1>"
                 + "<p>"
-                + "<img src=\"" + actualRecipeDetails[1] + "\">"
+                + "<img src=\"" + encodedImageUrl + "\">"
                 + "<br>"
-                + actualRecipeDetails[0]
+                + encodedRecipeName
                 + "</p>"
                 + "</body>"
                 + "</html>";
