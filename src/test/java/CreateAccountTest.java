@@ -18,7 +18,7 @@ public class CreateAccountTest {
 
     @BeforeAll
     public static void setUp() {
-        String testUri = "mongodb+srv://aditijain:cse110project@cluster0.yu0exzy.mongodb.net/?retryWrites=true&w=majority";
+        String testUri = "mongodb+srv://sraswan:pandapanda777@cluster0.fefhkg8.mongodb.net/?retryWrites=true&w=majority";
         mongoClient = MongoClients.create(testUri);
         PantryPalDB = mongoClient.getDatabase("PantryPal");
     }
@@ -27,7 +27,7 @@ public class CreateAccountTest {
     public void testCreateAccount() {
         String username = "testuser";
         String password = "testpassword";
-        // server.CreateAccount.createAccount(username, password);
+        server.Account.createAccount(username, password);
         MongoCollection<Document> accountsCollection = PantryPalDB.getCollection("accounts");
         Document queryDocument = accountsCollection.find(eq("username", username)).first();
         assertNotNull(queryDocument, "User document should exist");
