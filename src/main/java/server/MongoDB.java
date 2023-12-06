@@ -150,7 +150,7 @@ public class MongoDB implements HttpHandler {
     }
 
 
-    public static String fetchRecipeDetails(String recipeId) {
+    public static String[] fetchRecipeDetails(String recipeId) {
         String uri = "mongodb+srv://sraswan:pandapanda777@cluster0.fefhkg8.mongodb.net/?retryWrites=true&w=majority";
 
 
@@ -158,14 +158,6 @@ public class MongoDB implements HttpHandler {
             MongoDatabase database = mongoClient.getDatabase("PantryPal");
             MongoCollection<Document> collection = database.getCollection("recipes");
             Document recipeDoc = collection.find(eq("_id", recipeId)).first();
-            System.out.println("|" + recipeId+"|");
-
-        // try (MongoClient mongoClient = MongoClients.create(uri)) {
-
-        //     MongoDatabase RecipeDB = mongoClient.getDatabase("PantryPal");
-        //     MongoCollection<Document> recipesCollection = RecipeDB.getCollection("recipes");
-        //     System.out.println("HELLO:" + recipeId + "|");
-        //     Document recipeDoc = recipesCollection.find(eq("_id", recipeId)).first();
 
             System.out.println(recipeDoc);
 
@@ -174,17 +166,22 @@ public class MongoDB implements HttpHandler {
                 String recipeName = recipeDoc.getString("recipeName");
                 String recipeIngredients = recipeDoc.getString("recipeIngredients");
                 String recipeInstructions = recipeDoc.getString("recipeInstructions");
+                String url = recipeDoc.getString("url");
 
                 // Construct the recipe details string
-                return "Recipe Name: " + recipeName + "<br>" +
+                String str = "Recipe Name: " + recipeName + "<br>" +
                         "Ingredients: " + recipeIngredients + "<br>" +
                         "Instructions: " + recipeInstructions;
+                String[] str1 = {str, url};
+                return str1;
             } else {
-                return "Recipe not found";
+                String[] str2 = {"Recipe not found", ""};
+                return str2;
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return "Error fetching recipe details";
+            String[] str2 = {"Error fetching recipe details", ""};
+            return str2;
         }
     }
 
