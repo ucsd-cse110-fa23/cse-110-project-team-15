@@ -110,6 +110,7 @@ public class Controller {
 
     private void handleStopRecordingButton(ActionEvent event) {
         String[] instructions;
+        String id = new Timestamp(System.currentTimeMillis()).toString();
         audioRecorder.stopRecording();
         recipePopup.getStopRecordingButton().setDisable(true);
         recipePopup.getRecordingStatusLabel().setText("");
@@ -127,10 +128,10 @@ public class Controller {
                 recipePopup.mealTypeSet = false;
 
                 if (recipePopup.getRecipe().isComplete()) {
-                    recipePopup.getRecipe().setRecipeId(new Timestamp(System.currentTimeMillis()).toString());
+                    recipePopup.getRecipe().setRecipeId(id);
                     System.out.println("Time: " + recipePopup.getRecipe().getRecipeId());
 
-                    model.sendRecipe("create", loginPopup.getId(), recipePopup.getRecipe());
+                    id = model.sendRecipe("create", loginPopup.getId(), recipePopup.getRecipe());
                 } else {
                     System.out.println("Incomplete recipe. Please fill all fields.");
                 }
@@ -145,6 +146,8 @@ public class Controller {
             audioToMealType();
         }
         recipePopup.getStartRecordingButton().setDisable(false);
+        recipePopup.getRecipe().setRecipeId(id);
+        System.out.println(recipePopup.getRecipe().getRecipeId());
     }
 
     private void handleRefreshButton(ActionEvent event) {
@@ -160,6 +163,7 @@ public class Controller {
             String url = model.generateImage(instructions[0]);
             detailsPopup.getRecipe().getImageURL().setText(url);
             detailsPopup.setRecipe(detailsPopup.getRecipe());
+            System.out.println("update ID" + detailsPopup.getRecipe().getRecipeId());
             model.sendRecipe("update", loginPopup.getId(), detailsPopup.getRecipe());
         } catch (IOException | InterruptedException | URISyntaxException e1) {
             e1.printStackTrace();
@@ -226,6 +230,7 @@ public class Controller {
         detailsPopup.getRecipe().getIngredient().setText(detailsPopup.getIngredients().getText());
         detailsPopup.getRecipe().getInstruction().setText(detailsPopup.getInstruction().getText());
         String id = loginPopup.getId();
+        System.out.println("update ID lorem" + detailsPopup.getRecipe().getRecipeId());
         model.sendRecipe("update", id, detailsPopup.getRecipe());
         detailsPopup.close();
     }

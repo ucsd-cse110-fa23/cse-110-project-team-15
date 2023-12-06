@@ -30,6 +30,7 @@ public class MongoDB implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
+        String str = "";
         if ("POST".equals(exchange.getRequestMethod())) {
             String requestUri = exchange.getRequestURI().toString();
             // Obtain the input stream from the request
@@ -57,32 +58,34 @@ public class MongoDB implements HttpHandler {
             String url = json.getString("url");
 
             System.out.println("URI: " + requestUri);
+            System.out.println("User ID: " + userID);
+            System.out.println("Recipe ID: " + recipeId);
             System.out.println("Name: " + recipeName);
+            str = userID;
+            
             if (requestUri.contains("create")) {
-                createRecipe(userID, recipeId, recipeName, recipeIngredients, recipeInstructions, recipeMealType, url);
+                str = createRecipe(userID, recipeId, recipeName, recipeIngredients, recipeInstructions, recipeMealType, url);
             } else if (requestUri.contains("delete")) {
-                deleteRecipe(userID, recipeId, recipeName, recipeIngredients, recipeInstructions, recipeMealType, url);
+                str = deleteRecipe(userID, recipeId, recipeName, recipeIngredients, recipeInstructions, recipeMealType, url);
             } else if (requestUri.contains("update")) {
-                updateRecipe(userID, recipeId, recipeName, recipeIngredients, recipeInstructions, recipeMealType, url);
+                str = updateRecipe(userID, recipeId, recipeName, recipeIngredients, recipeInstructions, recipeMealType, url);
             }
         }
         //Sending back response to the client
-        exchange.sendResponseHeaders(200, "bruh".length());
+        exchange.sendResponseHeaders(200, str.length());
         OutputStream outStream = exchange.getResponseBody();
-        outStream.write("bruh".getBytes());
+        outStream.write(str.getBytes());
         outStream.close();
         return;
 
     }
 
-    public void updateRecipe(String id, String recipeId, String recipeName, String recipeIngredients, String recipeInstructions,
+    public String updateRecipe(String id, String recipeId, String recipeName, String recipeIngredients, String recipeInstructions,
             String mealType, String url) {
         String uri = "mongodb+srv://sraswan:pandapanda777@cluster0.fefhkg8.mongodb.net/?retryWrites=true&w=majority";
         try (MongoClient mongoClient = MongoClients.create(uri)) {
 
-            System.out.println("Name: " + recipeName);
-            System.out.println("ID: " + id);
-            MongoDatabase RecipeDB = mongoClient.getDatabase("recipe_db");
+            MongoDatabase RecipeDB = mongoClient.getDatabase("PantryPal");
             MongoCollection<Document> recipesCollection = RecipeDB.getCollection("recipes");
 
             Bson filter = recipesCollection.find(and(eq("userID", id), eq("_id", recipeId))).first();
@@ -92,20 +95,18 @@ public class MongoDB implements HttpHandler {
             UpdateResult updateResult = recipesCollection.updateOne(filter, updateOperation);
             System.out.println("Updated");
             System.out.println(updateResult);
-            return;
+            return recipeId;
         } catch (Exception e) {
             e.printStackTrace();
-            return;
+            return recipeId;
         }
     }
 
-    public void deleteRecipe(String id, String recipeId, String recipeName, String recipeIngredients, String recipeInstructions,
+    public String deleteRecipe(String id, String recipeId, String recipeName, String recipeIngredients, String recipeInstructions,
             String mealType, String url) {
         String uri = "mongodb+srv://sraswan:pandapanda777@cluster0.fefhkg8.mongodb.net/?retryWrites=true&w=majority";
         try (MongoClient mongoClient = MongoClients.create(uri)) {
 
-            System.out.println("Name: " + recipeName);
-            System.out.println("ID: " + id);
             MongoDatabase RecipeDB = mongoClient.getDatabase("PantryPal");
             MongoCollection<Document> recipesCollection = RecipeDB.getCollection("recipes");
 
@@ -115,13 +116,14 @@ public class MongoDB implements HttpHandler {
             DeleteResult delteteResult = recipesCollection.deleteOne(filter);
             System.out.println("Deleted");
             System.out.println(delteteResult);
+            return recipeId;
         } catch (Exception e) {
             e.printStackTrace();
+            return recipeId;
         }
-        return;
     }
 
-    public void createRecipe(String id, String recipeId, String recipeName, String recipeIngredients, String recipeInstructions,
+    public String createRecipe(String id, String recipeId, String recipeName, String recipeIngredients, String recipeInstructions,
     String mealType, String url) {
         String uri = "mongodb+srv://sraswan:pandapanda777@cluster0.fefhkg8.mongodb.net/?retryWrites=true&w=majority";
         try (MongoClient mongoClient = MongoClients.create(uri)) {
@@ -140,8 +142,12 @@ public class MongoDB implements HttpHandler {
             
             System.out.println("Created");
             System.out.println("Recipe Stored for user:" + id);
+            return recipeId;
         } catch (Exception e) {
             e.printStackTrace();
+            return recipeId;
         }
     }
+
+
 }

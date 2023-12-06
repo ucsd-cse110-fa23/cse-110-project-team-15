@@ -28,7 +28,7 @@ public class Recipe extends HBox {
     private TextField ingredient;
     private TextField instruction;
     private TextField imageURL;
-    private String id = "0";
+    private String id;
     private Button detailButton;
     public Map<String, String[]> recipe = new HashMap<>();
     String[] recipeDetails = new String[4];

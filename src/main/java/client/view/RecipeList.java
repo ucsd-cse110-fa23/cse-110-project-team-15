@@ -136,6 +136,7 @@ public class RecipeList extends VBox {
             String recipeIngredients = recipeDoc.getString("recipeIngredients");
             String recipeInstructions = recipeDoc.getString("recipeInstructions");
             String mealType = recipeDoc.getString("mealType");
+            String recipeId = recipeDoc.getString("_id");
             String url = recipeDoc.getString("url");
 
             recipe.getName().setText(recipeName);
@@ -143,6 +144,7 @@ public class RecipeList extends VBox {
             recipe.getInstruction().setText(recipeInstructions);
             recipe.getMealType().setText(mealType);
             recipe.getImageURL().setText(url);
+            recipe.setRecipeId(recipeId);
             recipeContainer.add(recipe);
             this.getChildren().add(recipe);
         }

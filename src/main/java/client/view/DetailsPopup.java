@@ -38,6 +38,7 @@ public class DetailsPopup extends Stage {
     private TextField name;
     private TextField ingredients;
     private TextArea instruction;
+    private String id;
 
     private ImageView recipeImage;
 
@@ -135,6 +136,7 @@ public class DetailsPopup extends Stage {
         String url = recipe.getImageURL().getText();
         Image image = new Image(url);
         recipeImage.setImage(image);
+        this.id = recipe.getRecipeId();
     }
 
     public Button getEditButton() {
