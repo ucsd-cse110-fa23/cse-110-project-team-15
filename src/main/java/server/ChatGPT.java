@@ -36,7 +36,7 @@ public class ChatGPT implements HttpHandler {
             e.printStackTrace();
         }
         //Sending back response to the client
-        httpExchange.sendResponseHeaders(200, response.length());
+        httpExchange.sendResponseHeaders(200, response.getBytes().length);
         OutputStream outStream = httpExchange.getResponseBody();
         outStream.write(response.getBytes());
         outStream.close();

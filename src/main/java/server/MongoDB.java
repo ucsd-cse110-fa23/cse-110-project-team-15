@@ -144,6 +144,4 @@ public class MongoDB implements HttpHandler {
             e.printStackTrace();
         }
     }
-
-
 }

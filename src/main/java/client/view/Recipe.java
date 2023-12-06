@@ -28,7 +28,7 @@ public class Recipe extends HBox {
     private TextField ingredient;
     private TextField instruction;
     private TextField imageURL;
-    private String id;
+    private String id = "0";
     private Button detailButton;
     public Map<String, String[]> recipe = new HashMap<>();
     String[] recipeDetails = new String[4];
@@ -36,7 +36,7 @@ public class Recipe extends HBox {
     public Recipe(AppFrame appframe) {
 
         this.recipeList = appframe.getRecipeList();
-        this.detailsPopup = appframe.getDetailsPopup();
+        this.detailsPopup = appframe.getDetailsPopup(); 
 
         this.setPrefSize(500, 50); // sets size of task
         this.setStyle( "-fx-background-color: #659966; -fx-border-width: 0; -fx-font-weight: bold; -fx-font-size: 11; -fx-font-family: 'Times New Roman';"); 
