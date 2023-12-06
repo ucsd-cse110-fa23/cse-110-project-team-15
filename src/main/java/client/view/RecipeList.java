@@ -5,6 +5,10 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
+
 import org.controlsfx.control.CheckComboBox;
 
 import java.util.List;
@@ -12,6 +16,10 @@ import java.util.List;
 import javafx.scene.layout.*;
 import java.util.ArrayList;
 import java.util.Collections;
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.bson.Document;
 
@@ -21,24 +29,47 @@ public class RecipeList extends VBox {
     private VBox filterDropdown;
     public CheckComboBox<String> mealOptions;
     ObservableList<String> mealtypes;
+
     private ArrayList<Recipe> recipeContainer;
+
+    private VBox filterTimeDropdown;
+    public CheckComboBox<String> timeOptions;
+    ObservableList<String> timeTypes;
 
     public RecipeList(AppFrame appFrame) {
         this.appFrame = appFrame;
         this.setSpacing(5);
         this.setPrefSize(500, 560);
         this.setStyle("-fx-background-color: #93c994;");
-        mealtypes = FXCollections.observableArrayList();
-        mealtypes.addAll(new String[] { "Breakfast", "Lunch", "Dinner" });
 
         recipeContainer = new ArrayList<Recipe>();
 
+        mealtypes = FXCollections.observableArrayList();
+        mealtypes.addAll(new String[] { "Breakfast", "Lunch", "Dinner" });
         mealOptions = new CheckComboBox<String>(mealtypes);
-
         filterDropdown = new VBox(mealOptions);
         filterDropdown.setAlignment(Pos.CENTER_RIGHT);
+
+        // this.getChildren().add(filterDropdown);
+
+        // this.getChildren().addAll(filterDropdown);
+
+
+        timeTypes = FXCollections.observableArrayList();
+        timeTypes.addAll(new String[] { "Newest", "Oldest" });
+        timeOptions = new CheckComboBox<String>(timeTypes);
+        filterTimeDropdown = new VBox(timeOptions);
+        filterTimeDropdown.setAlignment(Pos.CENTER_RIGHT);
+        // this.getChildren().add(filterTimeDropdown);
+
+        this.getChildren().addAll(filterDropdown, filterTimeDropdown);
+
         mealOptions.getCheckModel().getCheckedItems().addListener((ListChangeListener.Change<? extends String> c) -> {
             filterRecipes();
+        });
+
+        timeOptions.getCheckModel().getCheckedItems().addListener((ListChangeListener.Change<? extends String> c) -> {
+            sortRecipes();
         });
     }
 
@@ -46,12 +77,13 @@ public class RecipeList extends VBox {
         this.getChildren().remove(Recipe);
         recipeContainer.remove(Recipe);
         filterRecipes();
+        sortRecipes();
     }
 
     public void clearRecipes() {
         ArrayList<Node> filterAndOtherNodes = new ArrayList<>();
         for (Node node : getChildren()) {
-            if (node == filterDropdown) {
+            if (node == filterDropdown || node == filterTimeDropdown) {
                 filterAndOtherNodes.add(node);
             }
         }
@@ -60,71 +92,56 @@ public class RecipeList extends VBox {
         recipeContainer.clear();
     }
 
-    /*
-     * Save tasks to a file called "Recipes.csv". DO NOT DO THIS ON UI
-     */
-    // TODO: Change it to update the recipe in mongo instead of csv
-    public void saveRecipes() {
-        // for (int i = 0; i < recipeContainer.size(); i++) {
-        //         Recipe Recipe = recipeContainer.get(i);
-        //         String name = Recipe.getName().getText();
-        //         String ingredients = Recipe.getIngredient().getText();
-        //         String instruction = Recipe.getInstruction().getText();
-        //         String mealType = Recipe.getMealType().getText();
-        // }
-        // String id = server.Login.getID();
-        
-        // needs to go through controller
-        // server.UpdateRecipes(id, name, ingredients, instruction, mealType);
-        /**try {
-            File csvfile = new File("recipes.csv");
-            FileWriter fw = new FileWriter(csvfile);
-            for (int i = 0; i < recipeContainer.size(); i++) {
-                Recipe Recipe = recipeContainer.get(i);
-                String name = Recipe.getName().getText();
-                String ingredients = Recipe.getIngredient().getText();
-                String instruction = Recipe.getInstruction().getText();
-                String mealType = Recipe.getMealType().getText();
-                String url = Recipe.getImageURL().getText();
-                fw.write(name + "-" + ingredients + "-" + instruction + "-" + mealType + "-" + url + "\n");
-            }
-            fw.close();
-        } catch (Exception e) {
-            System.out.println("savetasks() not implemented!");
-        }**/
-    }
-
-    /*
-     * Sort the Recipes lexicographically
-     */
     public void sortRecipes() {
         try {
-            ArrayList<String> list = new ArrayList<String>();
-            ArrayList<Recipe> clist = new ArrayList<Recipe>();
-            ArrayList<Recipe> clist2 = new ArrayList<Recipe>();
-            int index = 1;
-            for (int i = 0; i < this.getChildren().size(); i++) {
-                if (this.getChildren().get(i) instanceof Recipe) {
-                    Recipe Recipe = (Recipe) this.getChildren().get(i);
-                    list.add(Recipe.getName().getText());
-                    clist.add(Recipe);
-                    index++;
+            if (!timeOptions.getCheckModel().getCheckedItems().isEmpty()) {
+                String selectedTime = timeOptions.getCheckModel().getCheckedItems().get(0);
+                if (selectedTime.equals("Newest")) {
+                    Collections.sort(recipeContainer, (r1, r2) -> {
+                        // Compare creation time for sorting from newest to oldest
+                        Timestamp time1 = Timestamp.valueOf(r1.getRecipeId());
+                        Timestamp time2 = Timestamp.valueOf(r2.getRecipeId());
+                        return time2.compareTo(time1);
+                    });
+                } else if (selectedTime.equals("Oldest")) {
+                    Collections.sort(recipeContainer, (r1, r2) -> {
+                        // Compare creation time for sorting from oldest to newest
+                        Timestamp time1 = Timestamp.valueOf(r1.getRecipeId());
+                        Timestamp time2 = Timestamp.valueOf(r2.getRecipeId());
+                        return time1.compareTo(time2);
+                    });
                 }
+                renderRecipes();
             }
-            Collections.sort(list);
-            for (String recipeName : list) {
-                for (Recipe Recipe : clist) {
-                    if (Recipe.getName().getText().equals(recipeName)) {
-                        clist2.add(Recipe);
-                    }
-                }
-            }
-            this.getChildren().clear();
-            this.getChildren().addAll(clist2);
         } catch (Exception e) {
-            System.out.println("sorttasks() not implemented!");
+            System.out.println("Error sorting recipes: " + e.getMessage());
         }
     }
+
+    private void renderRecipes() {
+        this.getChildren().clear();
+        for (Recipe recipe : recipeContainer) {
+            this.getChildren().add(recipe);
+        }
+    }
+
+    // private void renderRecipes() {
+    //     // Clear only recipes, not dropdowns
+    //     ArrayList<Node> dropdowns = new ArrayList<>();
+
+    //     for (Node node : this.getChildren()) {
+    //         if (node == filterDropdown || node == filterTimeDropdown) {
+    //             dropdowns.add(node);
+    //         }
+    //     }
+    //     this.getChildren().clear();
+    //     this.getChildren().addAll(dropdowns); // Add dropdowns back
+
+    //     for (Recipe recipe : recipeContainer) {
+    //         this.getChildren().add(recipe);
+    //     }
+
+    // }
 
     // loadTasks from Mongo
     public void loadTasks(String id) {
@@ -135,16 +152,16 @@ public class RecipeList extends VBox {
             String recipeName = recipeDoc.getString("recipeName");
             String recipeIngredients = recipeDoc.getString("recipeIngredients");
             String recipeInstructions = recipeDoc.getString("recipeInstructions");
-            String mealType = recipeDoc.getString("mealType");
             String recipeId = recipeDoc.getString("_id");
+            String mealType = recipeDoc.getString("mealType");
             String url = recipeDoc.getString("url");
 
             recipe.getName().setText(recipeName);
             recipe.getIngredient().setText(recipeIngredients);
             recipe.getInstruction().setText(recipeInstructions);
+            recipe.setRecipeId(recipeId);
             recipe.getMealType().setText(mealType);
             recipe.getImageURL().setText(url);
-            recipe.setRecipeId(recipeId);
             recipeContainer.add(recipe);
             this.getChildren().add(recipe);
         }
@@ -162,8 +179,8 @@ public class RecipeList extends VBox {
 
         for (Recipe recipe : recipeContainer) {
             String mealType = recipe.getMealType().getText().toLowerCase();
-            if (mealType.charAt(mealType.length()-1)=='.'){
-                mealType = mealType.substring(0, mealType.length()-1);
+            if (mealType.charAt(mealType.length() - 1) == '.') {
+                mealType = mealType.substring(0, mealType.length() - 1);
             }
             System.out.println(mealType);
             if (selectedMealTypes.length == 0 || ifContains(selectedMealTypes, mealType)) {
@@ -190,5 +207,38 @@ public class RecipeList extends VBox {
     public void addRecipe(Recipe recipe) {
         recipeContainer.add(recipe);
         filterRecipes();
+        sortRecipes();
     }
+
+    /*
+     * Sort the Recipes lexicographically
+     */
+    // public void sortRecipes() {
+    // try {
+    // ArrayList<String> list = new ArrayList<String>();
+    // ArrayList<Recipe> clist = new ArrayList<Recipe>();
+    // ArrayList<Recipe> clist2 = new ArrayList<Recipe>();
+    // int index = 1;
+    // for (int i = 0; i < this.getChildren().size(); i++) {
+    // if (this.getChildren().get(i) instanceof Recipe) {
+    // Recipe Recipe = (Recipe) this.getChildren().get(i);
+    // list.add(Recipe.getName().getText());
+    // clist.add(Recipe);
+    // index++;
+    // }
+    // }
+    // Collections.sort(list);
+    // for (String recipeName : list) {
+    // for (Recipe Recipe : clist) {
+    // if (Recipe.getName().getText().equals(recipeName)) {
+    // clist2.add(Recipe);
+    // }
+    // }
+    // }
+    // this.getChildren().clear();
+    // this.getChildren().addAll(clist2);
+    // } catch (Exception e) {
+    // System.out.println("sorttasks() not implemented!");
+    // }
+    // }
 }

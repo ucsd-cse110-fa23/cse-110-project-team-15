@@ -85,6 +85,8 @@ public class Controller {
         if (loginPopup.isLoggedIn()) {
             loginPopup.setId(userID);
             accountPopup.close();
+            loginPopup.setUsername(accountPopup.getUsername().getText());
+            loginPopup.setPassword(accountPopup.getPassword().getText());
             appFrame.setLoggedInUI();
         }
     }
@@ -141,7 +143,6 @@ public class Controller {
             recipePopup.close();
             // recipePopup.getRecipe().saveRecipe();
             recipePopup.getRecipe().addRecipe();
-            recipePopup.getRecipe().saveRecipe();
         } else {
             audioToMealType();
         }
@@ -168,7 +169,6 @@ public class Controller {
         } catch (IOException | InterruptedException | URISyntaxException e1) {
             e1.printStackTrace();
         }
-        detailsPopup.getRecipe().saveRecipe();
         refreshButton.setDisable(false);
     }
 
