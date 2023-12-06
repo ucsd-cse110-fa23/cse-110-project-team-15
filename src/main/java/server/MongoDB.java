@@ -152,13 +152,21 @@ public class MongoDB implements HttpHandler {
 
     public static String fetchRecipeDetails(String recipeId) {
         String uri = "mongodb+srv://sraswan:pandapanda777@cluster0.fefhkg8.mongodb.net/?retryWrites=true&w=majority";
+
+
         try (MongoClient mongoClient = MongoClients.create(uri)) {
+            MongoDatabase database = mongoClient.getDatabase("PantryPal");
+            MongoCollection<Document> collection = database.getCollection("recipes");
+            Document recipeDoc = collection.find(eq("_id", recipeId)).first();
+            System.out.println("|" + recipeId+"|");
 
-            MongoDatabase RecipeDB = mongoClient.getDatabase("PantryPal");
-            MongoCollection<Document> recipesCollection = RecipeDB.getCollection("recipes");
+        // try (MongoClient mongoClient = MongoClients.create(uri)) {
 
-            Bson filter = eq("_id", recipeId);
-            Document recipeDoc = recipesCollection.find(filter).first();
+        //     MongoDatabase RecipeDB = mongoClient.getDatabase("PantryPal");
+        //     MongoCollection<Document> recipesCollection = RecipeDB.getCollection("recipes");
+        //     System.out.println("HELLO:" + recipeId + "|");
+        //     Document recipeDoc = recipesCollection.find(eq("_id", recipeId)).first();
+
             System.out.println(recipeDoc);
 
             if (recipeDoc != null) {

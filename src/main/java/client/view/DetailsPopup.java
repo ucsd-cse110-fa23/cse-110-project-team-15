@@ -198,6 +198,7 @@ public class DetailsPopup extends Stage {
 
     private String buildRecipeUrl(String recipeId) {
         String baseUrl = "https://localhost:8100/recipe/";
+        recipeId = recipeId.replace(" ", "_");
         return baseUrl + "?=" + recipeId;
     }
 }
