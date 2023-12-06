@@ -71,6 +71,7 @@ public class Model {
             System.out.println("username on server: " + json.toString());
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println(response.body());
             return response.body();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -207,12 +208,13 @@ public class Model {
 
     }
 
-    public static boolean isServerOnline() {
+    public boolean isServerOnline() {
         String urlString = "http://localhost:8100/api/online";
 
         try (Socket socket = new Socket()) {
             URL url = new URL(urlString);
             socket.connect(new InetSocketAddress(url.getHost(), url.getPort()), 2000);
+            socket.close();
             return true;
         }
         catch (IOException e){

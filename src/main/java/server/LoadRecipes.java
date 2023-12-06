@@ -56,10 +56,11 @@ public class LoadRecipes implements HttpHandler{
     // }
 
     public static List<Document> loadRecipes(String userID) {
-        String uri = "mongodb+srv://aditijain:cse110project@cluster0.yu0exzy.mongodb.net/?retryWrites=true&w=majority";
+        String uri = "mongodb+srv://sraswan:pandapanda777@cluster0.fefhkg8.mongodb.net/?retryWrites=true&w=majority";
         MongoClient mongoClient = MongoClients.create(uri);
-        MongoDatabase PantryPalDB = mongoClient.getDatabase("recipe_db");
+        MongoDatabase PantryPalDB = mongoClient.getDatabase("PantryPal");
         MongoCollection<Document> recipesCollection = PantryPalDB.getCollection("recipes");
+        System.out.println("pip"+userID);
         List<Document> recipes = new ArrayList<>();
         if (userID != null) {
             recipes = recipesCollection.find(eq("userID", userID)).into(new ArrayList<>());

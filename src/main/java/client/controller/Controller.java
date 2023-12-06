@@ -238,11 +238,11 @@ public class Controller {
     }
 
     public boolean checkServerStatus() {
-        boolean checker = Model.isServerOnline();
+        boolean checker = model.isServerOnline();
         if (!checker) {
             loginPopup.close();
         }
-        return Model.isServerOnline();
+        return model.isServerOnline();
     }
 
     public AppFrame getAppFrame() {

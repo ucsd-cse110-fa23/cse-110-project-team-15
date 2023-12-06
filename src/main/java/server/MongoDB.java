@@ -77,7 +77,7 @@ public class MongoDB implements HttpHandler {
 
     public void updateRecipe(String id, String recipeId, String recipeName, String recipeIngredients, String recipeInstructions,
             String mealType, String url) {
-        String uri = "mongodb+srv://aditijain:cse110project@cluster0.yu0exzy.mongodb.net/?retryWrites=true&w=majority";
+        String uri = "mongodb+srv://sraswan:pandapanda777@cluster0.fefhkg8.mongodb.net/?retryWrites=true&w=majority";
         try (MongoClient mongoClient = MongoClients.create(uri)) {
 
             System.out.println("Name: " + recipeName);
@@ -101,12 +101,12 @@ public class MongoDB implements HttpHandler {
 
     public void deleteRecipe(String id, String recipeId, String recipeName, String recipeIngredients, String recipeInstructions,
             String mealType, String url) {
-        String uri = "mongodb+srv://aditijain:cse110project@cluster0.yu0exzy.mongodb.net/?retryWrites=true&w=majority";
+        String uri = "mongodb+srv://sraswan:pandapanda777@cluster0.fefhkg8.mongodb.net/?retryWrites=true&w=majority";
         try (MongoClient mongoClient = MongoClients.create(uri)) {
 
             System.out.println("Name: " + recipeName);
             System.out.println("ID: " + id);
-            MongoDatabase RecipeDB = mongoClient.getDatabase("recipe_db");
+            MongoDatabase RecipeDB = mongoClient.getDatabase("PantryPal");
             MongoCollection<Document> recipesCollection = RecipeDB.getCollection("recipes");
 
             // DOESNT ACTUALLY DELETE FIND OUT HOW TO DO THIS MAYBE FILTER IS WRONG LOL
@@ -123,10 +123,10 @@ public class MongoDB implements HttpHandler {
 
     public void createRecipe(String id, String recipeId, String recipeName, String recipeIngredients, String recipeInstructions,
     String mealType, String url) {
-        String uri = "mongodb+srv://aditijain:cse110project@cluster0.yu0exzy.mongodb.net/?retryWrites=true&w=majority";
+        String uri = "mongodb+srv://sraswan:pandapanda777@cluster0.fefhkg8.mongodb.net/?retryWrites=true&w=majority";
         try (MongoClient mongoClient = MongoClients.create(uri)) {
 
-            MongoDatabase RecipeDB = mongoClient.getDatabase("recipe_db");
+            MongoDatabase RecipeDB = mongoClient.getDatabase("PantryPal");
             MongoCollection<Document> accountsCollection = RecipeDB.getCollection("recipes");
 
             Document recipe = new Document("_id", recipeId)

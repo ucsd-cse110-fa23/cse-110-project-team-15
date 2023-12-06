@@ -35,7 +35,7 @@ public class Account implements HttpHandler {
     private static volatile String userID;
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        System.out.println("bruh");
+
         boolean success = true;
         if ("POST".equals(exchange.getRequestMethod())) {
             String requestUri = exchange.getRequestURI().toString();
@@ -85,7 +85,7 @@ public class Account implements HttpHandler {
     }
 
     public static String createAccount(String username, String password) {
-        String uri = "mongodb+srv://aditijain:cse110project@cluster0.yu0exzy.mongodb.net/?retryWrites=true&w=majority";
+        String uri = "mongodb+srv://sraswan:pandapanda777@cluster0.fefhkg8.mongodb.net/?retryWrites=true&w=majorityy";
         try (MongoClient mongoClient = MongoClients.create(uri)) {
 
             MongoDatabase PantryPalDB = mongoClient.getDatabase("PantryPal");
@@ -105,7 +105,7 @@ public class Account implements HttpHandler {
     }
     
     public static String loginAccount(String username, String password, boolean autoLogin) {
-        String uri = "mongodb+srv://aditijain:cse110project@cluster0.yu0exzy.mongodb.net/?retryWrites=true&w=majority";
+        String uri = "mongodb+srv://sraswan:pandapanda777@cluster0.fefhkg8.mongodb.net/?retryWrites=true&w=majority";
         MongoClient mongoClient = MongoClients.create(uri);
         System.out.println("Auto:"+autoLogin);
         MongoDatabase PantryPalDB = mongoClient.getDatabase("PantryPal");
