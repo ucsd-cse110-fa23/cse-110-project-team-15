@@ -90,11 +90,13 @@ public class MongoDB implements HttpHandler {
 
             Bson filter = recipesCollection.find(and(eq("userID", id), eq("_id", recipeId))).first();
             System.out.println(filter);
-            Bson updateOperation = combine(set("recipeIngredients", recipeIngredients), set("recipeInstructions", recipeInstructions));
+            Bson updateOperation = combine(set("url", url), set("recipeName", recipeName), set("recipeIngredients", recipeIngredients), set("recipeInstructions", recipeInstructions));
                
             UpdateResult updateResult = recipesCollection.updateOne(filter, updateOperation);
             System.out.println("Updated");
             System.out.println(updateResult);
+            mongoClient.close();
+
             return recipeId;
         } catch (Exception e) {
             e.printStackTrace();
@@ -116,6 +118,9 @@ public class MongoDB implements HttpHandler {
             DeleteResult delteteResult = recipesCollection.deleteOne(filter);
             System.out.println("Deleted");
             System.out.println(delteteResult);
+            
+            mongoClient.close();
+
             return recipeId;
         } catch (Exception e) {
             e.printStackTrace();
@@ -142,6 +147,7 @@ public class MongoDB implements HttpHandler {
             
             System.out.println("Created");
             System.out.println("Recipe Stored for user:" + id);
+            mongoClient.close();
             return recipeId;
         } catch (Exception e) {
             e.printStackTrace();
@@ -167,12 +173,15 @@ public class MongoDB implements HttpHandler {
                 String recipeIngredients = recipeDoc.getString("recipeIngredients");
                 String recipeInstructions = recipeDoc.getString("recipeInstructions");
                 String url = recipeDoc.getString("url");
+                
+                mongoClient.close();
 
                 // Construct the recipe details string
                 String str = "Recipe Name: " + recipeName + "<br>" +
                         "Ingredients: " + recipeIngredients + "<br>" +
                         "Instructions: " + recipeInstructions;
                 String[] str1 = {str, url};
+
                 return str1;
             } else {
                 String[] str2 = {"Recipe not found", ""};
