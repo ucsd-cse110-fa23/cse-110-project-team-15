@@ -36,6 +36,10 @@ public class RecipeList extends VBox {
     public CheckComboBox<String> timeOptions;
     ObservableList<String> timeTypes;
 
+    private VBox filterSortDropdown;
+    public CheckComboBox<String> sortOptions;
+    ObservableList<String> sortTypes;
+
     public RecipeList(AppFrame appFrame) {
         this.appFrame = appFrame;
         this.setSpacing(5);
@@ -50,18 +54,19 @@ public class RecipeList extends VBox {
         filterDropdown = new VBox(mealOptions);
         filterDropdown.setAlignment(Pos.CENTER_RIGHT);
 
-        // this.getChildren().add(filterDropdown);
-
-        // this.getChildren().addAll(filterDropdown);
-
         timeTypes = FXCollections.observableArrayList();
         timeTypes.addAll(new String[] { "Newest", "Oldest" });
         timeOptions = new CheckComboBox<String>(timeTypes);
         filterTimeDropdown = new VBox(timeOptions);
         filterTimeDropdown.setAlignment(Pos.CENTER_RIGHT);
-        // this.getChildren().add(filterTimeDropdown);
 
-        this.getChildren().addAll(filterDropdown, filterTimeDropdown);
+        sortTypes = FXCollections.observableArrayList();
+        sortTypes.addAll(new String[] { "A-Z", "Z-A" });
+        sortOptions = new CheckComboBox<String>(sortTypes);
+        filterSortDropdown = new VBox(sortOptions);
+        filterSortDropdown.setAlignment(Pos.CENTER_RIGHT);
+
+        this.getChildren().addAll(filterDropdown, filterTimeDropdown, filterSortDropdown);
 
         mealOptions.getCheckModel().getCheckedItems().addListener((ListChangeListener.Change<? extends String> c) -> {
             filterRecipes();
@@ -69,6 +74,10 @@ public class RecipeList extends VBox {
 
         timeOptions.getCheckModel().getCheckedItems().addListener((ListChangeListener.Change<? extends String> c) -> {
             sortRecipes();
+        });
+
+        sortOptions.getCheckModel().getCheckedItems().addListener((ListChangeListener.Change<? extends String> c) -> {
+            sortRecipesLex();
         });
     }
 
@@ -82,7 +91,7 @@ public class RecipeList extends VBox {
     public void clearRecipes() {
         ArrayList<Node> filterAndOtherNodes = new ArrayList<>();
         for (Node node : getChildren()) {
-            if (node == filterDropdown || node == filterTimeDropdown) {
+            if (node == filterDropdown || node == filterTimeDropdown || node == filterSortDropdown) {
                 filterAndOtherNodes.add(node);
             }
         }
@@ -91,30 +100,23 @@ public class RecipeList extends VBox {
         recipeContainer.clear();
     }
 
-    // public void sortRecipes() {
-    // try {
-    // if (!timeOptions.getCheckModel().getCheckedItems().isEmpty()) {
-    // String selectedTime = timeOptions.getCheckModel().getCheckedItems().get(0);
-    // if (selectedTime.equals("Newest")) {
-    // Collections.sort(recipeContainer, (r1, r2) -> {
-    // Timestamp time1 = Timestamp.valueOf(r1.getRecipeId() + ".000000000");
-    // Timestamp time2 = Timestamp.valueOf(r2.getRecipeId() + ".000000000");
-    // return time2.compareTo(time1);
-    // });
-    // } else if (selectedTime.equals("Oldest")) {
-    // Collections.sort(recipeContainer, (r1, r2) -> {
-    // // Compare creation time for sorting from oldest to newest
-    // Timestamp time1 = Timestamp.valueOf(r1.getRecipeId() + ".000000000");
-    // Timestamp time2 = Timestamp.valueOf(r2.getRecipeId() + ".000000000");
-    // return time1.compareTo(time2);
-    // });
-    // }
-    // renderRecipes();
-    // }
-    // } catch (Exception e) {
-    // System.out.println("Error sorting recipes: " + e.getMessage());
-    // }
-    // }
+    public void sortRecipesLex() {
+        try {
+            if (!sortOptions.getCheckModel().getCheckedItems().isEmpty()) {
+                String selectedSort = sortOptions.getCheckModel().getCheckedItems().get(0);
+                if (selectedSort.equals("A-Z")) {
+                    Collections.sort(recipeContainer,
+                            (r1, r2) -> r1.getNameText().compareToIgnoreCase(r2.getNameText()));
+                } else if (selectedSort.equals("Z-A")) {
+                    Collections.sort(recipeContainer,
+                            (r1, r2) -> r2.getNameText().compareToIgnoreCase(r1.getNameText()));
+                }
+                renderRecipes();
+            }
+        } catch (Exception e) {
+            System.out.println("Error sorting recipes alphabetically: " + e.getMessage());
+        }
+    }
 
     public void sortRecipes() {
         try {
@@ -143,19 +145,12 @@ public class RecipeList extends VBox {
         }
     }
 
-    // private void renderRecipes() {
-    // this.getChildren().clear();
-    // for (Recipe recipe : recipeContainer) {
-    // this.getChildren().add(recipe);
-    // }
-    // }
-
     private void renderRecipes() {
         // Clear only recipes, not dropdowns
         ArrayList<Node> dropdowns = new ArrayList<>();
 
         for (Node node : this.getChildren()) {
-            if (node == filterDropdown || node == filterTimeDropdown) {
+            if (node == filterDropdown || node == filterTimeDropdown || node == filterSortDropdown) {
                 dropdowns.add(node);
             }
         }
@@ -235,35 +230,4 @@ public class RecipeList extends VBox {
         sortRecipes();
     }
 
-    /*
-     * Sort the Recipes lexicographically
-     */
-    // public void sortRecipes() {
-    // try {
-    // ArrayList<String> list = new ArrayList<String>();
-    // ArrayList<Recipe> clist = new ArrayList<Recipe>();
-    // ArrayList<Recipe> clist2 = new ArrayList<Recipe>();
-    // int index = 1;
-    // for (int i = 0; i < this.getChildren().size(); i++) {
-    // if (this.getChildren().get(i) instanceof Recipe) {
-    // Recipe Recipe = (Recipe) this.getChildren().get(i);
-    // list.add(Recipe.getName().getText());
-    // clist.add(Recipe);
-    // index++;
-    // }
-    // }
-    // Collections.sort(list);
-    // for (String recipeName : list) {
-    // for (Recipe Recipe : clist) {
-    // if (Recipe.getName().getText().equals(recipeName)) {
-    // clist2.add(Recipe);
-    // }
-    // }
-    // }
-    // this.getChildren().clear();
-    // this.getChildren().addAll(clist2);
-    // } catch (Exception e) {
-    // System.out.println("sorttasks() not implemented!");
-    // }
-    // }
 }
