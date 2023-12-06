@@ -145,5 +145,33 @@ public class MongoDB implements HttpHandler {
         }
     }
 
+    public static String fetchRecipeDetails(String recipeId) {
+        String uri = "mongodb+srv://aditijain:cse110project@cluster0.yu0exzy.mongodb.net/?retryWrites=true&w=majority";
+        try (MongoClient mongoClient = MongoClients.create(uri)) {
+
+            MongoDatabase RecipeDB = mongoClient.getDatabase("recipe_db");
+            MongoCollection<Document> recipesCollection = RecipeDB.getCollection("recipes");
+
+            Bson filter = eq("_id", recipeId);
+            Document recipeDoc = recipesCollection.find(filter).first();
+
+            if (recipeDoc != null) {
+                String recipeName = recipeDoc.getString("recipeName");
+                String recipeIngredients = recipeDoc.getString("recipeIngredients");
+                String recipeInstructions = recipeDoc.getString("recipeInstructions");
+
+                // Construct the recipe details string
+                return "Recipe Name: " + recipeName + "<br>" +
+                        "Ingredients: " + recipeIngredients + "<br>" +
+                        "Instructions: " + recipeInstructions;
+            } else {
+                return "Recipe not found";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error fetching recipe details";
+        }
+    }
+
 
 }

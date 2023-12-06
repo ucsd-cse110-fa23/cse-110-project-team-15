@@ -123,15 +123,15 @@ public class DetailsPopup extends Stage {
         });
 
         shareButton.setOnAction(e -> {
-            String recipeId = generateRecipeId(name.getText()); // You need to implement this method
-            String recipeUrl = buildRecipeUrl(recipeId); // You need to implement this method
+            String recipeId = recipe.getRecipeId();
+            String recipeUrl = buildRecipeUrl(recipeId);
 
             // Copy the URL to the clipboard
             Clipboard clipboard = Clipboard.getSystemClipboard();
             ClipboardContent content = new ClipboardContent();
             content.putString(recipeUrl);
             clipboard.setContent(content);
-            
+
             System.out.println("Recipe URL copied to clipboard: " + recipeUrl);
         });
 
@@ -196,13 +196,8 @@ public class DetailsPopup extends Stage {
         deleteButton.setOnAction(eventHandler);
     }
 
-    private String generateRecipeId(String recipeName) {
-        int hashCode = recipeName.hashCode();
-        return Integer.toString(Math.abs(hashCode));
-    }
-
     private String buildRecipeUrl(String recipeId) {
-        String baseUrl = "https://your-base-url/recipe/";
+        String baseUrl = "https://localhost:8100/recipe/";
         return baseUrl + recipeId;
     }
     
