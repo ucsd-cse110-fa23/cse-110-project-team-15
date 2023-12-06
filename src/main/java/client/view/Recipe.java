@@ -8,7 +8,8 @@ import javafx.geometry.Insets;
 import java.util.Map;
 import java.io.IOException;
 import java.net.URISyntaxException;
-
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.sql.Timestamp;
 
 //import RecipeManagement.RecipePopup.DetailsPopup;
@@ -36,24 +37,27 @@ public class Recipe extends HBox {
     public Recipe(AppFrame appframe) {
 
         this.recipeList = appframe.getRecipeList();
-        this.detailsPopup = appframe.getDetailsPopup(); 
+        this.detailsPopup = appframe.getDetailsPopup();
 
         this.setPrefSize(500, 50); // sets size of task
-        this.setStyle( "-fx-background-color: #659966; -fx-border-width: 0; -fx-font-weight: bold; -fx-font-size: 11; -fx-font-family: 'Times New Roman';"); 
+        this.setStyle(
+                "-fx-background-color: #659966; -fx-border-width: 0; -fx-font-weight: bold; -fx-font-size: 11; -fx-font-family: 'Times New Roman';");
 
         recipeInfo = new VBox();
         // nameLabel = new Label("Recipe Name:");
 
         this.name = new TextField(); // create task name text field
         this.name.setPrefSize(200, 10); // set size of text field
-        this.name.setStyle( "-fx-background-color: #659966; -fx-border-width: 0; -fx-font-size: 17; -fx-font-family: 'Times New Roman';"); 
+        this.name.setStyle(
+                "-fx-background-color: #659966; -fx-border-width: 0; -fx-font-size: 17; -fx-font-family: 'Times New Roman';");
         this.name.setPadding(new Insets(10, 0, 10, 0)); // adds some padding to the text field
         this.name.setAlignment(Pos.CENTER_LEFT);
         this.name.setEditable(false);
 
         this.mealType = new TextField();
         this.mealType.setPrefSize(100, 10); // set size of text field
-        this.mealType.setStyle( "-fx-background-color: #659966; -fx-border-width: 0; -fx-font-size: 17; -fx-font-family: 'Times New Roman';"); 
+        this.mealType.setStyle(
+                "-fx-background-color: #659966; -fx-border-width: 0; -fx-font-size: 17; -fx-font-family: 'Times New Roman';");
         this.mealType.setPadding(new Insets(10, 0, 10, 0)); // adds some padding to the text field
         this.mealType.setAlignment(Pos.CENTER_LEFT);
         this.mealType.setEditable(false);
@@ -115,6 +119,12 @@ public class Recipe extends HBox {
         return this.id;
     }
 
+    public LocalDateTime getRecipeIdAsDateTime() {
+        String recipeId = this.id;
+        System.out.println(recipeId);
+        return LocalDateTime.parse(recipeId, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
+    }
+
     public void setRecipeId(String id) {
         this.id = id;
     }
@@ -138,7 +148,8 @@ public class Recipe extends HBox {
     // mealtype -> ingredients -> name -> instructions)
     public Boolean isComplete() {
         return !this.name.getText().isEmpty() && !this.mealType.getText().isEmpty()
-                && !this.ingredient.getText().isEmpty() && !this.instruction.getText().isEmpty() && !this.imageURL.getText().isEmpty();
+                && !this.ingredient.getText().isEmpty() && !this.instruction.getText().isEmpty()
+                && !this.imageURL.getText().isEmpty();
     }
 
     public void deleteRecipe() {
@@ -146,9 +157,9 @@ public class Recipe extends HBox {
         recipeList.removeRecipe(this);
     }
 
-    public void saveRecipe() {
-        recipeList.saveRecipes();
-    }
+    // public void saveRecipe() {
+    // recipeList.saveRecipes();
+    // }
 
     public void addRecipe() {
         if (isComplete())

@@ -12,7 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.text.*;
-
+import javafx.scene.control.Label;
 import java.io.*;
 
 import javax.swing.text.View;
@@ -46,6 +46,9 @@ class Header extends HBox {
     private Button loginButton;
     private Button logoutButton;
     boolean loggedIn = false;
+    private LoginPopup loginPopup;
+    Label username;
+    private VBox headerContent;
 
     Header() {
         this.setPrefSize(500, 100); // Size of the header
@@ -61,7 +64,6 @@ class Header extends HBox {
 
         loginButton = new Button("Login");
         loginButton.setStyle(defaultButtonStyle);
-        // loginButton.setAlignment(Pos.CENTER_RIGHT);
 
         logoutButton = new Button("Logout");
         logoutButton.setStyle(defaultButtonStyle);
@@ -70,7 +72,21 @@ class Header extends HBox {
         Text titleText = new Text("PantryPal"); // Text of the Header
         titleText.setStyle("-fx-font-weight: bold;  -fx-font-size: 25; -fx-font-family: 'Lucida Bright';");
 
-        this.getChildren().addAll(titleText, createAccountButton, loginButton, logoutButton);
+        loginPopup = new LoginPopup();
+        username = new Label();
+        username.setStyle("-fx-font-size: 13; -fx-font-family: 'Lucida Bright';");
+        username.setAlignment(Pos.CENTER_RIGHT);
+        username.setVisible(false);
+
+        HBox buttons = new HBox(createAccountButton, loginButton, logoutButton);
+        buttons.setAlignment(Pos.CENTER);
+        buttons.setSpacing(10);
+        buttons.setPadding(new Insets(10));
+
+        headerContent = new VBox(titleText, username, buttons);
+        headerContent.setAlignment(Pos.CENTER);
+
+        this.getChildren().addAll(headerContent);
         this.setAlignment(Pos.CENTER); // Align the text to the Center
     }
 
@@ -82,6 +98,10 @@ class Header extends HBox {
 
     public Button getLoginButton() {
         return loginButton;
+    }
+
+    public Label getUsername() {
+        return username;
     }
 
     public Button getLogoutButton(boolean visible) {
@@ -174,6 +194,8 @@ public class AppFrame extends BorderPane {
         header.getLogoutButton(true);
         header.getLoginButton(false);
         header.getCreateAccountButton(false);
+        header.getUsername().setText("@" + loginPopup.getUsername().getText());
+        header.getUsername().setVisible(true);
         recipeList.clearRecipes();
         getRecipes().loadTasks(loginPopup.getId());
 
@@ -183,6 +205,7 @@ public class AppFrame extends BorderPane {
         header.getLogoutButton(false);
         header.getLoginButton(true);
         header.getCreateAccountButton(true);
+        header.getUsername().setVisible(false);
         recipeList.clearRecipes();
     }
 
@@ -207,7 +230,7 @@ public class AppFrame extends BorderPane {
     }
 
     public ServerUnavailable getServerUnavailable() {
-        if (serverUnavailable == null){
+        if (serverUnavailable == null) {
             serverUnavailable = new ServerUnavailable();
         }
         return serverUnavailable;
