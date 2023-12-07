@@ -40,8 +40,9 @@ public class MS2Test extends ApplicationTest {
         ShareURLTest t14 = new ShareURLTest(); 
         SortRecipeTest t15 = new SortRecipeTest();
         WhisperTest t16 = new WhisperTest();
+        ServerTest t17 = new ServerTest();
 
-        t2.testLoginE2E();
+        t2.testAutoLoginE2E();
         t3.testChatGPTE2E();
         t4.testCreateAccountE2E();
         t6.testFilterByMealE2E();
@@ -50,6 +51,7 @@ public class MS2Test extends ApplicationTest {
         t12.testRecipeTestE2E();
         t14.testShareURLE2E();
         t16.testWhisperE2E();
+        t17.testServerE2E();
 
     }
 }
