@@ -49,6 +49,7 @@ public class CreateAccountTest {
 
     @Test
     public void testCreateAccountE2E() {
+        setUp();
         testCreateAccountSuccessful();
         testCreateAccountUnsuccessful();
     }

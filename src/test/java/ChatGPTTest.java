@@ -41,26 +41,27 @@ public class ChatGPTTest {
         assertEquals(expectedResponse, response);
     }
 
-        // @Test
-        // public void testHandle() throws IOException, InterruptedException, URISyntaxException {
-        //     String requestText = "Test Prompt";
-        //     String responseText = "Generated Response";
-        //     ByteArrayInputStream bis = new ByteArrayInputStream(requestText.getBytes());
-        //     ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        @Test
+        public void testHandle() throws IOException, InterruptedException, URISyntaxException {
+            String requestText = "Test Prompt";
+            String responseText = "Generated Response";
+            ByteArrayInputStream bis = new ByteArrayInputStream(requestText.getBytes());
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
-        //     when(exchange.getRequestBody()).thenReturn(bis);
-        //     when(exchange.getResponseBody()).thenReturn(bos);
-        //     doReturn(responseText).when(chatGPT).generate(anyString());
+            when(exchange.getRequestBody()).thenReturn(bis);
+            when(exchange.getResponseBody()).thenReturn(bos);
+            doReturn(responseText).when(chatGPT).generate(anyString());
 
-        //     chatGPT.handle(exchange);
+            chatGPT.handle(exchange);
 
-        //     verify(chatGPT, times(1)).generate(requestText);
-        //     String responseBody = bos.toString();
-        //     assertEquals(responseText, responseBody.trim());
-        // }
+            verify(chatGPT, times(1)).generate(requestText);
+            String responseBody = bos.toString();
+            assertEquals(responseText, responseBody.trim());
+        }
 
     @Test
     public void testChatGPTE2E() throws IOException, InterruptedException, URISyntaxException {
+        setUp();
         testGenerateSuccess();
     }
 }

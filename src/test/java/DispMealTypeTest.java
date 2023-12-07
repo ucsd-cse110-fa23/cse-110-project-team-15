@@ -45,14 +45,12 @@ public class DispMealTypeTest extends ApplicationTest {
     }
 
     // this one doesnt work
-    // @Test
-    // public void testDispMealTypeE2E() {
-    // Platform.runLater(() -> {
-    // testDisplayMealTypeSuccess();
-    // recipe.getMealType().clear();
-    // testDisplayNoMealType();
-    // recipe.getMealType().clear();
-    // testDisplayIncorrectMealType();
-    // });
-    // }
+    @Test
+    public void testDispMealTypeE2E() {
+        Platform.runLater(() -> {
+            testDisplayMealTypeSuccess();
+            testDisplayNoMealType();
+            testDisplayIncorrectMealType();
+        });
+    }
 }

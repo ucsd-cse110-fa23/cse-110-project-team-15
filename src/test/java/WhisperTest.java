@@ -31,6 +31,7 @@ public class WhisperTest {
 
     @Test
     public void testWhisperE2E() {
+        setUp();
         testGenerate();
     }
 }
