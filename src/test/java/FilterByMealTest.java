@@ -25,7 +25,7 @@ import java.nio.file.Path;
 import org.mockito.Mockito;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class FilterTest extends ApplicationTest {
+public class FilterByMealTest extends ApplicationTest {
 
     @BeforeAll
     public static void initJFX() {
@@ -44,7 +44,7 @@ public class FilterTest extends ApplicationTest {
     }
 
     @Test
-    public void filterByOneMealType() {
+    public void testFilterByOneMealType() {
         AppFrame mockAppFrame = Mockito.mock(AppFrame.class);
         RecipeList list = new RecipeList(mockAppFrame);
         Mockito.when(mockAppFrame.getRecipeList()).thenReturn(list);
@@ -90,7 +90,7 @@ public class FilterTest extends ApplicationTest {
     }
 
     @Test
-    public void filterByMultiMealType() {
+    public void testFilterByMultiMealType() {
         AppFrame mockAppFrame = Mockito.mock(AppFrame.class);
         RecipeList list = new RecipeList(mockAppFrame);
         Mockito.when(mockAppFrame.getRecipeList()).thenReturn(list);
@@ -138,7 +138,7 @@ public class FilterTest extends ApplicationTest {
     }
 
     @Test
-    public void deselectFilter() {
+    public void testDeselectFilter() {
         AppFrame mockAppFrame = Mockito.mock(AppFrame.class);
         RecipeList list = new RecipeList(mockAppFrame);
         Mockito.when(mockAppFrame.getRecipeList()).thenReturn(list);
@@ -174,5 +174,12 @@ public class FilterTest extends ApplicationTest {
         list.mealOptions.getCheckModel().check("Breakfast");
         list.mealOptions.getCheckModel().clearCheck("Breakfast");
         assertEquals(0, list.mealOptions.getCheckModel().getCheckedItems().size());
+    }
+
+    @Test
+    public void testFilterByMealE2E() {
+        testFilterByOneMealType();
+        testFilterByMultiMealType();
+        testDeselectFilter();
     }
 }

@@ -12,7 +12,7 @@ import static com.mongodb.client.model.Filters.eq;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class LoginTest {
+public class AutoLoginTest {
     private static MongoClient mongoClient;
     private static MongoDatabase PantryPalDB;
 
@@ -24,7 +24,7 @@ public class LoginTest {
     }
 
     @Test
-    public void testLoginAccount() {
+    public void testAutoLoginSuccess() {
         String username = "test";
         String password = "password";
         String userID = server.Account.loginAccount(username, password, false);
@@ -32,7 +32,7 @@ public class LoginTest {
     }
 
     @Test
-    public void testLoginAccountUnsuccessful() {
+    public void testAutoLoginUnsuccessful() {
         String username = "testuser";
         String password = "testpasswordd";
         String userID = server.Account.loginAccount(username, password, false);
@@ -41,7 +41,8 @@ public class LoginTest {
 
     @Test
     public void testLoginE2E() {
-        testLoginAccount();
-        testLoginAccountUnsuccessful();
+        testAutoLoginSuccess();
+        testAutoLoginUnsuccessful();
     }
 }
+

@@ -59,7 +59,9 @@ public class ImagePreviewTest extends ApplicationTest {
         assertTrue(recipe.isComplete());
     }
 
-        
-
-        
+    @Test
+    public void testImagePreviewE2E() {
+        testGenerateImage();
+    }    
+  
 }

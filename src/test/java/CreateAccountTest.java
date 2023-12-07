@@ -8,6 +8,7 @@ import org.bson.Document;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -24,7 +25,7 @@ public class CreateAccountTest {
     }
 
     @Test
-    public void testCreateAccount() {
+    public void testCreateAccountSuccessful() {
         String username = "testuser";
         String password = "testpassword";
         server.Account.createAccount(username, password);
@@ -33,5 +34,22 @@ public class CreateAccountTest {
         assertNotNull(queryDocument, "User document should exist");
         assertEquals(username, queryDocument.getString("username"), "Username should match");
         assertEquals(password, queryDocument.getString("password"), "Password should match");
+    }
+
+    @Test
+    public void testCreateAccountUnsuccessful() {
+        String username = "test";
+        String password = "password";
+        String output = server.Account.createAccount(username, password);
+        MongoCollection<Document> accountsCollection = PantryPalDB.getCollection("accounts");
+        Document queryDocument = accountsCollection.find(and(eq("username", username), eq("password", password))).first();
+        assertEquals(queryDocument.toString(), "Document{{_id=65714a6024ebf878f9f2b35e, username=test, password=password}}");
+        assertEquals(output, null);
+    }
+
+    @Test
+    public void testCreateAccountE2E() {
+        testCreateAccountSuccessful();
+        testCreateAccountUnsuccessful();
     }
 }

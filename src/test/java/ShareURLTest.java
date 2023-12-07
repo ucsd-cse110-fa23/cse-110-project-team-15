@@ -105,4 +105,10 @@ public class ShareURLTest extends ApplicationTest {
         assertEquals(expectedHtml, capturedOutput);
     }
 
+    @Test
+    public void testShareURLE2E() throws Exception {
+        testbuildRecipeUrl();
+        testfetchRecipeDetails();
+        testHandleGet();
+    }
 }

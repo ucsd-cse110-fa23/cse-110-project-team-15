@@ -50,15 +50,9 @@ public class RecipeTest extends ApplicationTest {
         // assertTrue(recipe.isComplete());
     }
 
-    /*
-     * this test case doesn't pass
-     */
-
-    // @Test
-    // public void testRecipeIncomplete() {
-    // Recipe rec1 = new Recipe();
-    // rec1.getName().setText("Chicken Stir-Fry");
-
-    // assertFalse(rec1.isComplete());
-    // }
+    @Test
+    public void testRecipeTestE2E() {
+        testRecipeInitialization();
+        testRecipeCompletion();
+    }
 }

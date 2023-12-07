@@ -28,4 +28,9 @@ public class WhisperTest {
         assertNotNull(generatedText);
         assertEquals(location, generatedText);
     }
+
+    @Test
+    public void testWhisperE2E() {
+        testGenerate();
+    }
 }
