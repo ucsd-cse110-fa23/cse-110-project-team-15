@@ -25,9 +25,11 @@ public class MongoTest {
             MongoCollection<Document> collection = database.getCollection("recipes");
             System.out.println(collection);
             // Query for all documents in the collection
-            Document documents = collection.find(eq("_id", "2023-12-05 19:40:51.838")).first();
+            FindIterable<Document> documents = collection.find();
             
-            System.out.println(documents);
+            for (Document document : documents) {
+                System.out.println(document);
+            }
 
             mongoClient.close();
 

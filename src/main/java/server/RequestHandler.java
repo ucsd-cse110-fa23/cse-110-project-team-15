@@ -7,9 +7,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
-import java.text.Normalizer;
+import java.net.URLEncoder;
 import java.util.Map;
 import java.util.Scanner;
+import java.io.UnsupportedEncodingException;
+import java.text.Normalizer;
+import java.util.regex.Pattern;
 
 public class RequestHandler implements HttpHandler {
 
@@ -31,7 +34,7 @@ public class RequestHandler implements HttpHandler {
       outStream.close();
   }
 
-  private String handleGet (HttpExchange httpExchange) throws UnsupportedEncodingException{
+  private String handleGet(HttpExchange httpExchange) throws UnsupportedEncodingException{
       URI uri = httpExchange.getRequestURI();
       String query = uri.getRawQuery();
       System.out.println(query);
@@ -61,12 +64,10 @@ public class RequestHandler implements HttpHandler {
           .append("</p>")
           .append("</body>")
           .append("</html>");
+    
+        System.out.println(htmlBuilder);
 
       return htmlBuilder.toString();
   }
-
-
-
-
 
 }

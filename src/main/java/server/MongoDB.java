@@ -168,7 +168,6 @@ public class MongoDB implements HttpHandler {
             System.out.println(recipeDoc);
 
             if (recipeDoc != null) {
-                System.out.println(recipeDoc.toJson());
                 String recipeName = recipeDoc.getString("recipeName");
                 String recipeIngredients = recipeDoc.getString("recipeIngredients");
                 String recipeInstructions = recipeDoc.getString("recipeInstructions");
