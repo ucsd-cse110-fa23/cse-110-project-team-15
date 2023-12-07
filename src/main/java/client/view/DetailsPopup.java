@@ -196,7 +196,7 @@ public class DetailsPopup extends Stage {
         deleteButton.setOnAction(eventHandler);
     }
 
-    private String buildRecipeUrl(String recipeId) {
+    public String buildRecipeUrl(String recipeId) {
         String baseUrl = "http://localhost:8100/recipe/";
         recipeId = recipeId.replace(" ", "_");
         return baseUrl + "?=" + recipeId;
