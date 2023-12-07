@@ -58,7 +58,7 @@ public class AutoLoginTest {
     }
 
     @Test
-    public void testLoginE2E() {
+    public void testAutoLoginE2E() {
         testAutoLoginSuccess();
         testAutoLoginUnsuccessful();
     }
