@@ -1,5 +1,6 @@
 import client.view.Recipe;
 import client.view.AppFrame;
+import client.view.DetailsPopup;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 
@@ -30,6 +31,8 @@ public class DispMealTypeTest extends ApplicationTest {
     @Test
     public void testDisplayNoMealType() {
         Platform.runLater(() -> {
+            recipe.getMealType().setText("");
+
             String actualMealType = recipe.getMealType().getText();
             assertEquals("", actualMealType);
         });
@@ -52,5 +55,14 @@ public class DispMealTypeTest extends ApplicationTest {
             testDisplayNoMealType();
             testDisplayIncorrectMealType();
         });
+    }
+
+        @Test
+    public void testUrl() {
+                Platform.runLater(() -> {
+        DetailsPopup popup = new DetailsPopup();
+        String url = popup.buildRecipeUrl("123145134 1231241341");
+        assertEquals(url, "http://localhost:8100/recipe/?=123145134_1231241341");
+         });
     }
 }

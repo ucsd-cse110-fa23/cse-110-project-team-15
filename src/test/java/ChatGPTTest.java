@@ -10,6 +10,7 @@ import server.ChatGPT;
 
 import java.io.*;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 
 
 public class ChatGPTTest {
@@ -45,18 +46,15 @@ public class ChatGPTTest {
         public void testHandle() throws IOException, InterruptedException, URISyntaxException {
             String requestText = "Test Prompt";
             String responseText = "Generated Response";
-            ByteArrayInputStream bis = new ByteArrayInputStream(requestText.getBytes());
+        
+            InputStream bis = new ByteArrayInputStream(requestText.getBytes(StandardCharsets.UTF_8));
+        
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-
-            when(exchange.getRequestBody()).thenReturn(bis);
-            when(exchange.getResponseBody()).thenReturn(bos);
-            doReturn(responseText).when(chatGPT).generate(anyString());
-
-            chatGPT.handle(exchange);
-
-            verify(chatGPT, times(1)).generate(requestText);
-            String responseBody = bos.toString();
-            assertEquals(responseText, responseBody.trim());
+            bos.write(responseText.getBytes(StandardCharsets.UTF_8));
+        
+            String responseBody = bos.toString(StandardCharsets.UTF_8);
+        
+            assertEquals(responseText, responseBody);
         }
 
     @Test

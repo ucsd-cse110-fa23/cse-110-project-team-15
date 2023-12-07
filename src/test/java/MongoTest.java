@@ -8,6 +8,7 @@ import static com.mongodb.client.model.Filters.eq;
 
 import client.model.*;
 import client.view.AppFrame;
+import client.view.DetailsPopup;
 import server.ChatGPT;
 import server.Server;
 import java.net.InetAddress;
@@ -76,4 +77,5 @@ public class MongoTest {
 
 
     }
+
 }
