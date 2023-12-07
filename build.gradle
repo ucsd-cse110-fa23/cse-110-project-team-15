@@ -28,6 +28,7 @@ dependencies {
     testImplementation 'org.testfx:testfx-core:4.0.16-alpha'
     testImplementation "org.testfx:testfx-junit5:4.0.16-alpha"
     testImplementation 'org.mockito:mockito-core:3.2.4'
+    testImplementation "org.mockito:mockito-core:3.+" 
 
     // This provides the JUnit API.
     testImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"

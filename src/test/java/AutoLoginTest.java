@@ -1,3 +1,4 @@
+import server.Account;
 import server.MongoDB;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
@@ -8,9 +9,21 @@ import org.bson.Document;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
+import java.util.prefs.Preferences;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class AutoLoginTest {
     private static MongoClient mongoClient;
@@ -27,16 +40,21 @@ public class AutoLoginTest {
     public void testAutoLoginSuccess() {
         String username = "test";
         String password = "password";
-        String userID = server.Account.loginAccount(username, password, false);
+        Preferences prefs = Preferences.userNodeForPackage(Account.class);
+        String userID = Account.loginAccount(username, password, true);
         assertNotNull((userID));
+        assertEquals(username, prefs.get("username", null));
     }
 
     @Test
     public void testAutoLoginUnsuccessful() {
+        Account.clearCredentials();
         String username = "testuser";
         String password = "testpasswordd";
+        Preferences prefs = Preferences.userNodeForPackage(Account.class);
         String userID = server.Account.loginAccount(username, password, false);
         assertEquals(userID, null);
+        assertEquals(null, prefs.get("username", null));
     }
 
     @Test
