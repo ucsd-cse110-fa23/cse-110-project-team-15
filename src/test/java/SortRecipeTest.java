@@ -1,9 +1,7 @@
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 
 import client.view.AppFrame;
 import client.view.Recipe;
@@ -31,19 +29,18 @@ public class SortRecipeTest {
             Recipe recipe1 = new Recipe(new AppFrame());
             Recipe recipe2 = new Recipe(new AppFrame());
             Recipe recipe3 = new Recipe(new AppFrame());
-            recipe1.setRecipeId("2023-12-06 10:00:00.000");
-            recipe2.setRecipeId("2023-12-06 11:00:00.000");
-            recipe3.setRecipeId("2023-12-06 09:00:00.000");
+            recipe1.setRecipeId(LocalDateTime.now().minusHours(1).toString());
+            recipe2.setRecipeId(LocalDateTime.now().toString());
+            recipe3.setRecipeId(LocalDateTime.now().minusHours(2).toString());
 
             recipeList.addRecipe(recipe1);
             recipeList.addRecipe(recipe2);
             recipeList.addRecipe(recipe3);
             recipeList.timeOptions.getCheckModel().check("Newest");
             recipeList.sortRecipes();
-            LocalDateTime newestTime = LocalDateTime.parse("2023-12-06 11:00:00.000",
-                    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
+            LocalDateTime newestTime = recipeList.getRecipes().get(0).getRecipeIdAsDateTime();
 
-            assertEquals(newestTime, recipeList.getRecipes().get(0).getRecipeIdAsDateTime());
+            assertEquals(newestTime, recipe2.getRecipeIdAsDateTime());
         });
     }
 
@@ -53,19 +50,18 @@ public class SortRecipeTest {
             Recipe recipe1 = new Recipe(new AppFrame());
             Recipe recipe2 = new Recipe(new AppFrame());
             Recipe recipe3 = new Recipe(new AppFrame());
-            recipe1.setRecipeId("2023-12-06 10:00:00.000");
-            recipe2.setRecipeId("2023-12-06 11:00:00.000");
-            recipe3.setRecipeId("2023-12-06 09:00:00.000");
+            recipe1.setRecipeId(LocalDateTime.now().minusHours(1).toString());
+            recipe2.setRecipeId(LocalDateTime.now().toString());
+            recipe3.setRecipeId(LocalDateTime.now().minusHours(2).toString());
 
             recipeList.addRecipe(recipe1);
             recipeList.addRecipe(recipe2);
             recipeList.addRecipe(recipe3);
             recipeList.timeOptions.getCheckModel().check("Oldest");
             recipeList.sortRecipes();
-            LocalDateTime oldestTime = LocalDateTime.parse("2023-12-06 09:00:00.000",
-                    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
+            LocalDateTime oldestTime = recipeList.getRecipes().get(0).getRecipeIdAsDateTime();
 
-            assertEquals(oldestTime, recipeList.getRecipes().get(0).getRecipeIdAsDateTime());
+            assertEquals(oldestTime, recipe3.getRecipeIdAsDateTime());
         });
     }
 
@@ -75,39 +71,22 @@ public class SortRecipeTest {
             Recipe recipe1 = new Recipe(new AppFrame());
             Recipe recipe2 = new Recipe(new AppFrame());
             Recipe recipe3 = new Recipe(new AppFrame());
-            recipe1.setRecipeId("2023-12-06 10:00:00.000");
-            recipe2.setRecipeId("2023-12-06 11:00:00.000");
-            recipe3.setRecipeId("2023-12-06 09:00:00.000");
+
+            recipe1.setRecipeId(LocalDateTime.now().minusHours(1).toString());
+            recipe2.setRecipeId(LocalDateTime.now().toString());
+            recipe3.setRecipeId(LocalDateTime.now().minusHours(2).toString());
 
             recipeList.addRecipe(recipe1);
             recipeList.addRecipe(recipe2);
             recipeList.addRecipe(recipe3);
+
             recipeList.sortRecipes();
-            LocalDateTime oldestTime = LocalDateTime.parse("2023-12-06 09:00:00.000",
-                    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
-            LocalDateTime newestTime = LocalDateTime.parse("2023-12-06 11:00:00.000",
-                    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
 
-            assertEquals(oldestTime, recipeList.getRecipes().get(0).getRecipeIdAsDateTime());
-            assertEquals(newestTime, recipeList.getRecipes().get(2).getRecipeIdAsDateTime());
+            LocalDateTime oldestTime = recipeList.getRecipes().get(0).getRecipeIdAsDateTime();
+            LocalDateTime newestTime = recipeList.getRecipes().get(2).getRecipeIdAsDateTime();
+
+            assertEquals(oldestTime, recipe3.getRecipeIdAsDateTime());
+            assertEquals(newestTime, recipe2.getRecipeIdAsDateTime());
         });
-    }
-
-    @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-    public class AllSortRecipeTests {
-
-        @Test
-        public void runAllSortTests() {
-            SortRecipeTest sortRecipeTest = new SortRecipeTest();
-
-            sortRecipeTest.setUp();
-            sortRecipeTest.testSortByNewest();
-
-            sortRecipeTest.setUp();
-            sortRecipeTest.testSortByOldest();
-
-            sortRecipeTest.setUp();
-            sortRecipeTest.testNoSort();
-        }
     }
 }
