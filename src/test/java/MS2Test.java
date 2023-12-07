@@ -24,7 +24,7 @@ public class MS2Test extends ApplicationTest {
 
     @Test
     public void MS2Test() throws IOException, InterruptedException, URISyntaxException, Exception{
-        // AudioRecorderTest t1 = new AudioRecorderTest();
+        AudioRecorderTest t1 = new AudioRecorderTest();
         AutoLoginTest t2 = new AutoLoginTest();
         ChatGPTTest t3 = new ChatGPTTest();
         CreateAccountTest t4 = new CreateAccountTest();

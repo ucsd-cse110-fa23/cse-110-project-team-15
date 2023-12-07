@@ -43,7 +43,7 @@ public class CreateAccountTest {
         String output = server.Account.createAccount(username, password);
         MongoCollection<Document> accountsCollection = PantryPalDB.getCollection("accounts");
         Document queryDocument = accountsCollection.find(and(eq("username", username), eq("password", password))).first();
-        assertEquals(queryDocument.toString(), "Document{{_id=65714a6024ebf878f9f2b35e, username=test, password=password}}");
+        assertEquals(queryDocument.toString(), "Document{{_id=6572193d634cce44404b3269, username=test, password=password}}");
         assertEquals(output, null);
     }
 
